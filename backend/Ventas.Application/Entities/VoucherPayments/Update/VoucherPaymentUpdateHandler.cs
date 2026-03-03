@@ -5,13 +5,13 @@ using Ventas.Application.Entities.VoucherPayments.DTOs;
 
 namespace Ventas.Application.Entities.VoucherPayments.Update
 {
-    public record VoucherPaymentCreateCommand(
+    public record VoucherPaymentUpdateCommand(
         int Id,
         decimal Amount,
         int VoucherId,
         int PaymentMethodId) : IRequest<VoucherPaymentOutput>;
 
-    public class VoucherPaymentUpdateHandler : IRequestHandler<VoucherPaymentCreateCommand, VoucherPaymentOutput>
+    public class VoucherPaymentUpdateHandler : IRequestHandler<VoucherPaymentUpdateCommand, VoucherPaymentOutput>
     {
         private readonly IVoucherPaymentRepository _voucherPaymentRepository;
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
@@ -22,7 +22,7 @@ namespace Ventas.Application.Entities.VoucherPayments.Update
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
-        public async Task<VoucherPaymentOutput> Handle(VoucherPaymentCreateCommand request, CancellationToken cancellationToken)
+        public async Task<VoucherPaymentOutput> Handle(VoucherPaymentUpdateCommand request, CancellationToken cancellationToken)
         {
             var existingVoucherPayment = await _voucherPaymentRepository.GetByIdAsync(request.Id);
             if (existingVoucherPayment == null)

@@ -6,7 +6,7 @@ using Ventas.Infrastructure.Data;
 
 namespace Ventas.Infrastructure.Persistence.Repositories
 {
-    internal class CategoryRepository : BaseRepository<Category>, ICategoryRepository
+    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
         public CategoryRepository(AppDbContext context) : base(context)
         {

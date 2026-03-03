@@ -1,54 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\MyMSystem\\Ventas\\backend\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{F7FFC713-87AE-49CD-9274-9529F4ED9BB3}|Ventas.Application\\Ventas.Application.csproj|d:\\mymsystem\\ventas\\backend\\ventas.application\\entities\\voucherdetails\\update\\voucherdetailupdatehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F7FFC713-87AE-49CD-9274-9529F4ED9BB3}|Ventas.Application\\Ventas.Application.csproj|solutionrelative:ventas.application\\entities\\voucherdetails\\update\\voucherdetailupdatehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F7FFC713-87AE-49CD-9274-9529F4ED9BB3}|Ventas.Application\\Ventas.Application.csproj|d:\\mymsystem\\ventas\\backend\\ventas.application\\entities\\voucherdetails\\create\\voucherdetailcreatehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F7FFC713-87AE-49CD-9274-9529F4ED9BB3}|Ventas.Application\\Ventas.Application.csproj|solutionrelative:ventas.application\\entities\\voucherdetails\\create\\voucherdetailcreatehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "VoucherDetailUpdateHandler.cs",
-              "DocumentMoniker": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Entities\\VoucherDetails\\Update\\VoucherDetailUpdateHandler.cs",
-              "RelativeDocumentMoniker": "Ventas.Application\\Entities\\VoucherDetails\\Update\\VoucherDetailUpdateHandler.cs",
-              "ToolTip": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Entities\\VoucherDetails\\Update\\VoucherDetailUpdateHandler.cs*",
-              "RelativeToolTip": "Ventas.Application\\Entities\\VoucherDetails\\Update\\VoucherDetailUpdateHandler.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-03T16:14:50.153Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VoucherDetailCreateHandler.cs",
-              "DocumentMoniker": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Entities\\VoucherDetails\\Create\\VoucherDetailCreateHandler.cs",
-              "RelativeDocumentMoniker": "Ventas.Application\\Entities\\VoucherDetails\\Create\\VoucherDetailCreateHandler.cs",
-              "ToolTip": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Entities\\VoucherDetails\\Create\\VoucherDetailCreateHandler.cs",
-              "RelativeToolTip": "Ventas.Application\\Entities\\VoucherDetails\\Create\\VoucherDetailCreateHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-03T15:48:09.415Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

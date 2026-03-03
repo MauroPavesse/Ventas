@@ -42,3 +42,4 @@ namespace Ventas.Application.Entities.VoucherDetails.Search
             return voucherDetails.Adapt<IEnumerable<VoucherDetailOutput>>();
         }
     }
+}

@@ -16,7 +16,7 @@ namespace Ventas.Infrastructure.Persistence.Configurations
                 .HasMaxLength(150);
 
             builder.Property(t => t.StringValue)
-                .HasColumnType("test");
+                .HasColumnType("text");
 
             builder.Property(t => t.NumericValue)
                 .HasPrecision(10, 2);
