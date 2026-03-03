@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.Vouchers
     {
         public Task<IEnumerable<Voucher>> SearchAsync(
             Expression<Func<Voucher, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

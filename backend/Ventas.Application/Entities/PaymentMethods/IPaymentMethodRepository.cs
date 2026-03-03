@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.PaymentMethods
     {
         public Task<IEnumerable<PaymentMethod>> SearchAsync(
             Expression<Func<PaymentMethod, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

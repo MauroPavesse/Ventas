@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.TaxConditions
     {
         public Task<IEnumerable<TaxCondition>> SearchAsync(
             Expression<Func<TaxCondition, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

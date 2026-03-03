@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.Products
     {
         public Task<IEnumerable<Product>> SearchAsync(
             Expression<Func<Product, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

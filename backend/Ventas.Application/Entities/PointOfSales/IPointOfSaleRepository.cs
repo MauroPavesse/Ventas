@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.PointOfSales
     {
         public Task<IEnumerable<PointOfSale>> SearchAsync(
             Expression<Func<PointOfSale, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.DailyBoxes
     {
         public Task<IEnumerable<DailyBox>> SearchAsync(
             Expression<Func<DailyBox, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

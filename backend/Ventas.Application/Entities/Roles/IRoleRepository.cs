@@ -8,7 +8,7 @@ namespace Ventas.Application.Entities.Roles
     {
         public Task<IEnumerable<Role>> SearchAsync(
             Expression<Func<Role, bool>>? predicate = null,
-            IEnumerable<string>? includes = null,
+            IEnumerable<string>? includesString = null,
             bool disableTracking = true);
     }
 }

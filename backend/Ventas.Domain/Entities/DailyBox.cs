@@ -8,6 +8,6 @@ namespace Ventas.Domain.Entities
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
 
-        public IEnumerable<Voucher> Voucher { get; set; } = new List<Voucher>();
+        public IEnumerable<Voucher> Vouchers { get; set; } = new List<Voucher>();
     }
 }
