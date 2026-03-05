@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z9wSoY4WG1Y=",
+  "dgSpecHash": "YrBxIhIqdEY=",
   "success": true,
-  "projectFilePath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj",
+  "projectFilePath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mauro\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

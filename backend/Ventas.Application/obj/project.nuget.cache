@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KV76E1j9Odc=",
+  "dgSpecHash": "i0+mP4jtJQU=",
   "success": true,
-  "projectFilePath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
+  "projectFilePath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mauro\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",

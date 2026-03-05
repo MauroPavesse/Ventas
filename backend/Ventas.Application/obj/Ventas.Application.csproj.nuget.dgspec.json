@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {}
+    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {}
   },
   "projects": {
-    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {
+    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
+        "projectUniqueName": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
         "projectName": "Ventas.Application",
-        "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
+        "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
         "packagesPath": "C:\\Users\\mauro\\.nuget\\packages\\",
-        "outputPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\obj\\",
+        "outputPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -32,8 +32,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
-                "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj"
+              "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
+                "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj"
               }
             }
           }
@@ -365,17 +365,17 @@
         }
       }
     },
-    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
+    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
+        "projectUniqueName": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
         "projectName": "Ventas.Domain",
-        "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
+        "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
         "packagesPath": "C:\\Users\\mauro\\.nuget\\packages\\",
-        "outputPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\obj\\",
+        "outputPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
