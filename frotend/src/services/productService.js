@@ -6,14 +6,13 @@ import { ProductUpdateCommand } from "../DTOs/products/ProductUpdateCommand";
 export const productService = {
   search: async (params) => {
     const body = new SearchCommand(params);
-
     const response = await api.post("/product/search", body);
     return response.data;
   },
 
   create: async (params) => {
     const body = new ProductCreateCommand(params);
-
+    console.log(body);
     const response = await api.post("/product", body);
     return response.data;
   },

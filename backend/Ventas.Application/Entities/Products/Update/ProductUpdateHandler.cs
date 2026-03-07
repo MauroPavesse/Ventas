@@ -5,7 +5,7 @@ using Ventas.Application.Entities.UnitOfWork;
 
 namespace Ventas.Application.Entities.Products.Update
 {
-    public record ProductUpdateCommand(int Id, int? Code, string Name, string Description, string ImagePath, decimal Price, string CodeBar, int CategoryId, int TaxRateId) : IRequest<ProductOutput>;
+    public record ProductUpdateCommand(int Id, string? Code, string Name, string Description, string ImagePath, decimal Price, string CodeBar, int CategoryId, int TaxRateId) : IRequest<ProductOutput>;
 
     public class ProductUpdateHandler : IRequestHandler<ProductUpdateCommand, ProductOutput>
     {

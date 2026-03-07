@@ -8,6 +8,9 @@ namespace Ventas.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+            builder.Property(t => t.Code)
+                .HasMaxLength(20);
+
             builder.Property(t => t.Name)
                 .HasMaxLength(70);
 

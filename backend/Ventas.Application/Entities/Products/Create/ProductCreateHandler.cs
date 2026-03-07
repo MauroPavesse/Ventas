@@ -6,7 +6,7 @@ using Ventas.Domain.Entities;
 
 namespace Ventas.Application.Entities.Products.Create
 {
-    public record ProductCreateCommand(int? Code, string Name, string Description, string ImagePath, decimal Price, string CodeBar, int CategoryId, int TaxRateId) : IRequest<ProductOutput>;
+    public record ProductCreateCommand(string? Code, string Name, string Description, string ImagePath, decimal Price, string CodeBar, int CategoryId, int TaxRateId) : IRequest<ProductOutput>;
 
     public class ProductCreateHandler : IRequestHandler<ProductCreateCommand, ProductOutput>
     {

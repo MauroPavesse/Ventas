@@ -33,7 +33,7 @@ namespace Ventas.Application.Entities.Products.Search
                 var codeFilter = search.Filters.FirstOrDefault(t => t.Field == "Code");
                 if (codeFilter != null)
                 {
-                    predicate = predicate.And(t => t.Code == Convert.ToInt32(codeFilter.Value));
+                    predicate = predicate.And(t => t.Code == codeFilter.Value);
                 }
             }
 

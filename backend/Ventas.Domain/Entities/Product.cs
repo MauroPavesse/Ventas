@@ -4,7 +4,7 @@ namespace Ventas.Domain.Entities
 {
     public class Product : BaseModel
     {
-        public int? Code { get; set; }
+        public string? Code { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string ImagePath { get; set; } = string.Empty;
