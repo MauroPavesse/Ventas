@@ -23,7 +23,7 @@ namespace Ventas.Infrastructure.Persistence.Configurations
             builder.Property(t => t.Provincie)
                 .HasMaxLength(50);
 
-            builder.Property(t => t.Name)
+            builder.Property(t => t.PostalCode)
                 .HasMaxLength(10);
         }
     }

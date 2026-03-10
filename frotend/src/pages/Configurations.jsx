@@ -31,6 +31,18 @@ const Configurations = () => {
       >
         PUNTOS DE VENTA
       </Button>
+      <Button
+        style={{
+          backgroundColor: "#5c9cbf",
+          width: "100%",
+          height: "60px",
+          color: "white",
+          fontSize: 30,
+        }}
+        onClick={() => navigate("/paymentmethod")}
+      >
+        FORMAS DE PAGO
+      </Button>
     </PageLayout>
   );
 };

@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import Business from "./pages/Business";
 import Configurations from "./pages/Configurations";
 import PointOfSale from "./pages/PointOfSale";
+import PaymentMethod from "./pages/PaymentMethod";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/business" element={<Business />} />
             <Route path="/pointofsale" element={<PointOfSale />} />
+            <Route path="/paymentmethod" element={<PaymentMethod />} />
           </Route>
 
           {/* Redirección por defecto si la ruta no existe */}

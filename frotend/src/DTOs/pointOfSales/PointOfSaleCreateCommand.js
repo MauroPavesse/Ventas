@@ -1,17 +1,17 @@
 export class PointOfSaleCreateCommand {
     constructor({
-        Name = "",
-        Number = "",
-        Address = "",
-        City = "",
-        Provincie = "",
-        PostalCode = ""
+        name = "",
+        number = "",
+        address = "",
+        city = "",
+        provincie = "",
+        postalCode = ""
     } = {}) {
-        this.Name = Name;
-        this.Number = Number;
-        this.Address = Address;
-        this.City = City;
-        this.Provincie = Provincie;
-        this.PostalCode = PostalCode;
+        this.name = name;
+        this.number = number;
+        this.address = address;
+        this.city = city;
+        this.provincie = provincie;
+        this.postalCode = postalCode;
     }
 }

@@ -1,19 +1,19 @@
 export class PointOfSaleUpdateCommand {
     constructor({
-        Id = 0,
-        Name = "",
-        Number = "",
-        Address = "",
-        City = "",
-        Provincie = "",
-        PostalCode = ""
+        id = 0,
+        name = "",
+        number = "",
+        address = "",
+        city = "",
+        provincie = "",
+        postalCode = ""
     } = {}) {
-        this.Id = Id;
-        this.Name = Name;
-        this.Number = Number;
-        this.Address = Address;
-        this.City = City;
-        this.Provincie = Provincie;
-        this.PostalCode = PostalCode;
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.address = address;
+        this.city = city;
+        this.provincie = provincie;
+        this.postalCode = postalCode;
     }
 }

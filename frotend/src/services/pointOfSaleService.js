@@ -6,14 +6,12 @@ import { PointOfSaleUpdateCommand } from "../DTOs/pointOfSales/PointOfSaleUpdate
 export const pointOfSaleService = {
   search: async (params) => {
     const body = new SearchCommand(params);
-
     const response = await api.post("/pointOfSale/search", body);
     return response.data;
   },
 
   create: async (params) => {
     const body = new PointOfSaleCreateCommand(params);
-
     const response = await api.post("/pointOfSale", body);
     return response.data;
   },
