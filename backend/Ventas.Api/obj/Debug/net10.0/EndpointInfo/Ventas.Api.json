@@ -145,6 +145,61 @@
         }
       }
     },
+    "/api/Configuration/search": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "parameters": [
+          {
+            "name": "command",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Configuration": {
+      "put": {
+        "tags": [
+          "Configuration"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfigurationsBatchCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfigurationsBatchCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfigurationsBatchCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Customer/search": {
       "post": {
         "tags": [
@@ -1239,6 +1294,38 @@
         }
       }
     },
+    "/api/Uploads/certificate": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/User/search": {
       "post": {
         "tags": [
@@ -1883,6 +1970,27 @@
         },
         "additionalProperties": false
       },
+      "ConfigurationUpdateItem": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string",
+            "nullable": true
+          },
+          "stringValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "numericValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "boolValue": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "CustomerCreateCommand": {
         "type": "object",
         "properties": {
@@ -2249,6 +2357,19 @@
         },
         "additionalProperties": false
       },
+      "UpdateConfigurationsBatchCommand": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationUpdateItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UserCreateCommand": {
         "type": "object",
         "properties": {
@@ -2528,6 +2649,9 @@
       "name": "Category"
     },
     {
+      "name": "Configuration"
+    },
+    {
       "name": "Customer"
     },
     {
@@ -2553,6 +2677,9 @@
     },
     {
       "name": "TaxRate"
+    },
+    {
+      "name": "Uploads"
     },
     {
       "name": "User"

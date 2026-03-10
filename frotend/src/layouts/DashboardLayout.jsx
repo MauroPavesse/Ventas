@@ -32,7 +32,7 @@ const DashboardLayout = ({ children }) => {
 
   // Ítems del menú inferior (Ajustes y Logout)
   const footerItems = [
-    { key: 'ajustes', icon: <SettingOutlined />, label: 'Ajustes' },
+    { key: 'configurations', icon: <SettingOutlined />, label: 'Ajustes'},
     { 
       key: 'logout', 
       icon: <LogoutOutlined />, 
@@ -79,6 +79,7 @@ const DashboardLayout = ({ children }) => {
               mode="inline"
               selectable={false}
               items={footerItems}
+              onClick={({ key }) => navigate(`/${key}`)}
               style={{ borderTop: '1px solid #f0f0f0' }}
             />
           </div>

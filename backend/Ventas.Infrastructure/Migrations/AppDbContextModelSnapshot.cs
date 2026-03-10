@@ -84,6 +84,118 @@ namespace Ventas.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Configuration");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Identificador del sistema",
+                            NumericValue = 0m,
+                            StringValue = "TEST",
+                            Variable = "M&MID"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Nombre de la empresa",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "empresa"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Fecha inicio de la empresa",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "fechaInicio"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "CUIT / CUIL de la empresa",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "cuit"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Condición fiscal de la empresa",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "condicionFiscalId"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Alias de ARCA",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "arcaAlias"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Dirección certificado de ARCA",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "arcaCertificado"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Clave del certificado de ARCA",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "arcaClave"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Token del sistema",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "tokenSystem"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Active = 1,
+                            BoolValue = false,
+                            Deleted = 0,
+                            Description = "Último número usado en la caja diaria",
+                            NumericValue = 0m,
+                            StringValue = "",
+                            Variable = "cajaDiariaNumero"
+                        });
                 });
 
             modelBuilder.Entity("Ventas.Domain.Entities.Customer", b =>

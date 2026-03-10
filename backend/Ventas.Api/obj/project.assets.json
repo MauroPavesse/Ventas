@@ -3568,6 +3568,7 @@
   },
   "packageFolders": {
     "C:\\Users\\mauro\\.nuget\\packages\\": {},
+    "D:\\Programas\\DevExpress 24.1\\Components\\Offline Packages": {},
     "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -3580,10 +3581,12 @@
       "outputPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "D:\\Programas\\DevExpress 24.1\\Components\\Offline Packages",
         "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
         "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3592,6 +3595,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "D:\\Programas\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

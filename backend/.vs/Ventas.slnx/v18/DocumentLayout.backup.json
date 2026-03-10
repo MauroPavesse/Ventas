@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F7FFC713-87AE-49CD-9274-9529F4ED9BB3}|Ventas.Application\\Ventas.Application.csproj|d:\\sistemas\\mymsystems\\ventas\\backend\\ventas.application\\entities\\configurations\\update\\configurationupdatehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F7FFC713-87AE-49CD-9274-9529F4ED9BB3}|Ventas.Application\\Ventas.Application.csproj|solutionrelative:ventas.application\\entities\\configurations\\update\\configurationupdatehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45E0666C-33DD-4F2A-B29D-B7A82ECD4AD1}|Ventas.Infrastructure\\Ventas.Infrastructure.csproj|d:\\sistemas\\mymsystems\\ventas\\backend\\ventas.infrastructure\\persistence\\configurations\\configurationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45E0666C-33DD-4F2A-B29D-B7A82ECD4AD1}|Ventas.Infrastructure\\Ventas.Infrastructure.csproj|solutionrelative:ventas.infrastructure\\persistence\\configurations\\configurationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ConfigurationUpdateHandler.cs",
+              "DocumentMoniker": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Entities\\Configurations\\Update\\ConfigurationUpdateHandler.cs",
+              "RelativeDocumentMoniker": "Ventas.Application\\Entities\\Configurations\\Update\\ConfigurationUpdateHandler.cs",
+              "ToolTip": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Entities\\Configurations\\Update\\ConfigurationUpdateHandler.cs",
+              "RelativeToolTip": "Ventas.Application\\Entities\\Configurations\\Update\\ConfigurationUpdateHandler.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T23:32:50.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ConfigurationConfiguration.cs",
+              "DocumentMoniker": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Persistence\\Configurations\\ConfigurationConfiguration.cs",
+              "RelativeDocumentMoniker": "Ventas.Infrastructure\\Persistence\\Configurations\\ConfigurationConfiguration.cs",
+              "ToolTip": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Persistence\\Configurations\\ConfigurationConfiguration.cs",
+              "RelativeToolTip": "Ventas.Infrastructure\\Persistence\\Configurations\\ConfigurationConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T23:16:48.168Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

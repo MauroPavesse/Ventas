@@ -84,6 +84,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Ventas.Api.Controllers.ConfigurationController",
+    "Method": "Update",
+    "RelativePath": "api/Configuration",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "Ventas.Application.Entities.Configurations.Update.UpdateConfigurationsBatchCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.ConfigurationController",
+    "Method": "Search",
+    "RelativePath": "api/Configuration/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Ventas.Api.Controllers.CustomerController",
     "Method": "Create",
     "RelativePath": "api/Customer",
@@ -738,6 +770,22 @@
       {
         "Name": "Deleted",
         "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.UploadsController",
+    "Method": "UploadCertificate",
+    "RelativePath": "api/Uploads/certificate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
     ],

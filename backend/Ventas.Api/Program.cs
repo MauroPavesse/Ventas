@@ -8,6 +8,7 @@ using Ventas.Application.Entities.Categories;
 using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Customers;
 using Ventas.Application.Entities.DailyBoxes;
+using Ventas.Application.Entities.Externas.FileStorage;
 using Ventas.Application.Entities.PaymentMethods;
 using Ventas.Application.Entities.PointOfSales;
 using Ventas.Application.Entities.PointOfSaleVoucherTypes;
@@ -23,6 +24,7 @@ using Ventas.Application.Entities.Vouchers;
 using Ventas.Application.Entities.VoucherTypes;
 using Ventas.Infrastructure.Data;
 using Ventas.Infrastructure.Persistence.Repositories;
+using Ventas.Infrastructure.Persistence.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,7 @@ builder.Services.AddScoped<IVoucherDetailRepository, VoucherDetailRepository>();
 builder.Services.AddScoped<IVoucherPaymentRepository, VoucherPaymentRepository>();
 builder.Services.AddScoped<IVoucherTypeRepository, VoucherTypeRepository>();
 builder.Services.AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 
 builder.Services.AddCors(options =>
 {
@@ -89,6 +92,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 using (var scope = app.Services.CreateScope())
 {

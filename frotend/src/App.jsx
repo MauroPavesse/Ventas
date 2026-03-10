@@ -5,6 +5,9 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import Dashboard from "./pages/Dashboard";
 import Sale from "./pages/Sale";
 import Products from "./pages/Products";
+import Business from "./pages/Business";
+import Configurations from "./pages/Configurations";
+import PointOfSale from "./pages/PointOfSale";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/sale" element={<Sale />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/configurations" element={<Configurations />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/pointofsale" element={<PointOfSale />} />
           </Route>
 
           {/* Redirección por defecto si la ruta no existe */}

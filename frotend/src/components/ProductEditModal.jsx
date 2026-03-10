@@ -129,7 +129,7 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
               name="name"
               rules={[{ required: true }]}
             >
-              <Input placeholder="Ej. Monitor Gamer" />
+              <Input placeholder="Ej. Helado Arcor" />
             </Form.Item>
 
             <Row gutter={10} style={{ alignItems: "baseline" }}>
