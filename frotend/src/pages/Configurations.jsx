@@ -27,7 +27,7 @@ const Configurations = () => {
           color: "white",
           fontSize: 30,
         }}
-        onClick={() => navigate("/pointofsale")}
+        onClick={() => navigate("/pointofsales")}
       >
         PUNTOS DE VENTA
       </Button>
@@ -39,7 +39,7 @@ const Configurations = () => {
           color: "white",
           fontSize: 30,
         }}
-        onClick={() => navigate("/paymentmethod")}
+        onClick={() => navigate("/paymentmethods")}
       >
         FORMAS DE PAGO
       </Button>
@@ -51,9 +51,21 @@ const Configurations = () => {
           color: "white",
           fontSize: 30,
         }}
-        onClick={() => navigate("/user")}
+        onClick={() => navigate("/users")}
       >
         PERSONAL
+      </Button>
+      <Button
+        style={{
+          backgroundColor: "#45c924",
+          width: "100%",
+          height: "60px",
+          color: "white",
+          fontSize: 30,
+        }}
+        onClick={() => navigate("/categories")}
+      >
+        CATEGORÍAS DE PRODUCTOS
       </Button>
     </PageLayout>
   );

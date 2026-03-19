@@ -168,6 +168,12 @@ const Sale = () => {
                             <h3>Total: ${cart.reduce((acc, item) => acc + item.import, 0)}</h3>
                         </div>
                     </Card>
+                    <Button
+                        type='primary'
+                        style={{ marginTop: 16, float: 'inline-end'}}
+                    >
+                        PAGAR
+                    </Button>
                 </Col>
             </Row>
         </PageLayout>

@@ -10,6 +10,8 @@ import Configurations from "./pages/Configurations";
 import PointOfSale from "./pages/PointOfSale";
 import PaymentMethod from "./pages/PaymentMethod";
 import User from "./pages/User";
+import Customer from "./pages/Customer";
+import Category from "./pages/Category";
 
 function App() {
   return (
@@ -22,13 +24,15 @@ function App() {
           {/* Rutas Privadas (Protegidas)*/}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/sale" element={<Sale />} />
+            <Route path="/sales" element={<Sale />} />
             <Route path="/products" element={<Products />} />
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/business" element={<Business />} />
-            <Route path="/pointofsale" element={<PointOfSale />} />
-            <Route path="/paymentmethod" element={<PaymentMethod />} />
-            <Route path="/user" element={<User />} />
+            <Route path="/pointofsales" element={<PointOfSale />} />
+            <Route path="/paymentmethods" element={<PaymentMethod />} />
+            <Route path="/users" element={<User />} />
+            <Route path="/customers" element={<Customer />} />
+            <Route path="/categories" element={<Category />} />
           </Route>
 
           {/* Redirección por defecto si la ruta no existe */}

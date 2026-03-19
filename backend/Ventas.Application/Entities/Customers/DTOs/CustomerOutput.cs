@@ -1,4 +1,5 @@
-﻿using Ventas.Domain.Common;
+﻿using Ventas.Application.Entities.TaxConditions.DTOs;
+using Ventas.Domain.Common;
 
 namespace Ventas.Application.Entities.Customers.DTOs
 {
@@ -9,5 +10,7 @@ namespace Ventas.Application.Entities.Customers.DTOs
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public int TaxConditionId { get; set; }
+        public TaxConditionOutput? TaxCondition { get; set; }
+        public string TaxConditionDescription => TaxCondition != null ? TaxCondition.Description : "";
     }
 }

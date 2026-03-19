@@ -1,7 +1,7 @@
 export class CategoryCreateCommand {
     constructor({
-        Name = ""
+        name = ""
     } = {}) {
-        this.Name = Name;
+        this.name = name;
     }
 }

@@ -1,9 +1,9 @@
 export class CategoryUpdateCommand {
     constructor({
-        Id = 0,
-        Name = ""
+        id = 0,
+        name = ""
     } = {}) {
-        this.Id = Id;
-        this.Name = Name;
+        this.id = id;
+        this.name = name;
     }
 }

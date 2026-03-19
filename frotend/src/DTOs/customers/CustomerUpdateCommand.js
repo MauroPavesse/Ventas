@@ -1,17 +1,17 @@
 export class CustomerUpdateCommand {
     constructor({
-        Id = 0,
-        Document = 0,
-        Cuit = "",
-        FirstName = "",
-        LastName = "",
-        TaxConditionId = 0
+        id = 0,
+        document = 0,
+        cuit = "",
+        firstName = "",
+        lastName = "",
+        taxConditionId = 0
     } = {}) {
-        this.Id = Id;
-        this.Document = Document;
-        this.Cuit = Cuit;
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.TaxConditionId = TaxConditionId;
+        this.id = id;
+        this.document = document;
+        this.cuit = cuit;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.taxConditionId = taxConditionId;
     }
 }

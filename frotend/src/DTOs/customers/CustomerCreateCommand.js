@@ -1,15 +1,15 @@
 export class CustomerCreateCommand {
     constructor({
-        Document = 0,
-        Cuit = "",
-        FirstName = "",
-        LastName = "",
-        TaxConditionId = 0
+        document = 0,
+        cuit = "",
+        firstName = "",
+        lastName = "",
+        taxConditionId = 0
     } = {}) {
-        this.Document = Document;
-        this.Cuit = Cuit;
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.TaxConditionId = TaxConditionId;
+        this.document = document;
+        this.cuit = cuit;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.taxConditionId = taxConditionId;
     }
 }

@@ -24,11 +24,11 @@ const DashboardLayout = ({ children }) => {
 
   // Ítems del menú superior
   const mainItems = [
-    { key: 'sale', icon: <ShoppingOutlined />, label: 'Venta' },
+    { key: 'sales', icon: <ShoppingOutlined />, label: 'Venta' },
     { key: 'caja', icon: <CalculatorOutlined />, label: 'Caja Diaria' },
     { key: 'comprobantes', icon: <FileTextOutlined />, label: 'Comprobantes' },
     { key: 'products', icon: <InboxOutlined />, label: 'Productos' },
-    { key: 'clients', icon: <UsergroupAddOutlined />, label: 'Clientes' },
+    { key: 'customers', icon: <UsergroupAddOutlined />, label: 'Clientes' },
   ];
 
   // Ítems del menú inferior (Ajustes y Logout)

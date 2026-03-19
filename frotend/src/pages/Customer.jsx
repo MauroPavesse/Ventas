@@ -2,30 +2,30 @@ import { Button, message, Table, Modal } from "antd";
 import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { userService } from "../services/userService";
+import { customerService } from "../services/customerService";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import UserEditModal from "../components/UserEditModal";
+import CustomerEditModal from "../components/CustomerEditModal";
 
-const User = () => {
+const Customer = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState();
+  const [customers, setCustomers] = useState();
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const [isModalUserOpen, setIsModalUserOpen] = useState(false);
+  const [isModalCustomerOpen, setIsModalCustomerOpen] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const command = new SearchCommand();
-      var res = await userService.search(command);
-      setUsers(res);
+      var res = await customerService.search(command);
+      setCustomers(res);
     } catch (error) {
-      message.error("Error al cargar el personal: " + error);
+      message.error("Error al cargar los clientes: " + error);
     } finally {
       setLoading(false);
     }
@@ -36,13 +36,10 @@ const User = () => {
   }, []);
 
   const columns = [
-    { title: "Usuario", dataIndex: "username", key: "username" },
-    { title: "Rol", dataIndex: "roleName", key: "roleName" },
-    {
-      title: "Punto de venta",
-      dataIndex: "pointOfSaleName",
-      key: "pointOfSaleName",
-    },
+    { title: "Nombre", dataIndex: "firstName", key: "firstName" },
+    { title: "Apellido", dataIndex: "lastName", key: "lastName" },
+    { title: "Documento", dataIndex: "document", key: "document" },
+    { title: "Condición Fiscal", dataIndex: "taxConditionDescription", key: "taxConditionDescription" },
     {
       title: "Acción",
       key: "action",
@@ -54,7 +51,7 @@ const User = () => {
             icon={<EditOutlined />}
             onClick={() => {
               setSelectedRecord(record);
-              setIsModalUserOpen(true);
+              setIsModalCustomerOpen(true);
             }}
           />
           <Button
@@ -67,26 +64,26 @@ const User = () => {
     },
   ];
 
-  const addUser = () => {
+  const addCustomer = () => {
     setSelectedRecord(null);
-    setIsModalUserOpen(true);
+    setIsModalCustomerOpen(true);
   };
 
   const { confirm } = Modal;
 
   const handleDelete = (record) => {
     confirm({
-      title: "¿Estás seguro de eliminar este usuario?",
+      title: "¿Estás seguro de eliminar este cliente?",
       icon: <ExclamationCircleOutlined />,
-      content: `Usuario: ${record.name}`,
+      content: `Cliente: ${record.name}`,
       okText: "Sí, eliminar",
       okType: "danger",
       cancelText: "Cancelar",
       onOk: async () => {
         try {
-          await userService.delete(record.id);
+          await customerService.delete(record.id);
           message.success("Eliminado correctamente");
-          users.filter((t) => t.id != record.id);
+          customers.filter((t) => t.id != record.id);
         } catch (e) {
           message.error("Error al eliminar: " + e);
         }
@@ -95,30 +92,30 @@ const User = () => {
   };
 
   const handleCancel = () => {
-    setIsModalUserOpen(false);
+    setIsModalCustomerOpen(false);
     setSelectedRecord(null);
   };
 
   const handleSuccess = () => {
-    setIsModalUserOpen(false);
+    setIsModalCustomerOpen(false);
     fetchData();
   };
 
   return (
-    <PageLayout title="Personal" onClose={() => navigate("/configurations")}>
-      <Button type="primary" style={{ marginBottom: 10 }} onClick={addUser}>
+    <PageLayout title="Clientes" onClose={() => navigate("/configurations")}>
+      <Button type="primary" style={{ marginBottom: 10 }} onClick={addCustomer}>
         Agregar
       </Button>
 
       <Table
-        dataSource={users}
+        dataSource={customers}
         columns={columns}
         rowKey="id"
         loading={loading}
       />
 
-      <UserEditModal
-        open={isModalUserOpen}
+      <CustomerEditModal
+        open={isModalCustomerOpen}
         initialValues={selectedRecord}
         onCancel={handleCancel}
         onSuccess={handleSuccess}
@@ -127,4 +124,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Customer;

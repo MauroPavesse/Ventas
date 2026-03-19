@@ -2,30 +2,30 @@ import { Button, message, Table, Modal } from "antd";
 import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { userService } from "../services/userService";
+import { categoryService } from "../services/categoryService";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import UserEditModal from "../components/UserEditModal";
+import CategoryEditModal from "../components/CategoryEditModal";
 
-const User = () => {
+const Category = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState();
+  const [categories, setCategories] = useState();
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const [isModalUserOpen, setIsModalUserOpen] = useState(false);
+  const [isModalCategoryOpen, setIsModalCategoryOpen] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const command = new SearchCommand();
-      var res = await userService.search(command);
-      setUsers(res);
+      var res = await categoryService.search(command);
+      setCategories(res);
     } catch (error) {
-      message.error("Error al cargar el personal: " + error);
+      message.error("Error al cargar las categorías: " + error);
     } finally {
       setLoading(false);
     }
@@ -36,13 +36,7 @@ const User = () => {
   }, []);
 
   const columns = [
-    { title: "Usuario", dataIndex: "username", key: "username" },
-    { title: "Rol", dataIndex: "roleName", key: "roleName" },
-    {
-      title: "Punto de venta",
-      dataIndex: "pointOfSaleName",
-      key: "pointOfSaleName",
-    },
+    { title: "Categoría", dataIndex: "name", key: "name" },
     {
       title: "Acción",
       key: "action",
@@ -54,7 +48,7 @@ const User = () => {
             icon={<EditOutlined />}
             onClick={() => {
               setSelectedRecord(record);
-              setIsModalUserOpen(true);
+              setIsModalCategoryOpen(true);
             }}
           />
           <Button
@@ -67,26 +61,26 @@ const User = () => {
     },
   ];
 
-  const addUser = () => {
+  const addCategory = () => {
     setSelectedRecord(null);
-    setIsModalUserOpen(true);
+    setIsModalCategoryOpen(true);
   };
 
   const { confirm } = Modal;
 
   const handleDelete = (record) => {
     confirm({
-      title: "¿Estás seguro de eliminar este usuario?",
+      title: "¿Estás seguro de eliminar esta categoría?",
       icon: <ExclamationCircleOutlined />,
-      content: `Usuario: ${record.name}`,
+      content: `Categoría: ${record.name}`,
       okText: "Sí, eliminar",
       okType: "danger",
       cancelText: "Cancelar",
       onOk: async () => {
         try {
-          await userService.delete(record.id);
+          await categoryService.delete(record.id);
           message.success("Eliminado correctamente");
-          users.filter((t) => t.id != record.id);
+          categories.filter((t) => t.id != record.id);
         } catch (e) {
           message.error("Error al eliminar: " + e);
         }
@@ -95,30 +89,30 @@ const User = () => {
   };
 
   const handleCancel = () => {
-    setIsModalUserOpen(false);
+    setIsModalCategoryOpen(false);
     setSelectedRecord(null);
   };
 
   const handleSuccess = () => {
-    setIsModalUserOpen(false);
+    setIsModalCategoryOpen(false);
     fetchData();
   };
 
   return (
-    <PageLayout title="Personal" onClose={() => navigate("/configurations")}>
-      <Button type="primary" style={{ marginBottom: 10 }} onClick={addUser}>
+    <PageLayout title="Categorías" onClose={() => navigate("/configurations")}>
+      <Button type="primary" style={{ marginBottom: 10 }} onClick={addCategory}>
         Agregar
       </Button>
 
       <Table
-        dataSource={users}
+        dataSource={categories}
         columns={columns}
         rowKey="id"
         loading={loading}
       />
 
-      <UserEditModal
-        open={isModalUserOpen}
+      <CategoryEditModal
+        open={isModalCategoryOpen}
         initialValues={selectedRecord}
         onCancel={handleCancel}
         onSuccess={handleSuccess}
@@ -127,4 +121,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Category;
