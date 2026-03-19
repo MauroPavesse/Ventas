@@ -9,7 +9,7 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  CloseOutlined
+  UsergroupAddOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,7 @@ const DashboardLayout = ({ children }) => {
     { key: 'caja', icon: <CalculatorOutlined />, label: 'Caja Diaria' },
     { key: 'comprobantes', icon: <FileTextOutlined />, label: 'Comprobantes' },
     { key: 'products', icon: <InboxOutlined />, label: 'Productos' },
+    { key: 'clients', icon: <UsergroupAddOutlined />, label: 'Clientes' },
   ];
 
   // Ítems del menú inferior (Ajustes y Logout)

@@ -1,15 +1,15 @@
 export class UserUpdateCommand {
     constructor({
-        Id = 0,
-        Username = "",
-        Password = "",
-        RoleId = 0 | null,
-        PointOfSaleId = 0 | null
+        id = 0,
+        username = "",
+        password = "",
+        roleId = 0 | null,
+        pointOfSaleId = 0 | null
     } = {}) {
-        this.Id = Id;
-        this.Username = Username;
-        this.Password = Password;
-        this.RoleId = RoleId;
-        this.PointOfSaleId = PointOfSaleId
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roleId = roleId;
+        this.pointOfSaleId = pointOfSaleId
     }
 }

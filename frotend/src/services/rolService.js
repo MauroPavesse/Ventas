@@ -7,25 +7,25 @@ export const rolService = {
   search: async (params) => {
     const body = new SearchCommand(params);
 
-    const response = await api.post("/rol/search", body);
+    const response = await api.post("/role/search", body);
     return response.data;
   },
 
   create: async (params) => {
     const body = new RolCreateCommand(params);
 
-    const response = await api.post("/rol", body);
+    const response = await api.post("/role", body);
     return response.data;
   },
 
   update: async (params) => {
     const body = new RolUpdateCommand(params);
-    const response = await api.put("/rol", body);
+    const response = await api.put("/role", body);
     return response.data;
   },
 
   delete: async (id) => {
-    const response = await api.delete(`/rol/${id}`);
+    const response = await api.delete(`/role/${id}`);
     return response.data;
   },
 };

@@ -13,7 +13,7 @@ export const paymentMethodService = {
 
   create: async (params) => {
     const body = new PaymentMethodCreateCommand(params);
-
+    console.log(body)
     const response = await api.post("/paymentMethod", body);
     return response.data;
   },

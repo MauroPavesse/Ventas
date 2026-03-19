@@ -1,13 +1,13 @@
 export class PaymentMethodCreateCommand {
     constructor({
-        Name = "",
-        DescountPercentage = 0,
-        IncreasePercentage = 0,
-        Color = ""
+        name = "",
+        descountPercentage = 0,
+        increasePercentage = 0,
+        color = ""
     } = {}) {
-        this.Name = Name;
-        this.DescountPercentage = DescountPercentage;
-        this.IncreasePercentage = IncreasePercentage;
-        this.Color = Color;
+        this.name = name;
+        this.descountPercentage = descountPercentage;
+        this.increasePercentage = increasePercentage;
+        this.color = color;
     }
 }

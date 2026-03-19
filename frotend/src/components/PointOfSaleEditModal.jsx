@@ -1,10 +1,24 @@
 import { Col, Form, Input, InputNumber, Modal, Row, message } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { pointOfSaleService } from "../services/pointOfSaleService";
 
 const PointOfSaleEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      if (initialValues) {
+        setTimeout(() => {
+          form.setFieldsValue({
+            ...initialValues,
+          });
+        }, 0);
+      } else {
+        form.resetFields();
+      }
+    }
+  }, [open, initialValues, form]);
 
   const handleOk = async () => {
     try {

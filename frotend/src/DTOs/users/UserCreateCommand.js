@@ -1,13 +1,13 @@
 export class UserCreateCommand {
     constructor({
-        Username = "",
-        Password = "",
-        RoleId = 0 | null,
-        PointOfSaleId = 0 | null
+        username = "",
+        password = "",
+        roleId = 0 | null,
+        pointOfSaleId = 0 | null
     } = {}) {
-        this.Username = Username;
-        this.Password = Password;
-        this.RoleId = RoleId;
-        this.PointOfSaleId = PointOfSaleId
+        this.username = username;
+        this.password = password;
+        this.roleId = roleId;
+        this.pointOfSaleId = pointOfSaleId
     }
 }

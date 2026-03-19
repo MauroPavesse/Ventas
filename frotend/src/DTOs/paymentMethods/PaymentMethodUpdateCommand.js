@@ -1,15 +1,15 @@
 export class PaymentMethodUpdateCommand {
     constructor({
-        Id = 0,
-        Name = "",
-        DescountPercentage = 0,
-        IncreasePercentage = 0,
-        Color = ""
+        id = 0,
+        name = "",
+        descountPercentage = 0,
+        increasePercentage = 0,
+        color = ""
     } = {}) {
-        this.Id = Id;
-        this.Name = Name;
-        this.DescountPercentage = DescountPercentage;
-        this.IncreasePercentage = IncreasePercentage;
-        this.Color = Color;
+        this.id = id;
+        this.name = name;
+        this.descountPercentage = descountPercentage;
+        this.increasePercentage = increasePercentage;
+        this.color = color;
     }
 }

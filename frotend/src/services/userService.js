@@ -6,14 +6,12 @@ import { UserUpdateCommand } from "../DTOs/users/UserUpdateCommand";
 export const userService = {
   search: async (params) => {
     const body = new SearchCommand(params);
-
     const response = await api.post("/user/search", body);
     return response.data;
   },
 
   create: async (params) => {
     const body = new UserCreateCommand(params);
-
     const response = await api.post("/user", body);
     return response.data;
   },

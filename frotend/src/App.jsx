@@ -9,6 +9,7 @@ import Business from "./pages/Business";
 import Configurations from "./pages/Configurations";
 import PointOfSale from "./pages/PointOfSale";
 import PaymentMethod from "./pages/PaymentMethod";
+import User from "./pages/User";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/business" element={<Business />} />
             <Route path="/pointofsale" element={<PointOfSale />} />
             <Route path="/paymentmethod" element={<PaymentMethod />} />
+            <Route path="/user" element={<User />} />
           </Route>
 
           {/* Redirección por defecto si la ruta no existe */}

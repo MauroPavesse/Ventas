@@ -43,6 +43,18 @@ const Configurations = () => {
       >
         FORMAS DE PAGO
       </Button>
+      <Button
+        style={{
+          backgroundColor: "#a88947",
+          width: "100%",
+          height: "60px",
+          color: "white",
+          fontSize: 30,
+        }}
+        onClick={() => navigate("/user")}
+      >
+        PERSONAL
+      </Button>
     </PageLayout>
   );
 };
