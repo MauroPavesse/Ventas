@@ -8,7 +8,7 @@ namespace Ventas.Domain.Entities
         public decimal AmountNet { get; set; }
         public decimal AmountVAT { get; set; }
         public string CAE { get; set; } = string.Empty;
-        public DateTime CAEExpiration { get; set; }
+        public DateTime? CAEExpiration { get; set; }
         public int UserId { get; set; }
         public User? User { get; set; } = null;
         public int? CustomerId { get; set; }
