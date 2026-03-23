@@ -9,6 +9,7 @@ using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Customers;
 using Ventas.Application.Entities.DailyBoxes;
 using Ventas.Application.Entities.Externas.FileStorage;
+using Ventas.Application.Entities.Externas.Jwt;
 using Ventas.Application.Entities.PaymentMethods;
 using Ventas.Application.Entities.PointOfSales;
 using Ventas.Application.Entities.PointOfSaleVoucherTypes;
@@ -62,6 +63,7 @@ builder.Services.AddScoped<IVoucherPaymentRepository, VoucherPaymentRepository>(
 builder.Services.AddScoped<IVoucherTypeRepository, VoucherTypeRepository>();
 builder.Services.AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddCors(options =>
 {

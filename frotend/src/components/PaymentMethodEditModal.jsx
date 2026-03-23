@@ -73,7 +73,6 @@ const PaymentMethodEditModal = ({
       confirmLoading={confirmLoading}
       onCancel={onCancel}
       width={700}
-      destroyOnClose
     >
       <Form form={form} layout="vertical" preserve={false}>
         <Row gutter={15}>

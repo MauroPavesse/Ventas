@@ -2,6 +2,7 @@ import api from "./api";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import { UserCreateCommand } from "../DTOs/users/UserCreateCommand";
 import { UserUpdateCommand } from "../DTOs/users/UserUpdateCommand";
+import { UserLoginCommand } from "../DTOs/users/UserLoginCommand";
 
 export const userService = {
   search: async (params) => {
@@ -26,4 +27,10 @@ export const userService = {
     const response = await api.delete(`/user/${id}`);
     return response.data;
   },
+
+  login: async(params) => {
+    const body = new UserLoginCommand(params);
+    const response = await api.post("/user/login", body)
+    return response.data;
+  }
 };

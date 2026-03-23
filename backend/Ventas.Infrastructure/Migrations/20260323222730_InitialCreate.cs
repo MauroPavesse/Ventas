@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Ventas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,12 +103,12 @@ namespace Ventas.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Number = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Provincie = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Deleted = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<int>(type: "int", nullable: false)
                 },
@@ -208,7 +210,7 @@ namespace Ventas.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: true),
                     PointOfSaleId = table.Column<int>(type: "int", nullable: true),
                     Deleted = table.Column<int>(type: "int", nullable: false),
@@ -260,7 +262,7 @@ namespace Ventas.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<int>(type: "int", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -327,7 +329,7 @@ namespace Ventas.Infrastructure.Migrations
                     AmountNet = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     AmountVAT = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CAE = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CAEExpiration = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CAEExpiration = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: true),
                     VoucherTypeId = table.Column<int>(type: "int", nullable: false),
@@ -430,6 +432,65 @@ namespace Ventas.Infrastructure.Migrations
                         principalTable: "Voucher",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Configuration",
+                columns: new[] { "Id", "Active", "BoolValue", "Deleted", "Description", "NumericValue", "StringValue", "Variable" },
+                values: new object[,]
+                {
+                    { 1, 1, false, 0, "Identificador del sistema", 0m, "TEST", "M&MID" },
+                    { 2, 1, false, 0, "Nombre de la empresa", 0m, "", "empresa" },
+                    { 3, 1, false, 0, "Fecha inicio de la empresa", 0m, "", "fechaInicio" },
+                    { 4, 1, false, 0, "CUIT / CUIL de la empresa", 0m, "", "cuit" },
+                    { 5, 1, false, 0, "Condición fiscal de la empresa", 0m, "", "condicionFiscalId" },
+                    { 6, 1, false, 0, "Alias de ARCA", 0m, "", "arcaAlias" },
+                    { 7, 1, false, 0, "Dirección certificado de ARCA", 0m, "", "arcaCertificado" },
+                    { 8, 1, false, 0, "Clave del certificado de ARCA", 0m, "", "arcaClave" },
+                    { 9, 1, false, 0, "Token del sistema", 0m, "", "tokenSystem" },
+                    { 10, 1, false, 0, "Último número usado en la caja diaria", 0m, "", "cajaDiariaNumero" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TaxCondition",
+                columns: new[] { "Id", "Active", "Code", "Deleted", "Description" },
+                values: new object[,]
+                {
+                    { 1, 1, 5, 0, "CONSUMIDOR FINAL" },
+                    { 2, 1, 1, 0, "RESPONSABLE INSCRIPTO" },
+                    { 3, 1, 4, 0, "SUJETO EXENTO" },
+                    { 4, 1, 6, 0, "RESPONSABLE MONOTRIBUTO" },
+                    { 5, 1, 7, 0, "SUJETO NO CATEGORIZADO" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TaxRate",
+                columns: new[] { "Id", "Active", "Code", "Deleted", "Description", "Percentage" },
+                values: new object[,]
+                {
+                    { 1, 1, "0005", 0, "IVA 21%", 21m },
+                    { 2, 1, "0004", 0, "IVA 10,5%", 10.5m },
+                    { 3, 1, "0003", 0, "IVA 0%", 0m },
+                    { 4, 1, "0006", 0, "IVA 27%", 27m },
+                    { 5, 1, "0008", 0, "IVA 5%", 5m },
+                    { 6, 1, "0009", 0, "IVA 2,5%", 2.5m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Active", "Deleted", "Password", "PointOfSaleId", "RoleId", "Username" },
+                values: new object[] { 1, 1, 0, "$2a$11$DTFShXgUa2qdWrsowwU41ue5BFG7MElT3pGWZFZkYCI9lBB2gxERG", null, null, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "VoucherType",
+                columns: new[] { "Id", "Active", "Code", "Deleted", "Description" },
+                values: new object[,]
+                {
+                    { 1, 1, "OR", 0, "ORDEN DE COMPRA" },
+                    { 2, 1, "001", 0, "FACTURA A" },
+                    { 3, 1, "004", 0, "RECIBO A" },
+                    { 4, 1, "006", 0, "FACTURA B" },
+                    { 5, 1, "009", 0, "RECIBO B" }
                 });
 
             migrationBuilder.CreateIndex(

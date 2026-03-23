@@ -118,7 +118,6 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
       confirmLoading={confirmLoading}
       onCancel={onCancel}
       width={700}
-      destroyOnClose
     >
       <Form form={form} layout="vertical" preserve={false}>
         <div style={{ display: "flex", gap: "20px" }}>

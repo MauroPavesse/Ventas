@@ -1331,51 +1331,25 @@
         "tags": [
           "User"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Filters",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SearchFilterCommand"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchCommand"
               }
-            }
-          },
-          {
-            "name": "Includes",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchCommand"
               }
-            }
-          },
-          {
-            "name": "DisableTracking",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "Deleted",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchCommand"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1459,6 +1433,37 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginServiceCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginServiceCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginServiceCommand"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2079,6 +2084,20 @@
         },
         "additionalProperties": false
       },
+      "LoginServiceCommand": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PaymentMethodCreateCommand": {
         "type": "object",
         "properties": {
@@ -2331,6 +2350,38 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SearchCommand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchFilterCommand"
+            },
+            "nullable": true
+          },
+          "includes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "disableTracking": {
+            "type": "boolean"
+          },
+          "deleted": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

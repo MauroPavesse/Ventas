@@ -693,8 +693,8 @@ namespace Ventas.Infrastructure.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int?>("PointOfSaleId")
                         .HasColumnType("int");
@@ -714,6 +714,16 @@ namespace Ventas.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = 1,
+                            Deleted = 0,
+                            Password = "$2a$11$DTFShXgUa2qdWrsowwU41ue5BFG7MElT3pGWZFZkYCI9lBB2gxERG",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Ventas.Domain.Entities.Voucher", b =>
@@ -740,7 +750,7 @@ namespace Ventas.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("CAEExpiration")
+                    b.Property<DateTime?>("CAEExpiration")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("CustomerId")

@@ -1,26 +1,28 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   // Al iniciar, revisa si ya habías entrado antes (se guarda en el navegador)
   const [user, setUser] = useState(() => {
-    return localStorage.getItem('user_auth') ? JSON.parse(localStorage.getItem('user_auth')) : null;
+    const savedUser = localStorage.getItem('user_data');
+    return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const login = () => {
-    const userData = { loggedIn: true }; // Aunque no uses datos, pon un objeto
-    setUser(userData);
-    localStorage.setItem('user_auth', JSON.stringify(userData));
+  const login = (data) => {
+    setUser(data);
+    localStorage.setItem('user_data', JSON.stringify(data)); // Guardamos Token y Nombre
   };
 
   const logout = () => {
-    localStorage.removeItem('user_auth');
     setUser(null);
+    localStorage.removeItem('user_data');
   };
 
+  const isAuthenticated = !!user;
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

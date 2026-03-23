@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Ventas.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df6ba82a7f7bbe0c65c935753d58e04ddf591378")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef1c5d778d6d1035e22a5cc827ba604db0cd6f17")]
 [assembly: System.Reflection.AssemblyProductAttribute("Ventas.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Ventas.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -12,34 +12,37 @@ import PaymentMethod from "./pages/PaymentMethod";
 import User from "./pages/User";
 import Customer from "./pages/Customer";
 import Category from "./pages/Category";
+import { App as AntdApp } from 'antd';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Rutas Públicas */}
-          <Route path="/login" element={<Login />} />
+    <AntdApp>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Rutas Públicas */}
+            <Route path="/login" element={<Login />} />
 
-          {/* Rutas Privadas (Protegidas)*/}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/sales" element={<Sale />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/configurations" element={<Configurations />} />
-            <Route path="/business" element={<Business />} />
-            <Route path="/pointofsales" element={<PointOfSale />} />
-            <Route path="/paymentmethods" element={<PaymentMethod />} />
-            <Route path="/users" element={<User />} />
-            <Route path="/customers" element={<Customer />} />
-            <Route path="/categories" element={<Category />} />
-          </Route>
+            {/* Rutas Privadas (Protegidas)*/}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/sales" element={<Sale />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/configurations" element={<Configurations />} />
+              <Route path="/business" element={<Business />} />
+              <Route path="/pointofsales" element={<PointOfSale />} />
+              <Route path="/paymentmethods" element={<PaymentMethod />} />
+              <Route path="/users" element={<User />} />
+              <Route path="/customers" element={<Customer />} />
+              <Route path="/categories" element={<Category />} />
+            </Route>
 
-          {/* Redirección por defecto si la ruta no existe */}
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            {/* Redirección por defecto si la ruta no existe */}
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </AntdApp>
   )
 }
 

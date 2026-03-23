@@ -81,7 +81,6 @@ const CustomerEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
       confirmLoading={confirmLoading}
       onCancel={onCancel}
       width={700}
-      destroyOnClose
     >
       <Form form={form} layout="vertical" preserve={false}>
         <Row gutter={15}>

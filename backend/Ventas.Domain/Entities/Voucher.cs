@@ -21,7 +21,7 @@ namespace Ventas.Domain.Entities
         public int StateEntityId { get; set; }
         public StateEntity? StateEntity { get; set; } = null;
 
-        public IEnumerable<VoucherDetail> VoucherDetails { get; set; } = new List<VoucherDetail>();
+        public List<VoucherDetail> VoucherDetails { get; set; } = new List<VoucherDetail>();
         public IEnumerable<VoucherPayment> VoucherPayments { get; set; } = new List<VoucherPayment>();
     }
 }

@@ -1,21 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj": {}
+    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {
+    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
+        "projectUniqueName": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
         "projectName": "Ventas.Application",
-        "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
+        "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj",
         "packagesPath": "C:\\Users\\mauro\\.nuget\\packages\\",
-        "outputPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\obj\\",
+        "outputPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Programas\\DevExpress 24.1\\Components\\Offline Packages",
-          "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -35,8 +35,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
-                "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj"
+              "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
+                "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj"
               }
             }
           }
@@ -57,6 +57,10 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[12.1.1, )"
@@ -76,6 +80,10 @@
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
               "version": "[10.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.16.0, )"
             }
           },
           "imports": [
@@ -372,18 +380,18 @@
         }
       }
     },
-    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
+    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
+        "projectUniqueName": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
         "projectName": "Ventas.Domain",
-        "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
+        "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
         "packagesPath": "C:\\Users\\mauro\\.nuget\\packages\\",
-        "outputPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\obj\\",
+        "outputPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Programas\\DevExpress 24.1\\Components\\Offline Packages",
-          "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -714,18 +722,18 @@
         }
       }
     },
-    "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj": {
+    "D:\\MyMSystem\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj",
+        "projectUniqueName": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj",
         "projectName": "Ventas.Infrastructure",
-        "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj",
+        "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Infrastructure\\Ventas.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\mauro\\.nuget\\packages\\",
-        "outputPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Infrastructure\\obj\\",
+        "outputPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Programas\\DevExpress 24.1\\Components\\Offline Packages",
-          "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -745,11 +753,11 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {
-                "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj"
+              "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj": {
+                "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Application\\Ventas.Application.csproj"
               },
-              "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
-                "projectPath": "D:\\Sistemas\\MyMSystems\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj"
+              "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj": {
+                "projectPath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj"
               }
             }
           }
