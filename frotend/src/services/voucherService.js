@@ -2,6 +2,7 @@ import api from "./api";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import { VoucherCreateCommand } from "../DTOs/vouchers/VoucherCreateCommand";
 import { VoucherUpdateCommand } from "../DTOs/vouchers/VoucherUpdateCommand";
+import { CloseSaleCommand } from "../DTOs/vouchers/closeSale/CloseSaleCommand";
 
 export const voucherService = {
   search: async (params) => {
@@ -28,4 +29,10 @@ export const voucherService = {
     const response = await api.delete(`/voucher/${id}`);
     return response.data;
   },
+
+  closeSale: async (params) => {
+    const body = new CloseSaleCommand(params);
+    const response = await api.post("/voucher/close-sale", body);
+    return response.data;
+  }
 };

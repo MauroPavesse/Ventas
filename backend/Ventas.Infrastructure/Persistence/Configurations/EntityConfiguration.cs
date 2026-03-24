@@ -10,6 +10,14 @@ namespace Ventas.Infrastructure.Persistence.Configurations
         {
             builder.Property(t => t.Name)
                 .HasMaxLength(50);
+
+            builder.HasData(
+                new Entity()
+                {
+                    Id = 1,
+                    Name = "COMPROBANTE"
+                }
+            );
         }
     }
 }

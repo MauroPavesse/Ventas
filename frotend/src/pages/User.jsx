@@ -78,7 +78,7 @@ const User = () => {
     confirm({
       title: "¿Estás seguro de eliminar este usuario?",
       icon: <ExclamationCircleOutlined />,
-      content: `Usuario: ${record.name}`,
+      content: `Usuario: ${record.username}`,
       okText: "Sí, eliminar",
       okType: "danger",
       cancelText: "Cancelar",

@@ -21,7 +21,9 @@ namespace Ventas.Application.Entities.Users.Create
 
         public async Task<UserOutput> Handle(UserCreateCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.CreateAsync(request.Adapt<User>());
+            var input = request.Adapt<User>();
+            input.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            var user = await _userRepository.CreateAsync(input);
             await _unitOfWorkRepository.SaveChangesAsync();
             return user.Adapt<UserOutput>();
         }

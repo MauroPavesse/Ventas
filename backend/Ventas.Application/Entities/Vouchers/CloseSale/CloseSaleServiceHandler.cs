@@ -141,11 +141,12 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                 {
                     voucherPayments.Add(new VoucherPayment()
                     {
-                        Amount = request.Payment.Amount,
+                        Amount = voucherDetails.Sum(t => t.AmountFinal),//request.Payment.Amount,
                         PaymentMethodId = request.Payment.Id
                     });
                 }
 
+                posVoucherType.Numeration++;
                 voucher = new Voucher()
                 {
                     Number = posVoucherType.Numeration,
@@ -165,7 +166,6 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
 
                 voucher = await _voucherRepository.CreateAsync(voucher);
                 
-                posVoucherType.Numeration++;
                 await _pointOfSaleVoucherTypeRepository.UpdateAsync(posVoucherType);
             }
 

@@ -2,10 +2,11 @@
 using MediatR;
 using Ventas.Application.Entities.UnitOfWork;
 using Ventas.Application.Entities.Users.DTOs;
+using Ventas.Domain.Entities;
 
 namespace Ventas.Application.Entities.Users.Update
 {
-    public record UserUpdateCommand(int Id, string Username, string Password, int? RoleId, int? PointOfSaleId) : IRequest<UserOutput>;
+    public record UserUpdateCommand(int Id, string Username, string? Password, int? RoleId, int? PointOfSaleId) : IRequest<UserOutput>;
 
     public class UserUpdateHandler : IRequestHandler<UserUpdateCommand, UserOutput>
     {
@@ -26,7 +27,12 @@ namespace Ventas.Application.Entities.Users.Update
                 throw new KeyNotFoundException($"Usuario con Id {request.Id} no encontrado.");
             }
             existingUser.Username = request.Username;
-            existingUser.Password = request.Password;
+
+            if (!string.IsNullOrWhiteSpace(request.Password))
+            {
+                existingUser.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            }
+
             existingUser.RoleId = request.RoleId;
             existingUser.PointOfSaleId = request.PointOfSaleId;
             var updatedUser = await _userRepository.UpdateAsync(existingUser);

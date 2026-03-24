@@ -7,7 +7,6 @@ namespace Ventas.Application.Entities.Users.DTOs
     public class UserOutput : BaseModel
     {
         public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
         public int? RoleId { get; set; }
         public RoleOutput? Role { get; set; } = null;
         public string RoleName => Role != null ? Role.Name : "";

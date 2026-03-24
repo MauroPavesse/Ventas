@@ -15,6 +15,9 @@ import { productService } from "../services/productService"; // Asumiendo esta r
 import { SearchCommand } from "../DTOs/SearchCommand";
 import { DeleteOutlined } from "@ant-design/icons";
 import CloseSale from "../components/CloseSale";
+import { voucherService } from "../services/voucherService";
+import { VoucherTypesEnum } from '../constants/voucherTypesEnum';
+import { VoucherStateEnum } from '../constants/stateEntityEnum';
 
 const Sale = () => {
   const navigate = useNavigate();
@@ -161,11 +164,19 @@ const Sale = () => {
 
   const totalCart = cart.reduce((acc, item) => acc + item.import, 0);
 
-  const handleConfirmSale = (saleData) => {
+  const handleConfirmSale = async (saleData) => {
+    const userDataRaw = localStorage.getItem('user_data');
+    const userData = userDataRaw ? JSON.parse(userDataRaw) : null;
+    const userId = userData?.userId;
     
-    console.log("Enviando venta al backend:", {
+    await voucherService.closeSale({
       items: cart,
-      ...saleData,
+      userId: userId,
+      voucherTypeId: VoucherTypesEnum.ORDEN_DE_COMPRA,
+      stateEntityId: VoucherStateEnum.FINALIZADO,
+      payment: saleData.method,
+      customerId: saleData.customer,
+      ...saleData
     });
     message.success("¡Venta procesada con éxito!");
     setCart([]); // Limpiar carrito
