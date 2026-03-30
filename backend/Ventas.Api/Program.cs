@@ -1,6 +1,7 @@
 using FluentValidation;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 using Ventas.Api.Middlewares;
 using Ventas.Application;
 using Ventas.Application.Behaviors;
@@ -9,6 +10,7 @@ using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Customers;
 using Ventas.Application.Entities.DailyBoxes;
 using Ventas.Application.Entities.Externas.FileStorage;
+using Ventas.Application.Entities.Externas.GeneratePdf;
 using Ventas.Application.Entities.Externas.Jwt;
 using Ventas.Application.Entities.PaymentMethods;
 using Ventas.Application.Entities.PointOfSales;
@@ -28,6 +30,8 @@ using Ventas.Infrastructure.Persistence.Repositories;
 using Ventas.Infrastructure.Persistence.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
@@ -64,6 +68,7 @@ builder.Services.AddScoped<IVoucherTypeRepository, VoucherTypeRepository>();
 builder.Services.AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IGenerateInvoicePdfService, GenerateInvoicePdfService>();
 
 builder.Services.AddCors(options =>
 {

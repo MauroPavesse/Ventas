@@ -249,6 +249,16 @@
   },
   {
     "ContainingType": "Ventas.Api.Controllers.DailyBoxController",
+    "Method": "CloseDailyBox",
+    "RelativePath": "api/DailyBox/close",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.DailyBoxController",
     "Method": "Search",
     "RelativePath": "api/DailyBox/search",
     "HttpMethod": "POST",
@@ -921,6 +931,38 @@
   },
   {
     "ContainingType": "Ventas.Api.Controllers.VoucherController",
+    "Method": "PrintInvoice",
+    "RelativePath": "api/Voucher/{id}/print-invoice",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.VoucherController",
+    "Method": "PrintTicket",
+    "RelativePath": "api/Voucher/{id}/print-ticket",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.VoucherController",
     "Method": "Create",
     "RelativePath": "api/Voucher/close-sale",
     "HttpMethod": "POST",
@@ -944,29 +986,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "Filters",
-        "Type": "System.Collections.Generic.List\u00601[[Ventas.Application.Shared.SearchFilterCommand, Ventas.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "Includes",
-        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "DisableTracking",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "Deleted",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "command",
+        "Type": "Ventas.Application.Shared.SearchCommand",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

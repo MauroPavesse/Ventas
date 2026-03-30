@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Ventas.Application.Entities.Vouchers.DTOs;
 using Ventas.Application.Shared;
 using Ventas.Domain.Entities;
+using Ventas.Domain.Enums;
 
 namespace Ventas.Application.Entities.Vouchers.Search
 {
@@ -27,6 +28,14 @@ namespace Ventas.Application.Entities.Vouchers.Search
             if (search.Id > 0)
             {
                 predicate = t => t.Id == search.Id;
+            }
+            else
+            {
+                var sinCajaDiaria = search.Filters.FirstOrDefault(t => t.Field == "SinCajaDiaria");
+                if (sinCajaDiaria != null)
+                {
+                    predicate = predicate.And(t => t.DailyBoxId == null && t.StateEntityId == (int)StateEntityEnum.VoucherStateEnum.FINALIZADO);
+                }
             }
 
             var vouchers = await _voucherRepository.SearchAsync(predicate, search.Includes, search.DisableTracking);

@@ -6,9 +6,7 @@ import { CloseSaleCommand } from "../DTOs/vouchers/closeSale/CloseSaleCommand";
 
 export const voucherService = {
   search: async (params) => {
-    const body = new SearchCommand(params);
-
-    const response = await api.post("/voucher/search", body);
+    const response = await api.post("/voucher/search", params);
     return response.data;
   },
 
@@ -33,6 +31,20 @@ export const voucherService = {
   closeSale: async (params) => {
     const body = new CloseSaleCommand(params);
     const response = await api.post("/voucher/close-sale", body);
+    return response.data;
+  },
+
+  printInvoice: async (id) => {
+    const response = await api.get(`/voucher/${id}/print-invoice`, {
+      responseType: 'blob' 
+    });
+    return response.data;
+  },
+
+  printTicket: async (id) => {
+    const response = await api.get(`/voucher/${id}/print-ticket`, {
+      responseType: 'blob' 
+    });
     return response.data;
   }
 };

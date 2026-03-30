@@ -480,6 +480,18 @@
         }
       }
     },
+    "/api/DailyBox/close": {
+      "post": {
+        "tags": [
+          "DailyBox"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/PaymentMethod/search": {
       "post": {
         "tags": [
@@ -1476,51 +1488,25 @@
         "tags": [
           "Voucher"
         ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Filters",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SearchFilterCommand"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchCommand"
               }
-            }
-          },
-          {
-            "name": "Includes",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchCommand"
               }
-            }
-          },
-          {
-            "name": "DisableTracking",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "Deleted",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchCommand"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1635,6 +1621,52 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Voucher/{id}/print-invoice": {
+      "get": {
+        "tags": [
+          "Voucher"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Voucher/{id}/print-ticket": {
+      "get": {
+        "tags": [
+          "Voucher"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

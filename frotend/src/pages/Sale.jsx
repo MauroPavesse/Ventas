@@ -114,7 +114,7 @@ const Sale = () => {
       title: "Precio",
       dataIndex: "price",
       key: "price",
-      render: (p) => `$${p}`,
+      render: (p) => `$ ${p}`,
     },
     {
       title: "Acción",
@@ -146,7 +146,7 @@ const Sale = () => {
       title: "Importe",
       dataIndex: "import",
       key: "import",
-      render: (i) => <strong>${i}</strong>,
+      render: (i) => <strong>$ {i}</strong>,
     },
     {
       title: "",

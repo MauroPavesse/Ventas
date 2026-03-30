@@ -1,8 +1,8 @@
 export class SearchFilterCommand {
   constructor(field = "", value = "", ids = []) {
-    this.Field = field;
-    this.Value = value;
-    this.Ids = ids;
+    this.field = field;
+    this.value = value;
+    this.ids = ids;
   }
 }
 
@@ -14,10 +14,10 @@ export class SearchCommand {
     disableTracking = true,
     deleted = 0,
   } = {}) {
-    this.Id = id;
-    this.Filters = filters;
-    this.Includes = includes;
-    this.DisableTracking = disableTracking;
-    this.Deleted = deleted;
+    this.id = id;
+    this.filters = filters;
+    this.includes = includes;
+    this.disableTracking = disableTracking;
+    this.deleted = deleted;
   }
 }

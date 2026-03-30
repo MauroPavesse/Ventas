@@ -25,8 +25,8 @@ const DashboardLayout = ({ children }) => {
   // Ítems del menú superior
   const mainItems = [
     { key: 'sales', icon: <ShoppingOutlined />, label: 'Venta' },
-    { key: 'caja', icon: <CalculatorOutlined />, label: 'Caja Diaria' },
-    { key: 'comprobantes', icon: <FileTextOutlined />, label: 'Comprobantes' },
+    { key: 'daily-box', icon: <CalculatorOutlined />, label: 'Caja Diaria' },
+    { key: 'vouchers', icon: <FileTextOutlined />, label: 'Comprobantes' },
     { key: 'products', icon: <InboxOutlined />, label: 'Productos' },
     { key: 'customers', icon: <UsergroupAddOutlined />, label: 'Clientes' },
   ];

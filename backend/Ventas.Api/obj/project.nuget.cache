@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "uBwxqpYY1ww=",
+  "dgSpecHash": "D2lRuQjZ8yY=",
   "success": true,
   "projectFilePath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Api\\Ventas.Api.csproj",
   "expectedPackageFiles": [
@@ -46,7 +46,9 @@
     "C:\\Users\\mauro\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.23.0\\microsoft.visualstudio.azure.containers.tools.targets.1.23.0.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\microsoft.visualstudio.solutionpersistence\\1.0.52\\microsoft.visualstudio.solutionpersistence.1.0.52.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
+    "C:\\Users\\mauro\\.nuget\\packages\\net.codecrete.qrcodegenerator\\2.1.0\\net.codecrete.qrcodegenerator.2.1.0.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\mauro\\.nuget\\packages\\questpdf\\2026.2.4\\questpdf.2026.2.4.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\10.1.4\\swashbuckle.aspnetcore.swagger.10.1.4.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\10.1.4\\swashbuckle.aspnetcore.swaggergen.10.1.4.nupkg.sha512",
     "C:\\Users\\mauro\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\10.1.4\\swashbuckle.aspnetcore.swaggerui.10.1.4.nupkg.sha512",

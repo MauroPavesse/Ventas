@@ -13,6 +13,8 @@ import User from "./pages/User";
 import Customer from "./pages/Customer";
 import Category from "./pages/Category";
 import { App as AntdApp } from 'antd';
+import DailyBox from "./pages/DailyBox";
+import VoucherPage from "./pages/VoucherPage";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
               <Route path="/users" element={<User />} />
               <Route path="/customers" element={<Customer />} />
               <Route path="/categories" element={<Category />} />
+              <Route path="/daily-box" element={<DailyBox />} />
+              <Route path="/vouchers" element={<VoucherPage />} />
             </Route>
 
             {/* Redirección por defecto si la ruta no existe */}

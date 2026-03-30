@@ -1,4 +1,5 @@
-﻿using Ventas.Domain.Common;
+﻿using Ventas.Application.Entities.Products.DTOs;
+using Ventas.Domain.Common;
 
 namespace Ventas.Application.Entities.VoucherDetails.DTOs
 {
@@ -6,6 +7,8 @@ namespace Ventas.Application.Entities.VoucherDetails.DTOs
     {
         public int VoucherId { get; set; }
         public int ProductId { get; set; }
+        public ProductOutput? Product { get; set; } = null;
+        public string ProductName => Product != null ? Product.Name : string.Empty;
         public decimal Quantity { get; set; }
         public decimal PriceUnit { get; set; }
         public decimal AmountNet { get; set; }

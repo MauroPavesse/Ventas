@@ -28,4 +28,9 @@ export const dailyBoxService = {
     const response = await api.delete(`/dailyBox/${id}`);
     return response.data;
   },
+
+  closeDailyBox: async () => {
+    const response = await api.post(`/dailyBox/close`);
+    return response.data;
+  }
 };

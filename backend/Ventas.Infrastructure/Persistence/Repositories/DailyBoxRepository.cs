@@ -29,13 +29,28 @@ namespace Ventas.Infrastructure.Persistence.Repositories
                             includes.Add(i => i
                                 .Include(t => t.Vouchers));
                             break;
+                        case "Vouchers.VoucherDetails":
+                            includes.Add(i => i
+                                .Include(t => t.Vouchers)
+                                .ThenInclude(t => t.VoucherDetails));
+                            break;
+                        case "Voucher.User.PointOfSale":
+                            includes.Add(i => i
+                                .Include(t => t.Vouchers)
+                                .ThenInclude(t => t.User!.PointOfSale));
+                            break;
                     }
                 }
             }
             else
             {
                 includes.Add(i => i
-                    .Include(t => t.Vouchers));
+                    .Include(t => t.Vouchers)
+                    .ThenInclude(t => t.VoucherDetails)
+                    .Include(t => t.Vouchers)
+                    .ThenInclude(t => t.User!.PointOfSale)
+                    .Include(t => t.Vouchers)
+                    .ThenInclude(t => t.VoucherType));
             }
 
             return await GetAllAsync(predicate, includes, disableTracking);

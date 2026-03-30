@@ -12,7 +12,6 @@ export const productService = {
 
   create: async (params) => {
     const body = new ProductCreateCommand(params);
-    console.log(body);
     const response = await api.post("/product", body);
     return response.data;
   },

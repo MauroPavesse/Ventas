@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Ventas.Application.Entities.DailyBoxes.CloseDailyBox;
 using Ventas.Application.Entities.DailyBoxes.Create;
 using Ventas.Application.Entities.DailyBoxes.Delete;
 using Ventas.Application.Entities.DailyBoxes.Search;
@@ -44,6 +45,13 @@ namespace Ventas.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _mediator.Send(new DailyBoxDeleteCommand(id));
+            return Ok(result);
+        }
+
+        [HttpPost("close")]
+        public async Task<IActionResult> CloseDailyBox()
+        {
+            var result = await _mediator.Send(new CloseDailyBoxServiceCommand());
             return Ok(result);
         }
     }

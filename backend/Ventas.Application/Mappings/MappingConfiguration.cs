@@ -6,7 +6,7 @@ namespace Ventas.Application.Mappings
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.Default.MaxDepth(3);
+            config.Default.MaxDepth(4);
         }
     }
 }

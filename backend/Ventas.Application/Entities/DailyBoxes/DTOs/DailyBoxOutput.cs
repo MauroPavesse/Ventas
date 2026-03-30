@@ -1,4 +1,5 @@
-﻿using Ventas.Domain.Common;
+﻿using Ventas.Application.Entities.Vouchers.DTOs;
+using Ventas.Domain.Common;
 
 namespace Ventas.Application.Entities.DailyBoxes.DTOs
 {
@@ -6,5 +7,7 @@ namespace Ventas.Application.Entities.DailyBoxes.DTOs
     {
         public int Number { get; set; }
         public decimal Amount { get; set; }
+        public List<VoucherOutput> Vouchers { get; set; } = new List<VoucherOutput>();
+        public int QuantityVouchers => Vouchers.Count;
     }
 }

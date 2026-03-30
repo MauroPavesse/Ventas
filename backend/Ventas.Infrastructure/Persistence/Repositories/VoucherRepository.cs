@@ -29,6 +29,10 @@ namespace Ventas.Infrastructure.Persistence.Repositories
                             includes.Add(i => i
                                 .Include(t => t.User));
                             break;
+                        case "User.PointOfSale":
+                            includes.Add(i => i
+                                .Include(t => t.User!.PointOfSale));
+                            break;
                         case "Customer":
                             includes.Add(i => i
                                 .Include(t => t.Customer));
@@ -49,6 +53,11 @@ namespace Ventas.Infrastructure.Persistence.Repositories
                             includes.Add(i => i
                                 .Include(t => t.VoucherDetails));
                             break;
+                        case "VoucherDetails.Product":
+                            includes.Add(i => i
+                                .Include(t => t.VoucherDetails)
+                                .ThenInclude(t => t.Product));
+                            break;
                         case "VoucherPayments":
                             includes.Add(i => i
                                 .Include(t => t.VoucherPayments));
@@ -59,12 +68,13 @@ namespace Ventas.Infrastructure.Persistence.Repositories
             else
             {
                 includes.Add(i => i
-                    .Include(t => t.User)
+                    .Include(t => t.User!.PointOfSale)
                     .Include(t => t.Customer)
                     .Include(t => t.VoucherType)
                     .Include(t => t.DailyBox)
                     .Include(t => t.StateEntity)
                     .Include(t => t.VoucherDetails)
+                    .ThenInclude(t => t.Product)
                     .Include(t => t.VoucherPayments));
             }
 
