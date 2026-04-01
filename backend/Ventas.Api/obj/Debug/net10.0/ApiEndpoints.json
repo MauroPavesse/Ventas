@@ -546,6 +546,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Ventas.Api.Controllers.PrintController",
+    "Method": "PrintBudget",
+    "RelativePath": "api/Print/budget/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.PrintController",
+    "Method": "PrintTicket",
+    "RelativePath": "api/Print/ticket/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Ventas.Api.Controllers.ProductController",
     "Method": "Create",
     "RelativePath": "api/Product",
@@ -918,38 +950,6 @@
     "Method": "Delete",
     "RelativePath": "api/Voucher/{id}",
     "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Ventas.Api.Controllers.VoucherController",
-    "Method": "PrintInvoice",
-    "RelativePath": "api/Voucher/{id}/print-invoice",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Ventas.Api.Controllers.VoucherController",
-    "Method": "PrintTicket",
-    "RelativePath": "api/Voucher/{id}/print-ticket",
-    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [

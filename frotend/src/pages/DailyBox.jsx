@@ -3,6 +3,7 @@ import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { voucherService } from "../services/voucherService";
+import { printService } from "../services/printService";
 import { dailyBoxService } from "../services/dailyBoxService";
 import {
   DeleteOutlined,
@@ -41,11 +42,11 @@ const DailyBox = () => {
     fetchData();
   }, []);
 
-  const printVoucher = async (voucherId) => {
+  const printTicket = async (voucherId) => {
     setLoading(true);
     try {
 
-      const blob = await voucherService.printTicket(voucherId);
+      const blob = await printService.printTicket(voucherId);
       const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
 
       if (true) {
@@ -125,7 +126,7 @@ const DailyBox = () => {
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px' }}>
           <Tooltip title="Imprimir">
-            <Button icon={<PrinterOutlined />} onClick={() => printVoucher(record.id)} />
+            <Button icon={<PrinterOutlined />} onClick={() => printTicket(record.id)} />
           </Tooltip>
 
           <Tooltip title="Convertir a Factura">
@@ -216,6 +217,7 @@ const DailyBox = () => {
 
       <Button
         type="primary"
+        style={{ marginTop: 16, float: "inline-end" }}
         onClick={() => closeDailyBox()}
       >
         Cerrar Caja

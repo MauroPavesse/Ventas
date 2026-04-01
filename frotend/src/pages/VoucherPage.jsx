@@ -3,6 +3,7 @@ import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { dailyBoxService } from "../services/dailyBoxService";
+import { printService } from "../services/printService";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import {
   PrinterOutlined,
@@ -13,6 +14,7 @@ const VoucherPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [dailyBoxes, setDailyBoxes] = useState();
+  const [printsDirectly, setPrintsDirectly] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -31,14 +33,30 @@ const VoucherPage = () => {
     fetchData();
   }, []);
 
-  const printVoucher = async (voucherId) => {
+  const printDailyBox = async (dailyBoxId) => {
     setLoading(true);
     try {
-
-      const blob = await voucherService.printTicket(voucherId);
+      const blob = await printService.printDailyBox(dailyBoxId);
       const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
 
-      if (true) {
+      window.open(url, '_blank');
+
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
+    } catch (error) {
+      console.error(error);
+      message.error("No se pudo generar el PDF del comprobante.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const printTicket = async (voucherId) => {
+    setLoading(true);
+    try {
+      const blob = await printService.printTicket(voucherId);
+      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+
+      if (printsDirectly) {
         // Creamos un iframe invisible
         const iframe = document.createElement('iframe');
         iframe.style.display = 'none';
@@ -100,7 +118,7 @@ const VoucherPage = () => {
             render: (_, record) => (
               <div style={{ display: 'flex', gap: '8px' }}>
                 <Tooltip title="Imprimir">
-                  <Button icon={<PrinterOutlined />} onClick={() => printVoucher(record.id)} />
+                  <Button icon={<PrinterOutlined />} onClick={() => printTicket(record.id)} />
                 </Tooltip>
 
                 <Tooltip title="Convertir a Factura">
@@ -136,7 +154,7 @@ const VoucherPage = () => {
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px' }}>
           <Tooltip title="Imprimir">
-            <Button icon={<PrinterOutlined />} onClick={() => printVoucher(record.id)} />
+            <Button icon={<PrinterOutlined />} onClick={() => printDailyBox(record.id)} />
           </Tooltip>
         </div>
       ),

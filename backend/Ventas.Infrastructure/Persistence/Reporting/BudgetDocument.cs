@@ -5,21 +5,20 @@ using Ventas.Application.Entities.Vouchers.DTOs;
 
 namespace Ventas.Infrastructure.Persistence.Reporting
 {
-    public class InvoiceDocument : IDocument
+    public class BudgetDocument : IDocument
     {
-        public record InvoiceDocumentCommand(
+        public record BudgetDocumentCommand(
             VoucherOutput Voucher,
             string BusinessName,
             string BusinessCuit,
             string BusinessTaxCondition,
             string BusinessAddress,
-            string CustomerTaxCondition,
-            byte[]? QrCodeImage
+            string CustomerTaxCondition
         );
 
-        private readonly InvoiceDocumentCommand _model;
+        private readonly BudgetDocumentCommand _model;
 
-        public InvoiceDocument(InvoiceDocumentCommand model)
+        public BudgetDocument(BudgetDocumentCommand model)
         {
             _model = model;
         }
@@ -93,27 +92,6 @@ namespace Ventas.Infrastructure.Persistence.Reporting
                     col.Item().AlignRight().PaddingTop(10)
                         .Text($"TOTAL: ${_model.Voucher.VoucherDetails.Sum(t => t.AmountFinal):N2}")
                         .FontSize(14).Bold();
-                });
-
-                // --- PIE DE PÁGINA (Aquí va el QR) ---
-                page.Footer().Column(col =>
-                {
-                    // QR de AFIP
-                    if (_model.QrCodeImage != null)
-                    {
-                        col.Item().AlignCenter().Width(2, Unit.Centimetre).Image(_model.QrCodeImage);
-                    }
-
-                    col.Item().AlignCenter().PaddingTop(5).Text(x =>
-                    {
-                        x.Span("Gracias por su compra!").FontSize(12).Italic();
-                    });
-
-                    col.Item().AlignCenter().Text(x => {
-                        x.CurrentPageNumber();
-                        x.Span(" / ");
-                        x.TotalPages();
-                    });
                 });
             });
         }

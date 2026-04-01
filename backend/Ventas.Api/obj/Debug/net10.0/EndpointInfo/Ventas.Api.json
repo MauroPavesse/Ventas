@@ -912,6 +912,52 @@
         }
       }
     },
+    "/api/Print/ticket/{id}": {
+      "get": {
+        "tags": [
+          "Print"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Print/budget/{id}": {
+      "get": {
+        "tags": [
+          "Print"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Product/search": {
       "post": {
         "tags": [
@@ -1621,52 +1667,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Voucher/{id}/print-invoice": {
-      "get": {
-        "tags": [
-          "Voucher"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Voucher/{id}/print-ticket": {
-      "get": {
-        "tags": [
-          "Voucher"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2856,6 +2856,9 @@
     },
     {
       "name": "PointOfSaleVoucherType"
+    },
+    {
+      "name": "Print"
     },
     {
       "name": "Product"

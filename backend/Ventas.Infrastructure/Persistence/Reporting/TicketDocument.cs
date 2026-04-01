@@ -1,14 +1,25 @@
 ﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using Ventas.Application.Entities.Vouchers.DTOs;
 
 namespace Ventas.Infrastructure.Persistence.Reporting
 {
+    public record TicketDocumentCommand(
+            VoucherOutput Voucher,
+            string BusinessName,
+            string BusinessCuit,
+            string BusinessTaxCondition,
+            string BusinessAddress,
+            string CustomerTaxCondition,
+            byte[]? QrCodeImage
+        );
+
     public class TicketDocument : IDocument
     {
-        private readonly InvoiceDocument.InvoiceDocumentCommand _model;
+        private readonly TicketDocumentCommand _model;
 
-        public TicketDocument(InvoiceDocument.InvoiceDocumentCommand model)
+        public TicketDocument(TicketDocumentCommand model)
         {
             _model = model;
         }

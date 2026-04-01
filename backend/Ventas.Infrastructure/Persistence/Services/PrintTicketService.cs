@@ -3,7 +3,7 @@ using Net.Codecrete.QrCodeGenerator;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using Ventas.Application.Entities.Configurations;
-using Ventas.Application.Entities.Externas.GeneratePdf;
+using Ventas.Application.Entities.Externas.Prints.TicketDocument;
 using Ventas.Application.Entities.TaxConditions;
 using Ventas.Application.Entities.Vouchers;
 using Ventas.Application.Entities.Vouchers.DTOs;
@@ -12,20 +12,20 @@ using Ventas.Infrastructure.Persistence.Reporting;
 
 namespace Ventas.Infrastructure.Persistence.Services
 {
-    public class GenerateInvoicePdfService : IGenerateInvoicePdfService
+    public class PrintTicketService : ITicketDocumentService
     {
         private readonly IVoucherRepository _voucherRepository;
         private readonly IConfigurationRepository _configurationRepository;
         private readonly ITaxConditionRepository _taxConditionRepository;
 
-        public GenerateInvoicePdfService(IVoucherRepository voucherRepository, IConfigurationRepository configurationRepository, ITaxConditionRepository taxConditionRepository)
+        public PrintTicketService(IVoucherRepository voucherRepository, IConfigurationRepository configurationRepository, ITaxConditionRepository taxConditionRepository)
         {
             _voucherRepository = voucherRepository;
             _configurationRepository = configurationRepository;
             _taxConditionRepository = taxConditionRepository;
         }
 
-        public async Task<byte[]> GenerateInvoicePdf(int id, bool isTicket = false)
+        public async Task<byte[]> PrintTicket(int id)
         {
             var voucher = (await _voucherRepository.SearchAsync(
                 t => t.Id == id,
@@ -95,7 +95,7 @@ namespace Ventas.Infrastructure.Persistence.Services
                 qrBytes = qr.ToPngBitmap(scale: 4); // Esto genera el byte[] que recibe el comando
             }
 
-            var command = new InvoiceDocument.InvoiceDocumentCommand(
+            var command = new TicketDocumentCommand(
                 Voucher: voucher.Adapt<VoucherOutput>(),
                 BusinessName: businessName,
                 BusinessCuit: businessCuit,
@@ -105,9 +105,7 @@ namespace Ventas.Infrastructure.Persistence.Services
                 QrCodeImage: qrBytes
             );
 
-            IDocument document = isTicket
-                ? new TicketDocument(command)
-                : new InvoiceDocument(command);
+            IDocument document = new TicketDocument(command);
 
             return document.GeneratePdf();
         }

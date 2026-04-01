@@ -1,5 +1,4 @@
 import api from "./api";
-import { SearchCommand } from "../DTOs/SearchCommand";
 import { VoucherCreateCommand } from "../DTOs/vouchers/VoucherCreateCommand";
 import { VoucherUpdateCommand } from "../DTOs/vouchers/VoucherUpdateCommand";
 import { CloseSaleCommand } from "../DTOs/vouchers/closeSale/CloseSaleCommand";
@@ -33,18 +32,4 @@ export const voucherService = {
     const response = await api.post("/voucher/close-sale", body);
     return response.data;
   },
-
-  printInvoice: async (id) => {
-    const response = await api.get(`/voucher/${id}/print-invoice`, {
-      responseType: 'blob' 
-    });
-    return response.data;
-  },
-
-  printTicket: async (id) => {
-    const response = await api.get(`/voucher/${id}/print-ticket`, {
-      responseType: 'blob' 
-    });
-    return response.data;
-  }
 };
