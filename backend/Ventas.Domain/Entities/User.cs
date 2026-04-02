@@ -10,5 +10,8 @@ namespace Ventas.Domain.Entities
         public Role? Role { get; set; } = null;
         public int? PointOfSaleId { get; set; }
         public PointOfSale? PointOfSale { get; set; } = null;
+
+        public IEnumerable<Voucher> Vouchers { get; set; } = new List<Voucher>();
+        public IEnumerable<DailyBox> DailyBoxes { get; set;} = new List<DailyBox>();
     }
 }

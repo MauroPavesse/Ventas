@@ -1,0 +1,3 @@
+dotnet ef migrations add "nombre" --project Ventas.Infrastructure --startup-project Ventas.Api
+dotnet ef database update --project Ventas.Infrastructure --startup-project Ventas.Api
+dotnet ef migrations remove --project Ventas.Infrastructure --startup-project Ventas.Api

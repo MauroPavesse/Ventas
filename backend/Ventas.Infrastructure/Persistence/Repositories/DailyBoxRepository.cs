@@ -34,10 +34,25 @@ namespace Ventas.Infrastructure.Persistence.Repositories
                                 .Include(t => t.Vouchers)
                                 .ThenInclude(t => t.VoucherDetails));
                             break;
-                        case "Voucher.User.PointOfSale":
+                        case "Vouchers.User.PointOfSale":
                             includes.Add(i => i
                                 .Include(t => t.Vouchers)
                                 .ThenInclude(t => t.User!.PointOfSale));
+                            break;
+                        case "Vouchers.VoucherPayments.PaymentMethod":
+                            includes.Add(i => i
+                                .Include(t => t.Vouchers)
+                                .ThenInclude(t => t.VoucherPayments)
+                                .ThenInclude(t => t.PaymentMethod));
+                            break;
+                        case "Vouchers.VoucherType":
+                            includes.Add(i => i
+                                .Include(t => t.Vouchers)
+                                .ThenInclude(t => t.VoucherType));
+                            break;
+                        case "User.PointOfSale":
+                            includes.Add(i => i
+                                .Include(t => t.User!.PointOfSale));
                             break;
                     }
                 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Ventas.Application.Entities.Externas.Prints.BudgetDocument;
+using Ventas.Application.Entities.Externas.Prints.DailyBoxDocument;
 using Ventas.Application.Entities.Externas.Prints.TicketDocument;
 
 namespace Ventas.Api.Controllers
@@ -34,6 +35,16 @@ namespace Ventas.Api.Controllers
             if (pdfBytes == null) return NotFound();
 
             return File(pdfBytes, "application/pdf", $"Presupuesto_{id}.pdf");
+        }
+
+        [HttpGet("dailyBox/{id}")]
+        public async Task<IActionResult> PrintDailyBox(int id)
+        {
+            var pdfBytes = await _mediator.Send(new DailyBoxDocumentServiceCommand(id));
+
+            if (pdfBytes == null) return NotFound();
+
+            return File(pdfBytes, "application/pdf", $"Caja_diaria_{id}.pdf");
         }
     }
 }

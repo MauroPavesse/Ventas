@@ -5,7 +5,7 @@ using Ventas.Application.Entities.UnitOfWork;
 
 namespace Ventas.Application.Entities.DailyBoxes.Update
 {
-    public record DailyBoxUpdateCommand(int Id, int Number, decimal Amount) : IRequest<DailyBoxOutput>;
+    public record DailyBoxUpdateCommand(int Id, int Number, decimal Amount, int UserId) : IRequest<DailyBoxOutput>;
 
     public class DailyBoxUpdateHandler : IRequestHandler<DailyBoxUpdateCommand, DailyBoxOutput>
     {
@@ -27,6 +27,7 @@ namespace Ventas.Application.Entities.DailyBoxes.Update
             }
             existingDailyBox.Number = request.Number;
             existingDailyBox.Amount = request.Amount;
+            existingDailyBox.UserId = request.UserId;
             var updatedDailyBox = await _dailyBoxRepository.UpdateAsync(existingDailyBox);
             await _unitOfWorkRepository.SaveChangesAsync();
             return updatedDailyBox.Adapt<DailyBoxOutput>();

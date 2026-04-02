@@ -111,6 +111,15 @@ namespace Ventas.Infrastructure.Persistence.Configurations
                     StringValue = "",
                     NumericValue = 0,
                     BoolValue = false
+                },
+                new Configuration
+                {
+                    Id = 11,
+                    Variable = "imprimeTicketDirecto",
+                    Description = "true: El ticket imprime directo / false: Muestra pantalla previa",
+                    StringValue = "",
+                    NumericValue = 0,
+                    BoolValue = false
                 }
             );
         }

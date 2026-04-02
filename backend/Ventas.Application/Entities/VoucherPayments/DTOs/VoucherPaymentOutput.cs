@@ -1,4 +1,5 @@
-﻿using Ventas.Domain.Common;
+﻿using Ventas.Application.Entities.PaymentMethods.DTOs;
+using Ventas.Domain.Common;
 
 namespace Ventas.Application.Entities.VoucherPayments.DTOs
 {
@@ -7,5 +8,6 @@ namespace Ventas.Application.Entities.VoucherPayments.DTOs
         public decimal Amount { get; set; }
         public int VoucherId { get; set; }
         public int PaymentMethodId { get; set; }
+        public PaymentMethodOutput? PaymentMethod { get; set; } = null;
     }
 }

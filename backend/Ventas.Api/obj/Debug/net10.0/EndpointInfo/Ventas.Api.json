@@ -480,10 +480,21 @@
         }
       }
     },
-    "/api/DailyBox/close": {
+    "/api/DailyBox/close/{userId}": {
       "post": {
         "tags": [
           "DailyBox"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -936,6 +947,29 @@
       }
     },
     "/api/Print/budget/{id}": {
+      "get": {
+        "tags": [
+          "Print"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Print/dailyBox/{id}": {
       "get": {
         "tags": [
           "Print"
@@ -2202,6 +2236,10 @@
           "amount": {
             "type": "number",
             "format": "double"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -2220,6 +2258,10 @@
           "amount": {
             "type": "number",
             "format": "double"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

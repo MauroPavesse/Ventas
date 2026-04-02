@@ -48,10 +48,10 @@ namespace Ventas.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("close")]
-        public async Task<IActionResult> CloseDailyBox()
+        [HttpPost("close/{userId}")]
+        public async Task<IActionResult> CloseDailyBox(int userId)
         {
-            var result = await _mediator.Send(new CloseDailyBoxServiceCommand());
+            var result = await _mediator.Send(new CloseDailyBoxServiceCommand(userId));
             return Ok(result);
         }
     }

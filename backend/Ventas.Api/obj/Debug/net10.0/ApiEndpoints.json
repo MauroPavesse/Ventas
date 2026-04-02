@@ -250,11 +250,17 @@
   {
     "ContainingType": "Ventas.Api.Controllers.DailyBoxController",
     "Method": "CloseDailyBox",
-    "RelativePath": "api/DailyBox/close",
+    "RelativePath": "api/DailyBox/close/{userId}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -549,6 +555,22 @@
     "ContainingType": "Ventas.Api.Controllers.PrintController",
     "Method": "PrintBudget",
     "RelativePath": "api/Print/budget/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.PrintController",
+    "Method": "PrintDailyBox",
+    "RelativePath": "api/Print/dailyBox/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

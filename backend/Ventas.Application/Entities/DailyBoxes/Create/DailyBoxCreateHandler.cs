@@ -6,7 +6,7 @@ using Ventas.Domain.Entities;
 
 namespace Ventas.Application.Entities.DailyBoxes.Create
 {
-    public record DailyBoxCreateCommand(int Number, decimal Amount) : IRequest<DailyBoxOutput>;
+    public record DailyBoxCreateCommand(int Number, decimal Amount, int UserId) : IRequest<DailyBoxOutput>;
 
     public class DailyBoxCreateHandler : IRequestHandler<DailyBoxCreateCommand, DailyBoxOutput>
     {

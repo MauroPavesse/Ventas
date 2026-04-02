@@ -8,7 +8,7 @@ using Ventas.Domain.Entities;
 
 namespace Ventas.Application.Entities.DailyBoxes.CloseDailyBox
 {
-    public record CloseDailyBoxServiceCommand() : IRequest<DailyBoxOutput>;
+    public record CloseDailyBoxServiceCommand(int UserId) : IRequest<DailyBoxOutput>;
 
     public class CloseDailyBoxServiceHandler : IRequestHandler<CloseDailyBoxServiceCommand, DailyBoxOutput>
     {
@@ -37,7 +37,8 @@ namespace Ventas.Application.Entities.DailyBoxes.CloseDailyBox
             {
                 Number = Convert.ToInt32(configurationNumber.NumericValue),
                 Amount = vouchers.Sum(t => t.AmountNet + t.AmountVAT),
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                UserId = request.UserId
             });
 
             await _unitOfWorkRepository.SaveChangesAsync();

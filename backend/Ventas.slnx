@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path="Document.txt" />
+  </Folder>
   <Project Path="Ventas.Api/Ventas.Api.csproj" />
   <Project Path="Ventas.Application/Ventas.Application.csproj" Id="f7ffc713-87ae-49cd-9274-9529f4ed9bb3" />
   <Project Path="Ventas.Domain/Ventas.Domain.csproj" Id="97a648d0-05d5-4da6-8650-ae2c34974584" />

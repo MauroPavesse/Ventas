@@ -12,6 +12,7 @@ using Ventas.Application.Entities.DailyBoxes;
 using Ventas.Application.Entities.Externas.FileStorage;
 using Ventas.Application.Entities.Externas.Jwt;
 using Ventas.Application.Entities.Externas.Prints.BudgetDocument;
+using Ventas.Application.Entities.Externas.Prints.DailyBoxDocument;
 using Ventas.Application.Entities.Externas.Prints.TicketDocument;
 using Ventas.Application.Entities.PaymentMethods;
 using Ventas.Application.Entities.PointOfSales;
@@ -71,6 +72,7 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ITicketDocumentService, PrintTicketService>();
 builder.Services.AddScoped<IBudgetDocumentService, PrintBudgetService>();
+builder.Services.AddScoped<IDailyBoxDocumentService, PrintDailyBoxService>();
 
 builder.Services.AddCors(options =>
 {

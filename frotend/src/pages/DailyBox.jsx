@@ -174,7 +174,10 @@ const DailyBox = () => {
     const executeClose = async () => {
       setLoading(true);
       try {
-        await dailyBoxService.closeDailyBox();
+        const userDataRaw = localStorage.getItem('user_data');
+        const userData = userDataRaw ? JSON.parse(userDataRaw) : null;
+        const userId = userData?.userId;
+        await dailyBoxService.closeDailyBox(userId);
         message.success("Caja cerrada correctamente");
         fetchData();
       } catch (error) {
