@@ -22,9 +22,19 @@ namespace Ventas.Application.Entities.Configurations.Search
         {
             Expression<Func<Configuration, bool>> predicate = t => t.Deleted == 0;
 
-            foreach(var variable in request.Variables)
+            if (request.Variables != null && request.Variables.Any())
             {
-                predicate = predicate.Or(t => t.Variable == variable);
+                // Empezamos con un predicado "falso" para ir sumando ORs
+                // O mejor: tomamos la primera variable como base.
+                Expression<Func<Configuration, bool>> varPredicate = t => false;
+
+                foreach (var variable in request.Variables)
+                {
+                    varPredicate = varPredicate.Or(t => t.Variable == variable);
+                }
+
+                // 3. Unimos la condición base con el grupo de variables usando AND
+                predicate = predicate.And(varPredicate);
             }
 
             var configurations = await configurationRepository.GetAllAsync(predicate);

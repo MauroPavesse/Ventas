@@ -1,11 +1,15 @@
 import api from "./api";
 import { ConfigurationSearchCommand } from "../DTOs/configurations/ConfigurationSearchCommand";
-import { ConfigurationUpdateCommand } from "../DTOs/configurations/ConfigurationUpdateCommand"
 
 export const configurationService = {
-  search: async (params) => {
-    const body = new ConfigurationSearchCommand(params);
-    const response = await api.post("/configuration/search", body);
+  search: async (variablesArray) => {
+    const response = await api.post("/configuration/search", null, {
+      params: { command: variablesArray },
+      // Esto serializa automáticamente a: ?command=var1&command=var2
+      paramsSerializer: {
+        indexes: null // Importante para que no mande command[0]=...
+      }
+    });
     return response.data;
   },
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { dailyBoxService } from "../services/dailyBoxService";
 import { printService } from "../services/printService";
 import { SearchCommand } from "../DTOs/SearchCommand";
+import { configurationService } from "../services/configurationService";
 import {
   PrinterOutlined,
   FileDoneOutlined
@@ -14,7 +15,6 @@ const VoucherPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [dailyBoxes, setDailyBoxes] = useState();
-  const [printsDirectly, setPrintsDirectly] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -55,6 +55,10 @@ const VoucherPage = () => {
     try {
       const blob = await printService.printTicket(voucherId);
       const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+
+      const resConfiguration = await configurationService.search(["imprimeTicketDirecto", "empresa", "cuit"]);
+      const configItem = resConfiguration.find(item => item.variable === "imprimeTicketDirecto");
+      const printsDirectly = configItem ? configItem.boolValue : false;
 
       if (printsDirectly) {
         // Creamos un iframe invisible

@@ -10,6 +10,7 @@ import {
   Button,
   InputNumber,
 } from "antd";
+import { PrinterOutlined } from '@ant-design/icons';
 import PageLayout from "../layouts/PageLayout";
 import { productService } from "../services/productService"; // Asumiendo esta ruta
 import { SearchCommand } from "../DTOs/SearchCommand";
@@ -18,6 +19,7 @@ import CloseSale from "../components/CloseSale";
 import { voucherService } from "../services/voucherService";
 import { VoucherTypesEnum } from '../constants/voucherTypesEnum';
 import { VoucherStateEnum } from '../constants/stateEntityEnum';
+import { printService } from "../services/printService";
 
 const Sale = () => {
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ const Sale = () => {
   const [cart, setCart] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [voucherNumber, setVoucherNumber] = useState(0);
 
   // Carga inicial
   useEffect(() => {
@@ -74,10 +77,10 @@ const Sale = () => {
         return prevCart.map((item) =>
           item.id === product.id
             ? {
-                ...item,
-                quantity: item.quantity + 1,
-                import: (item.quantity + 1) * item.price,
-              }
+              ...item,
+              quantity: item.quantity + 1,
+              import: (item.quantity + 1) * item.price,
+            }
             : item,
         );
       }
@@ -168,8 +171,9 @@ const Sale = () => {
     const userDataRaw = localStorage.getItem('user_data');
     const userData = userDataRaw ? JSON.parse(userDataRaw) : null;
     const userId = userData?.userId;
-    
+
     await voucherService.closeSale({
+      number: voucherNumber,
       items: cart,
       userId: userId,
       voucherTypeId: VoucherTypesEnum.ORDEN_DE_COMPRA,
@@ -179,8 +183,36 @@ const Sale = () => {
       ...saleData
     });
     message.success("¡Venta procesada con éxito!");
+    setVoucherNumber(0); // Limpiar numero de comprobante
     setCart([]); // Limpiar carrito
     setIsModalVisible(false);
+  };
+
+  const printBudget = async () => {
+    try {
+      const userDataRaw = localStorage.getItem('user_data');
+      const userData = userDataRaw ? JSON.parse(userDataRaw) : null;
+      const userId = userData?.userId;
+
+      const response = await voucherService.closeSale({
+        number: voucherNumber,
+        items: cart,
+        userId: userId,
+        voucherTypeId: VoucherTypesEnum.ORDEN_DE_COMPRA,
+        stateEntityId: VoucherStateEnum.INICIADO,
+        payment: null,
+        customerId: null
+      });
+
+      setVoucherNumber(response.number);
+      const blob = await printService.printBudget(response.id);
+      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+      window.open(url, '_blank');
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
+    } catch (error) {
+      console.error(error);
+      message.error("No se pudo generar el PDF del comprobante.");
+    }
   };
 
   return (
@@ -233,6 +265,18 @@ const Sale = () => {
             }}
           >
             PAGAR
+          </Button>
+          <Button
+            // type="default" es el estándar si no es el botón principal
+            style={{ marginTop: 16, marginRight: 10, float: "inline-end" }}
+            icon={<PrinterOutlined />} // Aquí agregamos el icono
+            onClick={() => {
+              if (cart.length === 0)
+                return message.warning("El carrito está vacío");
+              printBudget();
+            }}
+          >
+            PRESUPUESTO
           </Button>
         </Col>
       </Row>

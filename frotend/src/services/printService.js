@@ -8,7 +8,7 @@ export const printService = {
         return response.data;
     },
 
-    printInvoice: async (id) => {
+    printBudget: async (id) => {
         const response = await api.get(`/print/budget/${id}`, {
             responseType: 'blob'
         });

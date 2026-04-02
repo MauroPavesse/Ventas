@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { voucherService } from "../services/voucherService";
 import { printService } from "../services/printService";
 import { dailyBoxService } from "../services/dailyBoxService";
+import { configurationService } from "../services/configurationService";
 import {
   DeleteOutlined,
   ExclamationCircleOutlined,
@@ -49,7 +50,11 @@ const DailyBox = () => {
       const blob = await printService.printTicket(voucherId);
       const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
 
-      if (true) {
+      const resConfiguration = await configurationService.search(["imprimeTicketDirecto", "empresa", "cuit"]);
+      const configItem = resConfiguration.find(item => item.variable === "imprimeTicketDirecto");
+      const printsDirectly = configItem ? configItem.boolValue : false;
+
+      if (printsDirectly) {
         // Creamos un iframe invisible
         const iframe = document.createElement('iframe');
         iframe.style.display = 'none';

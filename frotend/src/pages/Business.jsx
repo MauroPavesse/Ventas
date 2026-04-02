@@ -11,6 +11,7 @@ import {
   Upload,
   Col,
   Row,
+  Checkbox,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { configurationService } from "../services/configurationService";
@@ -61,6 +62,10 @@ const Business = () => {
                   },
                 ]);
               }
+              break;
+            case "imprimeTicketDirecto":
+              // Forzamos a booleano con !! o validando explícitamente
+              value = !!item.boolValue;
               break;
           }
 
@@ -203,6 +208,10 @@ const Business = () => {
               <Button icon={<UploadOutlined />}>Seleccionar Certificado</Button>
             )}
           </Upload>
+        </Form.Item>
+
+        <Form.Item name="imprimeTicketDirecto" valuePropName="checked">
+          <Checkbox>Imprime ticket directo</Checkbox>
         </Form.Item>
 
         <Form.Item>
