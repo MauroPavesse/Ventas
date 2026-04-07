@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Ventas.Application.Entities.Externas.Prints.TicketDocument;
 using Ventas.Application.Entities.Vouchers.CloseSale;
+using Ventas.Application.Entities.Vouchers.ConvertToInvoice;
 using Ventas.Application.Entities.Vouchers.Create;
 using Ventas.Application.Entities.Vouchers.Delete;
 using Ventas.Application.Entities.Vouchers.Search;
@@ -50,7 +51,14 @@ namespace Ventas.Api.Controllers
         }
 
         [HttpPost("close-sale")]
-        public async Task<IActionResult> Create([FromBody] CloseSaleServiceCommand command)
+        public async Task<IActionResult> CloseSale([FromBody] CloseSaleServiceCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("convert-to-invoice")]
+        public async Task<IActionResult> ConvertToInvoice([FromBody] ConvertToInvoiceServiceCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

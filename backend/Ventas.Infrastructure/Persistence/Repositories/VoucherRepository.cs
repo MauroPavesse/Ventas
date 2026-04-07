@@ -58,6 +58,11 @@ namespace Ventas.Infrastructure.Persistence.Repositories
                                 .Include(t => t.VoucherDetails)
                                 .ThenInclude(t => t.Product));
                             break;
+                        case "VoucherDetails.Product.TaxRate":
+                            includes.Add(i => i
+                                .Include(t => t.VoucherDetails)
+                                .ThenInclude(t => t.Product!.TaxRate));
+                            break;
                         case "VoucherPayments":
                             includes.Add(i => i
                                 .Include(t => t.VoucherPayments));

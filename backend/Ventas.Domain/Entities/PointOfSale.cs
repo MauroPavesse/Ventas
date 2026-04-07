@@ -13,5 +13,6 @@ namespace Ventas.Domain.Entities
 
         public IEnumerable<User> Users { get; set; } = new List<User>();
         public IEnumerable<PointOfSaleVoucherType> PointOfSaleVoucherTypes { get; set; } = new List<PointOfSaleVoucherType>();
+        public IEnumerable<AfipToken> AfipTokens { get; set; } = new List<AfipToken>();
     }
 }

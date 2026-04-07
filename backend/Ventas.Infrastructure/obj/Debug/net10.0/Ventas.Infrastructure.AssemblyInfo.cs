@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Ventas.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a3cf3c4db9af8bc19944b0219658a54113fd297")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6bb601f3159b91aca5336700592431e172de0a09")]
 [assembly: System.Reflection.AssemblyProductAttribute("Ventas.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Ventas.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
