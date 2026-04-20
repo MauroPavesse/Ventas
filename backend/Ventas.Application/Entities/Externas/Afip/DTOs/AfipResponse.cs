@@ -6,16 +6,18 @@
         public bool Success { get; set; }
         public string? Cae { get; set; }
         public DateTime? CaeExpiration { get; set; }
+        public int Number { get; set; }
 
         private AfipResponse() { }
 
-        public static AfipResponse Ok(string cae, DateTime caeExpiration)
+        public static AfipResponse Ok(string cae, DateTime caeExpiration, int number)
         {
             return new AfipResponse
             {
                 Success = true,
                 Cae = cae,
-                CaeExpiration = caeExpiration
+                CaeExpiration = caeExpiration,
+                Number = number
             };
         }
 

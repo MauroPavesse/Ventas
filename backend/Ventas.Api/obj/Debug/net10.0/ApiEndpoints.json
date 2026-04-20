@@ -985,7 +985,7 @@
   },
   {
     "ContainingType": "Ventas.Api.Controllers.VoucherController",
-    "Method": "Create",
+    "Method": "CloseSale",
     "RelativePath": "api/Voucher/close-sale",
     "HttpMethod": "POST",
     "IsController": true,
@@ -994,6 +994,22 @@
       {
         "Name": "command",
         "Type": "Ventas.Application.Entities.Vouchers.CloseSale.CloseSaleServiceCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.VoucherController",
+    "Method": "ConvertToInvoice",
+    "RelativePath": "api/Voucher/convert-to-invoice",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "Ventas.Application.Entities.Vouchers.ConvertToInvoice.ConvertToInvoiceServiceCommand",
         "IsRequired": true
       }
     ],

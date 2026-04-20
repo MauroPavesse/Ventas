@@ -5,10 +5,12 @@ using QuestPDF.Infrastructure;
 using Ventas.Api.Middlewares;
 using Ventas.Application;
 using Ventas.Application.Behaviors;
+using Ventas.Application.Entities.AfipTokens;
 using Ventas.Application.Entities.Categories;
 using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Customers;
 using Ventas.Application.Entities.DailyBoxes;
+using Ventas.Application.Entities.Externas.Afip;
 using Ventas.Application.Entities.Externas.FileStorage;
 using Ventas.Application.Entities.Externas.Jwt;
 using Ventas.Application.Entities.Externas.Prints.BudgetDocument;
@@ -30,6 +32,7 @@ using Ventas.Application.Entities.VoucherTypes;
 using Ventas.Infrastructure.Data;
 using Ventas.Infrastructure.Persistence.Repositories;
 using Ventas.Infrastructure.Persistence.Services;
+using Ventas.Infrastructure.Persistence.Services.Afip;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +76,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ITicketDocumentService, PrintTicketService>();
 builder.Services.AddScoped<IBudgetDocumentService, PrintBudgetService>();
 builder.Services.AddScoped<IDailyBoxDocumentService, PrintDailyBoxService>();
+builder.Services.AddScoped<IAfipTokenRepository, AfipTokenRepository>();
+builder.Services.AddScoped<IAfipAuthService, AfipAuthService>();
+builder.Services.AddScoped<IAfipService, AfipService>();
 
 builder.Services.AddCors(options =>
 {

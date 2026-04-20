@@ -39,10 +39,11 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
             var encoding = new UTF8Encoding(false); // False evita el BOM
             var traBytes = encoding.GetBytes(traXml);
 
-            var contentInfo = new ContentInfo(
+            /*var contentInfo = new ContentInfo(
                 new Oid("1.2.840.113549.1.7.1"),
                 traBytes
-            );
+            );*/
+            var contentInfo = new ContentInfo(traBytes);
 
             var cms = new SignedCms(
                 contentInfo,
@@ -59,6 +60,7 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
                 DigestAlgorithm = new Oid("2.16.840.1.101.3.4.2.1")
             };
 
+            //signer.SignedAttributes.Add(new Pkcs9SigningTime());
             cms.ComputeSignature(signer);
             var cmsBytes = cms.Encode();
             return cmsBytes;
@@ -71,11 +73,6 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
             try
             {
                 var tra = CreateTRA("wsfe");
-                if (tra.StartsWith("<?xml") == true)
-                {
-                    var caca = $"First char: {(int)tra[0]}";
-                }
-                Console.WriteLine(tra);
                 var cms = SignTRA(tra, pathCert, password);
 
                 var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport)

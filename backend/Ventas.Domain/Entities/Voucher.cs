@@ -1,4 +1,5 @@
 ﻿using Ventas.Domain.Common;
+using Ventas.Domain.Enums;
 
 namespace Ventas.Domain.Entities
 {
@@ -23,5 +24,20 @@ namespace Ventas.Domain.Entities
 
         public List<VoucherDetail> VoucherDetails { get; set; } = new List<VoucherDetail>();
         public IEnumerable<VoucherPayment> VoucherPayments { get; set; } = new List<VoucherPayment>();
+
+        public void PrepareForAfip()
+        {
+            // El dominio decide su propio tipo basándose en reglas de negocio
+            this.VoucherTypeId = (Customer != null && Customer.TaxConditionId == (int)TaxConditionEnum.RESPONSABLE_INSCRIPTO)
+                ? (int)VoucherTypeEnum.FACTURA_A
+                : (int)VoucherTypeEnum.FACTURA_B;
+        }
+
+        public void SetFiscalData(string cae, DateTime expiration, int officialNumber)
+        {
+            this.CAE = cae;
+            this.CAEExpiration = expiration;
+            this.Number = officialNumber;
+        }
     }
 }

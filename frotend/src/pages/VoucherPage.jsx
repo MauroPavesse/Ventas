@@ -6,6 +6,7 @@ import { dailyBoxService } from "../services/dailyBoxService";
 import { printService } from "../services/printService";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import { configurationService } from "../services/configurationService";
+import { voucherService } from "../services/voucherService";
 import {
   PrinterOutlined,
   FileDoneOutlined
@@ -98,7 +99,7 @@ const VoucherPage = () => {
       content: `¿Deseas generar la factura legal para el comprobante ${record.description}?`,
       onOk: async () => {
         try {
-          // await voucherService.convertToInvoice(record.id);
+          await voucherService.convertToInvoice(record.id);
           message.success("Factura generada con éxito");
           fetchData(); // Recargar para actualizar estado si es necesario
         } catch (e) {

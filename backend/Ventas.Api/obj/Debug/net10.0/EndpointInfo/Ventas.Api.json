@@ -1708,6 +1708,37 @@
         }
       }
     },
+    "/api/Voucher/convert-to-invoice": {
+      "post": {
+        "tags": [
+          "Voucher"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertToInvoiceServiceCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertToInvoiceServiceCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertToInvoiceServiceCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/VoucherDetail/search": {
       "post": {
         "tags": [
@@ -2166,6 +2197,16 @@
           },
           "boolValue": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConvertToInvoiceServiceCommand": {
+        "type": "object",
+        "properties": {
+          "voucherId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

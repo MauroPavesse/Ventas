@@ -1,8 +1,13 @@
 ﻿using Afip.WSFE;
+using Mapster;
 using System.Globalization;
 using System.ServiceModel;
+using Ventas.Application.Entities.AfipTokens;
+using Ventas.Application.Entities.AfipTokens.DTOs;
+using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Externas.Afip;
 using Ventas.Application.Entities.Externas.Afip.DTOs;
+using Ventas.Application.Entities.UnitOfWork;
 using Ventas.Domain.Entities;
 using Ventas.Domain.Enums;
 
@@ -10,13 +15,37 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
 {
     public class AfipService : IAfipService
     {
-        public async Task<AfipResponse> EmitInvoiceAsync(string token, string sign, string businessCuit, Voucher voucher)
+        private readonly IAfipAuthService _afipAuthService;
+        private readonly IAfipTokenRepository _tokenRepository;
+        private readonly IConfigurationRepository _configRepository;
+        private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+
+        public AfipService(IAfipAuthService afipAuthService, IAfipTokenRepository tokenRepository, IConfigurationRepository configRepository, IUnitOfWorkRepository unitOfWorkRepository)
         {
+            _afipAuthService = afipAuthService;
+            _tokenRepository = tokenRepository;
+            _configRepository = configRepository;
+            _unitOfWorkRepository = unitOfWorkRepository;
+        }
+
+        public async Task<AfipResponse> EmitInvoiceAsync(Voucher voucher)
+        {
+            // 1. Obtener Token (Lógica interna, el Handler ni se entera)
+            var token = await GetValidTokenAsync(voucher.User!.PointOfSaleId ?? 0);
+
+            // 2. Obtener CUIT de configuración
+            var cuit = (await _configRepository.GetAllAsync(t => t.Variable == "cuit")).First().StringValue;
+
+            // 3. Consultar último número y emitir (Tu lógica de WSFE que ya tenías)
+            // ... (aquí va la llamada a AFIP usando el token obtenido)
+            int lastVoucherNumber = await GetLastVoucherNumberAsync(token.Token, token.Sign, cuit, voucher.User!.PointOfSaleId ?? 0, Convert.ToInt32(voucher.VoucherType!.Code));
+            voucher.Number = lastVoucherNumber + 1;
+
             var auth = new FEAuthRequest
             {
-                Token = token,
-                Sign = sign,
-                Cuit = long.Parse(businessCuit)
+                Token = token.Token,
+                Sign = token.Sign,
+                Cuit = long.Parse(cuit)
             };
 
             var voucherDetailsGroup = voucher.VoucherDetails.GroupBy(t => t.Product!.TaxRateId).ToList();
@@ -123,19 +152,14 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
 
             if (resultado.Resultado == "A")
             {
-                string cae = resultado.CAE;
-                string vencimiento = resultado.CAEFchVto;
-
-                voucher.CAE = cae;
-                voucher.CAEExpiration = DateTime.ParseExact(vencimiento, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-
                 return AfipResponse.Ok(
                     resultado.CAE,
                     DateTime.ParseExact(
                         resultado.CAEFchVto,
                         "yyyyMMdd",
                         CultureInfo.InvariantCulture
-                    )
+                    ),
+                    voucher.Number
                 );
             }
             else
@@ -188,6 +212,41 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
 
             var resp = await wsfe.FECompUltimoAutorizadoAsync(auth, pointOfSaleNumber, voucherTypeCode);
             return resp.Body.FECompUltimoAutorizadoResult.CbteNro;
+        }
+
+        private async Task<AfipTokenOutput> GetValidTokenAsync(int pointOfSaleId)
+        {
+            var token = await _tokenRepository.GetLatest(pointOfSaleId);
+
+            if (token == null || token.Expiration <= DateTime.UtcNow.AddMinutes(-5))
+            {
+                // Lógica de lectura de certificados y pedido de nuevo token
+                var configurations = await _configRepository.GetAllAsync(t => t.Variable == "arcaAlias" || t.Variable == "arcaCertificado" || t.Variable == "arcaClave");
+                var pathAlias = configurations.First(t => t.Variable == "arcaAlias").StringValue;
+                var pathCertificate = configurations.First(t => t.Variable == "arcaCertificado").StringValue;
+                var pathPassword = configurations.First(t => t.Variable == "arcaClave").StringValue;
+
+                var response = await _afipAuthService.GetToken(pathCertificate, pathPassword);
+
+                if (response.Success)
+                {
+                    // Guardar en BD para la próxima vez
+                    token = await _tokenRepository.CreateAsync(new AfipToken
+                    {
+                        Token = response.Data!.Token,
+                        Sign = response.Data!.Sign,
+                        Expiration = response.Data!.Expiration,
+                        PointOfSaleId = pointOfSaleId
+                    });
+                    await _unitOfWorkRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception(response.Errors.First().Message);
+                }
+            }
+
+            return token.Adapt<AfipTokenOutput>();
         }
     }
 }

@@ -92,7 +92,7 @@ const DailyBox = () => {
       content: `¿Deseas generar la factura legal para el comprobante ${record.description}?`,
       onOk: async () => {
         try {
-          // await voucherService.convertToInvoice(record.id);
+          await voucherService.convertToInvoice(record.id);
           message.success("Factura generada con éxito");
           fetchData(); // Recargar para actualizar estado si es necesario
         } catch (e) {
