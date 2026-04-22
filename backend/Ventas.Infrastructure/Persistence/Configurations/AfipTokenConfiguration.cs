@@ -9,12 +9,10 @@ namespace Ventas.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<AfipToken> builder)
         {
             builder.Property(t => t.Token)
-                .IsRequired()
-                .HasMaxLength(255);
+                .IsRequired();
 
             builder.Property(t => t.Sign)
-                .IsRequired()
-                .HasMaxLength(255);
+                .IsRequired();
         }
     }
 }

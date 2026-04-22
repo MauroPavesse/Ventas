@@ -3,6 +3,7 @@ using MediatR;
 using Ventas.Application.Entities.Externas.Afip;
 using Ventas.Application.Entities.UnitOfWork;
 using Ventas.Application.Entities.Vouchers.DTOs;
+using Ventas.Application.Entities.VoucherTypes;
 using Ventas.Domain.Common;
 
 namespace Ventas.Application.Entities.Vouchers.ConvertToInvoice
@@ -14,12 +15,14 @@ namespace Ventas.Application.Entities.Vouchers.ConvertToInvoice
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IVoucherRepository _voucherRepository;
         private readonly IAfipService _afipService;
+        private readonly IVoucherTypeRepository _voucherTypeRepository;
 
-        public ConvertToInvoiceServiceHandler(IUnitOfWorkRepository unitOfWorkRepository, IVoucherRepository voucherRepository, IAfipService afipService)
+        public ConvertToInvoiceServiceHandler(IUnitOfWorkRepository unitOfWorkRepository, IVoucherRepository voucherRepository, IAfipService afipService, IVoucherTypeRepository voucherTypeRepository)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _voucherRepository = voucherRepository;
             _afipService = afipService;
+            _voucherTypeRepository = voucherTypeRepository;
         }
 
         public async Task<Result<VoucherOutput>> Handle(ConvertToInvoiceServiceCommand request, CancellationToken cancellationToken)
@@ -33,6 +36,11 @@ namespace Ventas.Application.Entities.Vouchers.ConvertToInvoice
 
             // 2. Aplicar lógica de negocio (Dominio)
             voucher.PrepareForAfip();
+
+            var voucherType = (await _voucherTypeRepository.SearchAsync(
+                predicate: t => t.Id == voucher.VoucherTypeId
+            )).First();
+            voucher.VoucherType = voucherType;
 
             // 3. Comunicar con AFIP (Infraestructura encapsulada)
             var afipResponse = await _afipService.EmitInvoiceAsync(voucher);

@@ -38,7 +38,7 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
 
             // 3. Consultar último número y emitir (Tu lógica de WSFE que ya tenías)
             // ... (aquí va la llamada a AFIP usando el token obtenido)
-            int lastVoucherNumber = await GetLastVoucherNumberAsync(token.Token, token.Sign, cuit, voucher.User!.PointOfSaleId ?? 0, Convert.ToInt32(voucher.VoucherType!.Code));
+            int lastVoucherNumber = await GetLastVoucherNumberAsync(token.Token, token.Sign, cuit, Convert.ToInt32(voucher.User!.PointOfSale!.Number), Convert.ToInt32(voucher.VoucherType!.Code));
             voucher.Number = lastVoucherNumber + 1;
 
             var auth = new FEAuthRequest
@@ -116,7 +116,7 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
 
                 if (det != null)
                 {
-                    if (det.Resultado == "R")
+                    if (det.Resultado == "R" && det.Observaciones != null)
                     {
                         foreach (var obs in det.Observaciones)
                         {
@@ -166,14 +166,17 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
             {
                 var errors = new List<AfipErrorOutput>();
 
-                foreach (var obs in resultado.Observaciones)
+                if(resultado.Observaciones != null)
                 {
-                    errors.Add(new AfipErrorOutput
+                    foreach (var obs in resultado.Observaciones)
                     {
-                        Code = obs.Code.ToString(),
-                        Message = obs.Msg,
-                        Source = "WSFE"
-                    });
+                        errors.Add(new AfipErrorOutput
+                        {
+                            Code = obs.Code.ToString(),
+                            Message = obs.Msg,
+                            Source = "WSFE"
+                        });
+                    }
                 }
 
                 return AfipResponse.Fail(errors);
