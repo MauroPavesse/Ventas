@@ -77,7 +77,7 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
                     {
                         Concepto = 1,
                         DocTipo = customer == null || customer.TaxConditionId == (int)TaxConditionEnum.CONSUMIDOR_FINAL ? 99 : customer.TaxConditionId == (int)TaxConditionEnum.RESPONSABLE_INSCRIPTO ? 80 : 96,
-                        DocNro = customer == null || customer.TaxConditionId == (int)TaxConditionEnum.CONSUMIDOR_FINAL ? 0 : customer.Document,
+                        DocNro = customer == null || customer.TaxConditionId == (int)TaxConditionEnum.CONSUMIDOR_FINAL ? 0 : customer.TaxConditionId == (int)TaxConditionEnum.RESPONSABLE_INSCRIPTO ? Convert.ToInt64(customer.Cuit) : customer.Document,
                         CbteDesde = voucher.Number,
                         CbteHasta = voucher.Number,
                         CbteFch = DateTime.Now.ToString("yyyyMMdd"),

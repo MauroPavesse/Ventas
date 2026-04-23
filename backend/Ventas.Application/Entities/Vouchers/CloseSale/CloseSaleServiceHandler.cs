@@ -3,12 +3,14 @@ using MediatR;
 using System.Data;
 using System.Linq.Expressions;
 using Ventas.Application.Entities.PointOfSaleVoucherTypes;
+using Ventas.Application.Entities.Products;
 using Ventas.Application.Entities.TaxRates;
 using Ventas.Application.Entities.UnitOfWork;
 using Ventas.Application.Entities.Users;
 using Ventas.Application.Entities.VoucherDetails;
 using Ventas.Application.Entities.Vouchers.DTOs;
 using Ventas.Domain.Entities;
+using Ventas.Domain.Enums;
 
 namespace Ventas.Application.Entities.Vouchers.CloseSale
 {
@@ -16,7 +18,7 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
 
     public record CloseSaleServicePaymentCommand(int Id, decimal Discount, decimal Amount);
 
-    public record CloseSaleServiceCommand(int Number, List<CloseSaleServiceItemCommand> Items, CloseSaleServicePaymentCommand? Payment, int UserId, int? CustomerId, int VoucherTypeId, int StateEntityId) : IRequest<VoucherOutput>;
+    public record CloseSaleServiceCommand(int Id, int Number, List<CloseSaleServiceItemCommand> Items, CloseSaleServicePaymentCommand? Payment, int UserId, int? CustomerId, int VoucherTypeId, int StateEntityId) : IRequest<VoucherOutput>;
 
     public class CloseSaleServiceHandler : IRequestHandler<CloseSaleServiceCommand, VoucherOutput>
     {
@@ -26,8 +28,9 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
         private readonly IPointOfSaleVoucherTypeRepository _pointOfSaleVoucherTypeRepository;
         private readonly IUserRepository _userRepository;
         private readonly IVoucherDetailRepository _voucherDetailRepository;
+        private readonly IProductRepository _productRepository;
 
-        public CloseSaleServiceHandler(IUnitOfWorkRepository unitOfWorkRepository, IVoucherRepository voucherRepository, ITaxRateRepository taxRateRepository, IPointOfSaleVoucherTypeRepository pointOfSaleVoucherTypeRepository, IUserRepository userRepository, IVoucherDetailRepository voucherDetailRepository)
+        public CloseSaleServiceHandler(IUnitOfWorkRepository unitOfWorkRepository, IVoucherRepository voucherRepository, ITaxRateRepository taxRateRepository, IPointOfSaleVoucherTypeRepository pointOfSaleVoucherTypeRepository, IUserRepository userRepository, IVoucherDetailRepository voucherDetailRepository, IProductRepository productRepository)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _voucherRepository = voucherRepository;
@@ -35,6 +38,7 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
             _pointOfSaleVoucherTypeRepository = pointOfSaleVoucherTypeRepository;
             _userRepository = userRepository;
             _voucherDetailRepository = voucherDetailRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<VoucherOutput> Handle(CloseSaleServiceCommand request, CancellationToken cancellationToken)
@@ -44,16 +48,23 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
             var user = await _userRepository.GetByIdAsync(request.UserId);
             if (user == null) throw new DataException("Usuario no encontrado.");
 
+            var productsIds = request.Items.Select(t => t.Id).Distinct().ToList();
+            var products = await _productRepository.SearchAsync(
+                predicate: t => productsIds.Contains(t.Id));
+
+            Expression<Func<PointOfSaleVoucherType, bool>> predicatePointOfSaleVoucherType = t =>
+                    t.Deleted == 0 &&
+                    t.VoucherTypeId == request.VoucherTypeId &&
+                    t.PointOfSaleId == user.PointOfSaleId;
+
+            var posVoucherType = (await _pointOfSaleVoucherTypeRepository.SearchAsync(predicatePointOfSaleVoucherType)).FirstOrDefault();
+            if (posVoucherType == null) throw new Exception("Configuración de punto de venta no encontrada.");
+
             Voucher? voucher;
 
-            if (request.Number > 0)
+            if (request.Id > 0)
             {
-                Expression<Func<Voucher, bool>> predicate = t => 
-                t.Deleted == 0 &&
-                t.Number == request.Number && 
-                t.VoucherTypeId == request.VoucherTypeId;
-
-                var existingVouchers = await _voucherRepository.SearchAsync(predicate);
+                var existingVouchers = await _voucherRepository.SearchAsync(t => t.Id == request.Id);
                 voucher = existingVouchers.FirstOrDefault();
 
                 if (voucher == null) throw new DataException("El comprobante a actualizar no existe.");
@@ -65,16 +76,22 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                 foreach (var item in itemsToRemove)
                 {
                     await _voucherDetailRepository.DeleteAsync(item);
+                    voucher.VoucherDetails.Remove(item);
                 }
 
                 foreach (var itemRequest in request.Items)
                 {
-                    var existingItem = voucher.VoucherDetails
-                        .FirstOrDefault(d => d.ProductId == itemRequest.Id);
+                    var product = products.FirstOrDefault(t => t.Id == itemRequest.Id);
+                    if (product == null) continue;
 
-                    var taxRate = taxRates.First(t => t.Id == itemRequest.TaxRateId);
+                    var taxRate = taxRates.First(t => t.Id == product.TaxRateId);
+
                     decimal amountFinal = itemRequest.Quantity * itemRequest.Price;
                     decimal netAmount = amountFinal / (1 + (taxRate.Percentage / 100));
+                    decimal discountAmount = request.Payment != null ? (request.Payment.Discount * amountFinal / 100) : 0;
+
+                    var existingItem = voucher.VoucherDetails
+                        .FirstOrDefault(d => d.ProductId == itemRequest.Id);
 
                     if (existingItem != null)
                     {
@@ -83,19 +100,21 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                         existingItem.PriceUnit = itemRequest.Price;
                         existingItem.AmountNet = netAmount;
                         existingItem.AmountFinal = amountFinal;
-                        existingItem.Discount = request.Payment != null ? (request.Payment.Discount * amountFinal / 100) : 0;
+                        existingItem.Discount = discountAmount;
+                        await _voucherDetailRepository.UpdateAsync(existingItem);
                     }
                     else
                     {
                         // AGREGAR nuevo ítem
                         voucher.VoucherDetails.Add(new VoucherDetail
                         {
+                            VoucherId = voucher.Id,
                             ProductId = itemRequest.Id,
                             Quantity = itemRequest.Quantity,
                             PriceUnit = itemRequest.Price,
                             AmountNet = netAmount,
                             AmountFinal = amountFinal,
-                            Discount = request.Payment != null ? (request.Payment.Discount * amountFinal / 100) : 0
+                            Discount = discountAmount
                         });
                     }
                 }
@@ -105,22 +124,27 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                 voucher.StateEntityId = request.StateEntityId;
                 voucher.CustomerId = request.CustomerId;
 
+                int number = request.Number;
+                if (request.StateEntityId == (int)StateEntityEnum.VoucherStateEnum.FINALIZADO && voucher.Number == 0)
+                {
+                    posVoucherType.Numeration++;
+                    number = posVoucherType.Numeration;
+                    await _pointOfSaleVoucherTypeRepository.UpdateAsync(posVoucherType);
+                }
+                voucher.Number = number;
+
                 await _voucherRepository.UpdateAsync(voucher);
             }
             else
             {
-                Expression<Func<PointOfSaleVoucherType, bool>> predicatePointOfSaleVoucherType = t => 
-                    t.Deleted == 0 && 
-                    t.VoucherTypeId == request.VoucherTypeId && 
-                    t.PointOfSaleId == user.PointOfSaleId;
-
-                var posVoucherType = (await _pointOfSaleVoucherTypeRepository.SearchAsync(predicatePointOfSaleVoucherType)).FirstOrDefault();
-                if (posVoucherType == null) throw new Exception("Configuración de punto de venta no encontrada.");
-
                 List<VoucherDetail> voucherDetails = new List<VoucherDetail>();
                 foreach (var item in request.Items)
                 {
-                    var taxRate = taxRates.First(t => t.Id == item.TaxRateId);
+                    var product = products.FirstOrDefault(t => t.Id == item.Id);
+                    if (product == null) continue;
+
+                    var taxRate = taxRates.First(t => t.Id == product.TaxRateId);
+
                     decimal amountFinal = item.Quantity * item.Price;
                     decimal discountAmount = request.Payment != null ? (request.Payment.Discount * amountFinal / 100) : 0;
                     decimal netAmount = amountFinal / (1 + (taxRate.Percentage / 100));
@@ -146,10 +170,17 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                     });
                 }
 
-                posVoucherType.Numeration++;
+                int number = 0;
+                if(request.StateEntityId == (int)StateEntityEnum.VoucherStateEnum.FINALIZADO)
+                {
+                    posVoucherType.Numeration++;
+                    number = posVoucherType.Numeration;
+                    await _pointOfSaleVoucherTypeRepository.UpdateAsync(posVoucherType);
+                }
+
                 voucher = new Voucher()
                 {
-                    Number = posVoucherType.Numeration,
+                    Number = number,
                     AmountNet = voucherDetails.Sum(t => t.AmountNet),
                     AmountVAT = voucherDetails.Sum(t => t.AmountFinal) - voucherDetails.Sum(t => t.AmountNet),
                     CAE = string.Empty,
@@ -165,8 +196,6 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                 };
 
                 voucher = await _voucherRepository.CreateAsync(voucher);
-                
-                await _pointOfSaleVoucherTypeRepository.UpdateAsync(posVoucherType);
             }
 
             await _unitOfWorkRepository.SaveChangesAsync();

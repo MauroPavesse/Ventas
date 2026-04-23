@@ -1,5 +1,6 @@
 export class CloseSaleCommand {
     constructor({
+        id = 0,
         number = 0,
         items = [],
         payment = null,
@@ -8,6 +9,7 @@ export class CloseSaleCommand {
         voucherTypeId = 0,
         stateEntityId = 0
     } = {}) {
+        this.id = id;
         this.number = number;
         this.items = items;
         this.payment = payment;

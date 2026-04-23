@@ -36,6 +36,12 @@ namespace Ventas.Application.Entities.Vouchers.Search
                 {
                     predicate = predicate.And(t => t.DailyBoxId == null && t.StateEntityId == (int)StateEntityEnum.VoucherStateEnum.FINALIZADO);
                 }
+
+                var stateEntityFilter = search.Filters.FirstOrDefault(t => t.Field == "StateEntityId");
+                if (stateEntityFilter != null)
+                {
+                    predicate = predicate.And(t => t.StateEntityId == Convert.ToInt32(stateEntityFilter.Value));
+                }
             }
 
             var vouchers = await _voucherRepository.SearchAsync(predicate, search.Includes, search.DisableTracking);

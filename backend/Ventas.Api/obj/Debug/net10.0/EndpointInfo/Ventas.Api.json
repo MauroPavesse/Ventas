@@ -2106,6 +2106,10 @@
       "CloseSaleServiceCommand": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "number": {
             "type": "integer",
             "format": "int32"
