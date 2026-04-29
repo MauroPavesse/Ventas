@@ -14,7 +14,7 @@ import CategoryEditModal from "../components/CategoryEditModal";
 const Category = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isModalCategoryOpen, setIsModalCategoryOpen] = useState(false);
 
@@ -80,9 +80,9 @@ const Category = () => {
         try {
           await categoryService.delete(record.id);
           message.success("Eliminado correctamente");
-          categories.filter((t) => t.id != record.id);
-        } catch (e) {
-          message.error("Error al eliminar: " + e);
+          setCategories(prev => prev.filter((t) => t.id !== record.id));
+        } catch (errorMsg) {
+          message.error(errorMsg);
         }
       },
     });

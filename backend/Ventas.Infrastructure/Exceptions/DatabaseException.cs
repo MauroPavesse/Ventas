@@ -2,8 +2,6 @@
 {
     public class DatabaseException : Exception
     {
-        public DatabaseException(string message, Exception inner = null!) : base(message, inner)
-        {
-        }
+        public DatabaseException(string message, Exception inner) : base(message, inner) { }
     }
 }

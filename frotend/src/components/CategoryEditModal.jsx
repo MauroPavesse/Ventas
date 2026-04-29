@@ -27,7 +27,7 @@ const CategoryEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
       setConfirmLoading(true);
 
       const payload = {
-        id: initialValues?.id ? initialValues.id : 0,
+        id: initialValues?.id || 0,
         name: values.name,
       };
 
@@ -41,8 +41,17 @@ const CategoryEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
 
       onSuccess();
     } catch (error) {
-      console.error(error);
-      message.error("Error al guardar");
+      if (typeof error === "string") {
+        message.error(error);
+      } 
+      // Si el error viene de form.validateFields() de AntD (campos vacíos en el front)
+      else if (error.errorFields) {
+        console.log("Validación local fallida", error);
+      }
+      // Cualquier otro error inesperado
+      else {
+        message.error("Error inesperado al procesar la solicitud");
+      }
     } finally {
       setConfirmLoading(false);
     }
@@ -58,7 +67,11 @@ const CategoryEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
       width={700}
     >
       <Form form={form} layout="vertical" preserve={false}>
-        <Form.Item label="Nombre de la categoría" name="name">
+        <Form.Item 
+          label="Nombre de la categoría" 
+          name="name"
+          rules={[{ required: true, message: 'Por favor ingrese el nombre' }]}
+          >
             <Input placeholder="Frios" />
         </Form.Item>
       </Form>

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Ventas.Application.Entities.UnitOfWork;
+using Ventas.Domain.Exceptions;
 
 namespace Ventas.Application.Entities.Categories.Delete
 {
@@ -21,7 +22,7 @@ namespace Ventas.Application.Entities.Categories.Delete
             var existingCategory = await _categoryRepository.GetByIdAsync(request.Id);
             if (existingCategory == null)
             {
-                throw new KeyNotFoundException($"Categoría con ID {request.Id} no encontrado.");
+                throw new NotFoundException($"Categoría con ID {request.Id} no encontrado.");
             }
             existingCategory.Deleted = 1;
             existingCategory.Active = 0;

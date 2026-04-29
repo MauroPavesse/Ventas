@@ -43,8 +43,8 @@ namespace Ventas.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _mediator.Send(new CategoryDeleteCommand(id));
-            return Ok(result);
+            await _mediator.Send(new CategoryDeleteCommand(id));
+            return NoContent();
         }
     }
 }

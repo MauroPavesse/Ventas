@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using Ventas.Domain.Entities;
+using Ventas.Application.Entities.Categories.Create;
 
 namespace Ventas.Application.Entities.Categories
 {
-    public class CategoryValidator : AbstractValidator<Category>
+    public class CategoryValidator : AbstractValidator<CategoryCreateCommand>
     {
         public CategoryValidator()
         {

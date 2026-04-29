@@ -24,21 +24,42 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // 1. Verificamos si es un 401
+    // 1. Manejo de Seguridad (401 Unauthorized)
     if (error.response && error.response.status === 401) {
-      
-      // 2. IMPORTANTE: Si la URL incluye "login", NO redirecciones. 
-      // Deja que el componente Login maneje el error.
       const isLoginRequest = error.config.url.includes('/login');
-
       if (!isLoginRequest) {
         localStorage.removeItem('user_data');
         window.location.href = '/login'; 
+        return Promise.reject("Sesión expirada. Por favor, reingrese.");
       }
     }
+
+    // 2. Extraer el mensaje del estándar Problem Details (C#)
+    let friendlyMessage = "Ocurrió un error inesperado";
     
-    // Devolvemos el error para que el 'catch' del componente pueda leerlo
-    return Promise.reject(error);
+    if (error.response && error.response.data) {
+      const data = error.response.data;
+
+      // Si hay errores de validación (FluentValidation)
+      if (data.errors) {
+        // Convertimos el objeto de errores en una lista de strings
+        // Ejemplo: { Name: ["Obligatorio"], Code: ["Invalido"] } => "Obligatorio. Invalido."
+        friendlyMessage = Object.values(data.errors).flat().join(" ");
+      } 
+      // Si es un error de negocio o NotFound (BaseException)
+      else if (data.detail) {
+        friendlyMessage = data.detail;
+      }
+      // Si el backend mandó un título pero no un detalle
+      else if (data.title) {
+        friendlyMessage = data.title;
+      }
+    } else if (error.message === "Network Error") {
+      friendlyMessage = "No se pudo conectar con el servidor.";
+    }
+
+    // Devolvemos el string para que el 'catch' haga message.error(error)
+    return Promise.reject(friendlyMessage);
   }
 );
 

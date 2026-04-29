@@ -92,10 +92,12 @@ var config = TypeAdapterConfig.GlobalSettings;
 config.Scan(typeof(ApplicationAssemblyMarker).Assembly);
 
 builder.Services.AddSingleton(config);
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

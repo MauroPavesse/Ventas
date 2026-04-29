@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "nQWVaWD+Ozs=",
+  "dgSpecHash": "o0+IocC7CFI=",
   "success": true,
   "projectFilePath": "D:\\MyMSystem\\Ventas\\backend\\Ventas.Domain\\Ventas.Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\mauro\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.3.9\\microsoft.aspnetcore.http.abstractions.2.3.9.nupkg.sha512",
+    "C:\\Users\\mauro\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.3.0\\microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
+    "C:\\Users\\mauro\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
