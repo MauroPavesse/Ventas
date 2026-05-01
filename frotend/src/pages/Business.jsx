@@ -13,12 +13,13 @@ import {
   Row,
   Checkbox,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, CheckCircleFilled, CloseCircleFilled, LoadingOutlined } from "@ant-design/icons";
 import { configurationService } from "../services/configurationService";
 import { taxConditionService } from "../services/taxConditionService";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import { uploadsService } from "../services/uploadsService";
 import dayjs from "dayjs";
+import { afipService } from "../services/afipService";
 
 const Business = () => {
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ const Business = () => {
   const [form] = Form.useForm();
   const [saving, setSaving] = useState(false);
   const [fileList, setFileList] = useState([]);
+  const [testingConnection, setTestingConnection] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState(null);
+  const [watchValues, setWatchValues] = useState({ clave: "", certificado: "" });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -146,9 +150,62 @@ const Business = () => {
     setFileList([]); // Limpiamos la lista visual
   };
 
+  const testAfipConnection = async () => {
+    // Obtenemos los valores actuales del formulario
+    const clave = form.getFieldValue("arcaClave");
+    const certificado = form.getFieldValue("arcaCertificado");
+
+    // Solo disparamos si tenemos ambos datos
+    if (!clave || !certificado) return;
+
+    setTestingConnection(true);
+    setConnectionStatus(null);
+
+    try {
+      await afipService.testConnection(certificado, clave);
+
+      setConnectionStatus("success");
+    } catch (error) {
+      setConnectionStatus("error");
+    } finally {
+      setTestingConnection(false);
+    }
+  };
+
+  useEffect(() => {
+    const { clave, certificado } = watchValues;
+
+    // No disparamos si falta alguno
+    if (!clave || !certificado) {
+      setConnectionStatus(null);
+      return;
+    }
+
+    // Creamos el temporizador de 800ms (ajustalo a tu gusto)
+    const timer = setTimeout(() => {
+      testAfipConnection();
+    }, 800);
+
+    // LIMPIEZA: Si el usuario escribe antes de los 800ms, este return mata al timer anterior
+    // y el useEffect vuelve a empezar. ¡Magia!
+    return () => clearTimeout(timer);
+  }, [watchValues]);
+
   return (
     <PageLayout title="Datos de la empresa" onClose={() => navigate("/configurations")}>
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        onValuesChange={(changedValues, allValues) => {
+          if (changedValues.arcaClave || changedValues.arcaCertificado) {
+            setWatchValues({
+              clave: allValues.arcaClave,
+              certificado: allValues.arcaCertificado
+            });
+          }
+        }}
+      >
         <Row gutter={15}>
           <Col span={8}>
             <Form.Item label="Nombre empresa" name="empresa">
@@ -180,18 +237,6 @@ const Business = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={15}>
-          <Col span={4}>
-            <Form.Item label="Alias ARCA" name="arcaAlias">
-              <Input placeholder="Alias de ARCA" />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item label="Clave certificado" name="arcaClave">
-              <Input placeholder="*************" />
-            </Form.Item>
-          </Col>
-        </Row>
 
         <Form.Item label="Certificado ARCA" name="arcaCertificado">
           <Input hidden />
@@ -209,6 +254,29 @@ const Business = () => {
             )}
           </Upload>
         </Form.Item>
+
+        <Row gutter={15}>
+          <Col span={4}>
+            <Form.Item label="Alias ARCA" name="arcaAlias">
+              <Input placeholder="Alias de ARCA" />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label="Clave certificado" name="arcaClave"
+              help={
+                testingConnection ? (
+                  <span><LoadingOutlined /> Probando conexión...</span>
+                ) : connectionStatus === "success" ? (
+                  <span style={{ color: "#52c41a" }}><CheckCircleFilled /> Clave correcta</span>
+                ) : connectionStatus === "error" ? (
+                  <span style={{ color: "#ff4d4f" }}><CloseCircleFilled /> Clave incorrecta</span>
+                ) : null
+              }
+            >
+              <Input placeholder="*************" />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item name="imprimeTicketDirecto" valuePropName="checked">
           <Checkbox>Imprime ticket directo</Checkbox>

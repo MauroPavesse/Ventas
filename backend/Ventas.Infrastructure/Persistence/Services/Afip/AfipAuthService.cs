@@ -34,7 +34,8 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
             var cert = X509CertificateLoader.LoadPkcs12FromFile(
                 pathCert,
                 password,
-                X509KeyStorageFlags.UserKeySet | X509KeyStorageFlags.Exportable
+                X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable
+                //X509KeyStorageFlags.UserKeySet | X509KeyStorageFlags.Exportable
             );
             var encoding = new UTF8Encoding(false); // False evita el BOM
             var traBytes = encoding.GetBytes(traXml);

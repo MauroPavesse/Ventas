@@ -7,5 +7,6 @@ namespace Ventas.Application.Entities.Externas.Afip
     {
         Task<int> GetLastVoucherNumberAsync(string token, string sign, string businessCuit, int pointOfSaleNumber, int voucherTypeCode);
         Task<AfipResponse> EmitInvoiceAsync(Voucher voucher);
+        bool IsCertificatePasswordCorrect(string pathCert, string password);
     }
 }

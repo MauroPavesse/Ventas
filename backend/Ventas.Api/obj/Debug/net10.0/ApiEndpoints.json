@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "Ventas.Api.Controllers.AfipController",
+    "Method": "TestConnection",
+    "RelativePath": "api/Afip/test-connection",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "Ventas.Api.Controllers.AfipController\u002BAfipTestRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Ventas.Api.Controllers.CategoryController",
     "Method": "Create",
     "RelativePath": "api/Category",

@@ -1,6 +1,8 @@
 ﻿using Afip.WSFE;
 using Mapster;
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using Ventas.Application.Entities.AfipTokens;
 using Ventas.Application.Entities.AfipTokens.DTOs;
@@ -255,6 +257,19 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
             }
 
             return token.Adapt<AfipTokenOutput>();
+        }
+
+        public bool IsCertificatePasswordCorrect(string pathCert, string password)
+        {
+            try
+            {
+                var cert = X509CertificateLoader.LoadPkcs12FromFile(pathCert, password, X509KeyStorageFlags.MachineKeySet);
+                return true;
+            }
+            catch (CryptographicException)
+            {
+                return false; // Clave incorrecta
+            }
         }
     }
 }

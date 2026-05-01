@@ -5,6 +5,37 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Afip/test-connection": {
+      "post": {
+        "tags": [
+          "Afip"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AfipTestRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AfipTestRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AfipTestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Category/search": {
       "post": {
         "tags": [
@@ -2079,6 +2110,20 @@
   },
   "components": {
     "schemas": {
+      "AfipTestRequest": {
+        "type": "object",
+        "properties": {
+          "certificadoPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "clave": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CategoryCreateCommand": {
         "type": "object",
         "properties": {
@@ -2923,6 +2968,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Afip"
+    },
     {
       "name": "Category"
     },
