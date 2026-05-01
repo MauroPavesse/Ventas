@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MediatR;
 using Ventas.Application.Entities.Configurations.DTOs;
+using Ventas.Application.Entities.Externas.Encryption;
 using Ventas.Application.Entities.UnitOfWork;
 
 namespace Ventas.Application.Entities.Configurations.Update
@@ -13,11 +14,13 @@ namespace Ventas.Application.Entities.Configurations.Update
     {
         private readonly IConfigurationRepository configurationRepository;
         private readonly IUnitOfWorkRepository unitOfWorkRepository;
+        private readonly IEncryptionService encryptionService;
 
-        public ConfigurationUpdateHandler(IConfigurationRepository configurationRepository, IUnitOfWorkRepository unitOfWorkRepository)
+        public ConfigurationUpdateHandler(IConfigurationRepository configurationRepository, IUnitOfWorkRepository unitOfWorkRepository, IEncryptionService encryptionService)
         {
             this.configurationRepository = configurationRepository;
             this.unitOfWorkRepository = unitOfWorkRepository;
+            this.encryptionService = encryptionService;
         }
 
         public async Task<List<ConfigurationOutput>> Handle(UpdateConfigurationsBatchCommand request, CancellationToken cancellationToken)
@@ -28,9 +31,16 @@ namespace Ventas.Application.Entities.Configurations.Update
             {
                 var existingConfiguration = configurations.FirstOrDefault(t => t.Variable == item.Variable);
                 if (existingConfiguration == null) continue;
+
                 existingConfiguration.StringValue = item.StringValue;
                 existingConfiguration.NumericValue = item.NumericValue;
                 existingConfiguration.BoolValue = item.BoolValue;
+
+                if (item.Variable == "arcaClave")
+                {
+                    existingConfiguration.StringValue = encryptionService.Encrypt(item.StringValue);
+                }
+
                 var updatedConfiguration = await configurationRepository.UpdateAsync(existingConfiguration);
                 outputs.Add(updatedConfiguration.Adapt<ConfigurationOutput>());
             }

@@ -12,11 +12,14 @@ namespace Ventas.Infrastructure.Persistence.Services
             if (file == null || file.Length == 0) return null;
 
             var targetFolder = Path.Combine(_basePath, folderName);
-
+            if (folderName.Contains("localhost"))
+            {
+                targetFolder = "C:\\certificates";
+            }
             if (!Directory.Exists(targetFolder))
                 Directory.CreateDirectory(targetFolder);
 
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var fileName = file.FileName;
             var filePath = Path.Combine(targetFolder, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
@@ -24,7 +27,7 @@ namespace Ventas.Infrastructure.Persistence.Services
                 await file.CopyToAsync(stream);
             }
 
-            return $"/uploads/{folderName}/{fileName}";
+            return filePath;
         }
     }
 }

@@ -11,6 +11,7 @@ using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Customers;
 using Ventas.Application.Entities.DailyBoxes;
 using Ventas.Application.Entities.Externas.Afip;
+using Ventas.Application.Entities.Externas.Encryption;
 using Ventas.Application.Entities.Externas.FileStorage;
 using Ventas.Application.Entities.Externas.Jwt;
 using Ventas.Application.Entities.Externas.Prints.BudgetDocument;
@@ -79,6 +80,7 @@ builder.Services.AddScoped<IDailyBoxDocumentService, PrintDailyBoxService>();
 builder.Services.AddScoped<IAfipTokenRepository, AfipTokenRepository>();
 builder.Services.AddScoped<IAfipAuthService, AfipAuthService>();
 builder.Services.AddScoped<IAfipService, AfipService>();
+builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 
 builder.Services.AddCors(options =>
 {

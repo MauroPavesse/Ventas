@@ -7,6 +7,7 @@ using Ventas.Application.Entities.AfipTokens.DTOs;
 using Ventas.Application.Entities.Configurations;
 using Ventas.Application.Entities.Externas.Afip;
 using Ventas.Application.Entities.Externas.Afip.DTOs;
+using Ventas.Application.Entities.Externas.Encryption;
 using Ventas.Application.Entities.UnitOfWork;
 using Ventas.Domain.Entities;
 using Ventas.Domain.Enums;
@@ -19,13 +20,15 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
         private readonly IAfipTokenRepository _tokenRepository;
         private readonly IConfigurationRepository _configRepository;
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IEncryptionService encryptionService;
 
-        public AfipService(IAfipAuthService afipAuthService, IAfipTokenRepository tokenRepository, IConfigurationRepository configRepository, IUnitOfWorkRepository unitOfWorkRepository)
+        public AfipService(IAfipAuthService afipAuthService, IAfipTokenRepository tokenRepository, IConfigurationRepository configRepository, IUnitOfWorkRepository unitOfWorkRepository, IEncryptionService encryptionService)
         {
             _afipAuthService = afipAuthService;
             _tokenRepository = tokenRepository;
             _configRepository = configRepository;
             _unitOfWorkRepository = unitOfWorkRepository;
+            this.encryptionService = encryptionService;
         }
 
         public async Task<AfipResponse> EmitInvoiceAsync(Voucher voucher)
@@ -228,6 +231,8 @@ namespace Ventas.Infrastructure.Persistence.Services.Afip
                 var pathAlias = configurations.First(t => t.Variable == "arcaAlias").StringValue;
                 var pathCertificate = configurations.First(t => t.Variable == "arcaCertificado").StringValue;
                 var pathPassword = configurations.First(t => t.Variable == "arcaClave").StringValue;
+
+                pathPassword = encryptionService.Decrypt(pathPassword);
 
                 var response = await _afipAuthService.GetToken(pathCertificate, pathPassword);
 
