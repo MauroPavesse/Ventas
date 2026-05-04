@@ -30,6 +30,7 @@ using Ventas.Application.Entities.VoucherDetails;
 using Ventas.Application.Entities.VoucherPayments;
 using Ventas.Application.Entities.Vouchers;
 using Ventas.Application.Entities.VoucherTypes;
+using Ventas.Domain.Others;
 using Ventas.Infrastructure.Data;
 using Ventas.Infrastructure.Persistence.Repositories;
 using Ventas.Infrastructure.Persistence.Services;
@@ -81,6 +82,7 @@ builder.Services.AddScoped<IAfipTokenRepository, AfipTokenRepository>();
 builder.Services.AddScoped<IAfipAuthService, AfipAuthService>();
 builder.Services.AddScoped<IAfipService, AfipService>();
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
 
 builder.Services.AddCors(options =>
 {
@@ -88,6 +90,15 @@ builder.Services.AddCors(options =>
         builder.AllowAnyOrigin()
                .AllowAnyHeader()
                .AllowAnyMethod());
+});
+
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policy => {
+        policy.WithOrigins("https://*.reservacanchita.online")
+              .SetIsOriginAllowedToAllowWildcardSubdomains()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
 var config = TypeAdapterConfig.GlobalSettings;
@@ -105,34 +116,40 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ventas API V1");
+        c.RoutePrefix = string.Empty; // Esto hace que Swagger salga en la raíz (evita el 404)
+    });
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<AppDbContext>();
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "Ocurrió un error al aplicar las migraciones.");
+        }
+    }
 }
+
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<TenantMiddleware>();
+
 app.MapControllers();
 
 app.UseStaticFiles();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<AppDbContext>();
-        if (context.Database.GetPendingMigrations().Any())
-        {
-            context.Database.Migrate();
-        }
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocurrió un error al aplicar las migraciones.");
-    }
-}
 
 app.UseCors("Open");
 

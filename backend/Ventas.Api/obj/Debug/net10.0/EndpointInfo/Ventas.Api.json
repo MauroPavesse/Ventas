@@ -1417,6 +1417,18 @@
         }
       }
     },
+    "/api/Tenant/setup-database": {
+      "post": {
+        "tags": [
+          "Tenant"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Uploads/certificate": {
       "post": {
         "tags": [
@@ -3006,6 +3018,9 @@
     },
     {
       "name": "TaxRate"
+    },
+    {
+      "name": "Tenant"
     },
     {
       "name": "Uploads"

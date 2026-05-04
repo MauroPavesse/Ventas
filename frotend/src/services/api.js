@@ -1,11 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  //baseURL: 'http://72.60.60.66:5000/api',
-  baseURL: 'https://localhost:7189/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  // Vite elegirá automáticamente según el entorno
+  baseURL: import.meta.env.VITE_API_URL, 
+  headers: { 'Content-Type': 'application/json' },
 });
 
 api.interceptors.request.use(

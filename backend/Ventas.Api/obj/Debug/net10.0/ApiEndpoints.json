@@ -856,6 +856,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Ventas.Api.Controllers.TenantController",
+    "Method": "SetupDatabase",
+    "RelativePath": "api/Tenant/setup-database",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Ventas.Api.Controllers.UploadsController",
     "Method": "UploadCertificate",
     "RelativePath": "api/Uploads/certificate",
