@@ -1303,6 +1303,68 @@
         }
       }
     },
+    "/api/Statistics/sales-amount": {
+      "post": {
+        "tags": [
+          "Statistics"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticsGetSalesAmountCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticsGetSalesAmountCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticsGetSalesAmountCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Statistics/top-products": {
+      "post": {
+        "tags": [
+          "Statistics"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticsTopProductsCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticsTopProductsCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticsTopProductsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/TaxCondition/search": {
       "post": {
         "tags": [
@@ -2692,6 +2754,34 @@
         },
         "additionalProperties": false
       },
+      "StatisticsGetSalesAmountCommand": {
+        "type": "object",
+        "properties": {
+          "dateFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StatisticsTopProductsCommand": {
+        "type": "object",
+        "properties": {
+          "dateFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateConfigurationsBatchCommand": {
         "type": "object",
         "properties": {
@@ -3012,6 +3102,9 @@
     },
     {
       "name": "Role"
+    },
+    {
+      "name": "Statistics"
     },
     {
       "name": "TaxCondition"

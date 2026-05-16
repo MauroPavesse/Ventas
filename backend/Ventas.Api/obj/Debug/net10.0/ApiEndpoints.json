@@ -784,6 +784,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Ventas.Api.Controllers.StatisticsController",
+    "Method": "GetSalesAmount",
+    "RelativePath": "api/Statistics/sales-amount",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "Ventas.Application.Entities.Statistics.GetSalesAmount.StatisticsGetSalesAmountCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Ventas.Api.Controllers.StatisticsController",
+    "Method": "GetTopProducts",
+    "RelativePath": "api/Statistics/top-products",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "Ventas.Application.Entities.Statistics.TopProducts.StatisticsTopProductsCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Ventas.Api.Controllers.TaxConditionController",
     "Method": "Search",
     "RelativePath": "api/TaxCondition/search",
