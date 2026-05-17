@@ -1,4 +1,4 @@
-import { Button, message, Table, Modal, Tooltip } from "antd";
+import { Button, message, Table, Modal, Tooltip, Grid, Card } from "antd";
 import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,11 +10,17 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
   PrinterOutlined,
-  FileDoneOutlined
+  FileDoneOutlined,
+  DollarOutlined
 } from "@ant-design/icons";
+
+const { useBreakpoint } = Grid;
 
 const DailyBox = () => {
   const navigate = useNavigate();
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Detecta celulares y tablets pequeñas
+
   const [loading, setLoading] = useState(false);
   const [vouchers, setVouchers] = useState();
 
@@ -31,7 +37,7 @@ const DailyBox = () => {
         ]
       };
       var res = await voucherService.search(command);
-      setVouchers(res);
+      setVouchers(res || []);
     } catch (error) {
       message.error("Error al cargar las categorías: " + error);
     } finally {
@@ -107,35 +113,46 @@ const DailyBox = () => {
       <Table
         columns={[
           { title: "Producto", dataIndex: "productName", key: "productName" },
-          { title: "Cant.", dataIndex: "quantity", key: "quantity" },
-          { title: "Precio Unit.", dataIndex: "priceUnit", key: "priceUnit", render: (p) => `$ ${p}` },
+          { title: "Cant.", dataIndex: "quantity", key: "quantity", width: isMobile ? 60 : undefined },
           { title: "Subtotal", dataIndex: "amountFinal", key: "amountFinal", render: (a) => `$ ${a}` },
         ]}
         dataSource={record.voucherDetails}
         pagination={false}
         size="small"
         rowKey="id"
+        scroll={isMobile ? { x: true } : undefined}
       />
     ),
     rowExpandable: (record) => record.voucherDetails?.length > 0,
   };
 
   const columns = [
-    { title: "Comprobante", dataIndex: "description", key: "description" },
-    { title: "Importe", dataIndex: "amountTotal", key: "amountTotal", render: (i) => <b>$ {i.toLocaleString()}</b> },
+    {
+      title: "Comprobante",
+      dataIndex: "description",
+      key: "description",
+      render: (text) => <span style={{ fontSize: isMobile ? '13px' : '14px' }}>{text}</span>
+    },
+    {
+      title: "Importe",
+      dataIndex: "amountTotal",
+      key: "amountTotal",
+      render: (i) => <b>$ {i.toLocaleString()}</b>
+    },
     {
       title: "Acción",
       key: "action",
-      fixed: "right",
-      width: 150,
+      fixed: isMobile ? false : "right",
+      width: isMobile ? 130 : 150,
       render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Tooltip title="Imprimir">
-            <Button icon={<PrinterOutlined />} onClick={() => printTicket(record.id)} />
+        <div style={{ display: 'flex', gap: isMobile ? '4px' : '8px' }}>
+          <Tooltip title={isMobile ? "" : "Imprimir"}>
+            <Button size={isMobile ? "small" : "default"} icon={<PrinterOutlined />} onClick={() => printTicket(record.id)} />
           </Tooltip>
 
-          <Tooltip title="Convertir a Factura">
+          <Tooltip title={isMobile ? "" : "Convertir a Factura"}>
             <Button
+              size={isMobile ? "small" : "default"}
               type="primary"
               ghost
               icon={<FileDoneOutlined />}
@@ -144,6 +161,7 @@ const DailyBox = () => {
           </Tooltip>
 
           <Button
+            size={isMobile ? "small" : "default"}
             danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record)}
@@ -167,7 +185,7 @@ const DailyBox = () => {
         try {
           await voucherService.delete(record.id);
           message.success("Eliminado correctamente");
-          vouchers.filter((t) => t.id != record.id);
+          setVouchers((prev) => prev.filter((t) => t.id !== record.id));
         } catch (e) {
           message.error("Error al eliminar: " + e);
         }
@@ -215,22 +233,36 @@ const DailyBox = () => {
   return (
     <PageLayout title="Caja de Hoy - Comprobantes" onClose={() => navigate("/dashboard")}>
 
-      <Table
-        dataSource={vouchers}
-        columns={columns}
-        rowKey="id"
-        loading={loading}
-        expandable={expandableConfig}
-      />
+      {/* Botón superior destacado para celular */}
+      <div style={{ 
+        marginBottom: 16, 
+        display: 'flex', 
+        justifyContent: isMobile ? 'stretch' : 'flex-end' 
+      }}>
+        <Button
+          type="primary"
+          danger
+          icon={<DollarOutlined />}
+          onClick={() => closeDailyBox()}
+          block={isMobile}
+          size={isMobile ? "large" : "default"}
+          style={{ fontWeight: 600 }}
+        >
+          Cerrar Caja Diaria
+        </Button>
+      </div>
 
-      <Button
-        type="primary"
-        style={{ marginTop: 16, float: "inline-end" }}
-        onClick={() => closeDailyBox()}
-      >
-        Cerrar Caja
-      </Button>
-
+      <div style={{ overflowX: 'auto' }}>
+        <Table
+          dataSource={vouchers}
+          columns={columns}
+          rowKey="id"
+          loading={loading}
+          expandable={expandableConfig}
+          size={isMobile ? "small" : "default"}
+          scroll={{ x: true }} // Hace que la grilla principal sea deslizable horizontalmente si no entra
+        />
+      </div>
     </PageLayout>
   );
 };

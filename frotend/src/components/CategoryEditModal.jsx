@@ -1,5 +1,5 @@
-import { Col, Form, Input, Select, Modal, Row, message } from "antd";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Modal, message } from "antd";
 import { categoryService } from "../services/categoryService";
 
 const CategoryEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
@@ -43,7 +43,7 @@ const CategoryEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
     } catch (error) {
       if (typeof error === "string") {
         message.error(error);
-      } 
+      }
       // Si el error viene de form.validateFields() de AntD (campos vacíos en el front)
       else if (error.errorFields) {
         console.log("Validación local fallida", error);
@@ -59,20 +59,32 @@ const CategoryEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
 
   return (
     <Modal
-      title={initialValues?.id ? "Editar Categoría" : "Nuevo Categoría"}
+      title={initialValues?.id ? "Editar Categoría" : "Nueva Categoría"}
       open={open}
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
-      width={700}
+      // Si el componente padre envía un ancho (ej: 95% en móvil), lo adopta; si no, usa un ancho base de 500
+      width={500}
+      forceRender // Asegura que el formulario esté en el DOM para inyectar campos sin delays
+      okText="Guardar"
+      cancelText="Cancelar"
     >
-      <Form form={form} layout="vertical" preserve={false}>
-        <Form.Item 
-          label="Nombre de la categoría" 
+      <Form
+        form={form}
+        layout="vertical"
+        preserve={false}
+        style={{ marginTop: '16px' }}
+      >
+        <Form.Item
+          label="Nombre de la categoría"
           name="name"
           rules={[{ required: true, message: 'Por favor ingrese el nombre' }]}
-          >
-            <Input placeholder="Frios" />
+        >
+          <Input
+            placeholder="Ej: Frios, Bebidas, Almacén"
+            size="large" // Input cómodo para pulsación táctil
+          />
         </Form.Item>
       </Form>
     </Modal>

@@ -12,6 +12,9 @@ import {
   Col,
   Row,
   Checkbox,
+  Card,
+  Divider,
+  Grid
 } from "antd";
 import { UploadOutlined, CheckCircleFilled, CloseCircleFilled, LoadingOutlined } from "@ant-design/icons";
 import { configurationService } from "../services/configurationService";
@@ -21,8 +24,13 @@ import { uploadsService } from "../services/uploadsService";
 import dayjs from "dayjs";
 import { afipService } from "../services/afipService";
 
+const { useBreakpoint } = Grid;
+
 const Business = () => {
   const navigate = useNavigate();
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Detecta celulares y tablets chicas
+
   const [loadingLists, setLoadingLists] = useState(false);
   const [taxConditions, setTaxConditions] = useState([]);
   const [form] = Form.useForm();
@@ -42,7 +50,7 @@ const Business = () => {
           taxConditionService.search(command),
         ]);
 
-        setTaxConditions(resTaxCondition);
+        setTaxConditions(resTaxCondition || []);
 
         // --- TRANSFORMACIÓN DE LA LISTA A OBJETO ---
         const initialValues = {};
@@ -148,22 +156,16 @@ const Business = () => {
   const handleRemove = () => {
     form.setFieldsValue({ arcaCertificado: "" });
     setFileList([]); // Limpiamos la lista visual
+    setConnectionStatus(null);
   };
 
-  const testAfipConnection = async () => {
-    // Obtenemos los valores actuales del formulario
-    const clave = form.getFieldValue("arcaClave");
-    const certificado = form.getFieldValue("arcaCertificado");
-
-    // Solo disparamos si tenemos ambos datos
+  const testAfipConnection = async (clave, certificado) => {
     if (!clave || !certificado) return;
 
     setTestingConnection(true);
     setConnectionStatus(null);
-
     try {
       await afipService.testConnection(certificado, clave);
-
       setConnectionStatus("success");
     } catch (error) {
       setConnectionStatus("error");
@@ -183,7 +185,7 @@ const Business = () => {
 
     // Creamos el temporizador de 800ms (ajustalo a tu gusto)
     const timer = setTimeout(() => {
-      testAfipConnection();
+      testAfipConnection(clave, certificado);
     }, 800);
 
     // LIMPIEZA: Si el usuario escribe antes de los 800ms, este return mata al timer anterior
@@ -200,93 +202,127 @@ const Business = () => {
         onValuesChange={(changedValues, allValues) => {
           if (changedValues.arcaClave || changedValues.arcaCertificado) {
             setWatchValues({
-              clave: allValues.arcaClave,
-              certificado: allValues.arcaCertificado
+              clave: allValues.arcaClave || "",
+              certificado: allValues.arcaCertificado || ""
             });
           }
         }}
+        requiredMark="optional"
       >
-        <Row gutter={15}>
-          <Col span={8}>
-            <Form.Item label="Nombre empresa" name="empresa">
-              <Input placeholder="Nombre de la empresa" />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item label="Fecha de inicio" name="fechaInicio">
-              <DatePicker style={{ width: "100%" }} />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={15}>
-          <Col span={4}>
-            <Form.Item label="CUIT / CUIL" name="cuit">
-              <Input placeholder="xxxxxxxxxxx" />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item label="Condición fiscal" name="condicionFiscalId">
-              <Select
-                placeholder="Seleccione condición fiscal"
-                loading={loadingLists}
-                options={taxConditions.map((c) => ({
-                  value: c.id,
-                  label: c.description,
-                }))}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Card variant="borderless" style={{ padding: 0, background: 'transparent' }}>
+          {/* SECCIÓN 1: IDENTIDAD DE LA EMPRESA */}
+          <Divider titlePlacement="left" style={{ marginTop: 0 }}>Empresa e Identificación</Divider>
+          <Row gutter={[16, 0]}>
+            <Col xs={24} sm={12} md={10}>
+              <Form.Item label="Nombre empresa" name="empresa">
+                <Input placeholder="Nombre de la empresa" size={isMobile ? "large" : "default"} />
+              </Form.Item>
+            </Col>
 
-        <Form.Item label="Certificado ARCA" name="arcaCertificado">
-          <Input hidden />
+            <Col xs={24} sm={12} md={6}>
+              <Form.Item label="Fecha de inicio" name="fechaInicio">
+                <DatePicker style={{ width: "100%" }} size={isMobile ? "large" : "default"} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={[16, 0]}>
+            <Col xs={24} sm={12} md={8}>
+              <Form.Item label="CUIT / CUIL" name="cuit">
+                <Input placeholder="xxxxxxxxxxx" size={isMobile ? "large" : "default"} inputMode="numeric" />
+              </Form.Item>
+            </Col>
 
-          <Upload
-            customRequest={handleCustomUpload}
-            fileList={fileList} // <--- Vinculamos el estado visual
-            onRemove={handleRemove} // <--- Usamos nuestra función de limpieza
-            maxCount={1}
-          >
-            {/* Ocultamos el botón si ya hay un archivo para evitar confusiones, 
-        o lo dejamos para permitir el reemplazo */}
-            {fileList.length < 1 && (
-              <Button icon={<UploadOutlined />}>Seleccionar Certificado</Button>
-            )}
-          </Upload>
-        </Form.Item>
+            <Col xs={24} sm={12} md={8}>
+              <Form.Item label="Condición fiscal" name="condicionFiscalId">
+                <Select
+                  placeholder="Seleccione condición"
+                  loading={loadingLists}
+                  size={isMobile ? "large" : "default"}
+                  options={taxConditions.map((c) => ({
+                    value: c.id,
+                    label: c.description,
+                  }))}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-        <Row gutter={15}>
-          <Col span={4}>
-            <Form.Item label="Alias ARCA" name="arcaAlias">
-              <Input placeholder="Alias de ARCA" />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item label="Clave certificado" name="arcaClave"
-              help={
-                testingConnection ? (
-                  <span><LoadingOutlined /> Probando conexión...</span>
-                ) : connectionStatus === "success" ? (
-                  <span style={{ color: "#52c41a" }}><CheckCircleFilled /> Clave correcta</span>
-                ) : connectionStatus === "error" ? (
-                  <span style={{ color: "#ff4d4f" }}><CloseCircleFilled /> Clave incorrecta</span>
-                ) : null
-              }
+          {/* SECCIÓN 2: INTEGRACIÓN FACTURA ELECTRÓNICA */}
+          <Divider titlePlacement="left">Conectividad Fiscal (ARCA / AFIP)</Divider>
+          <Row gutter={[16, 0]}>
+            <Col xs={24}>
+              <Form.Item name="arcaCertificado" noStyle>
+                <Input type="hidden" />
+              </Form.Item>
+
+              {/* El Form.Item principal ahora solo tiene un único hijo: el Upload */}
+              <Form.Item label="Certificado digital (.key / .crt)">
+                <Upload
+                  customRequest={handleCustomUpload}
+                  fileList={fileList}
+                  onRemove={handleRemove}
+                  maxCount={1}
+                >
+                  {fileList.length < 1 && (
+                    <Button icon={<UploadOutlined />} block={isMobile} size={isMobile ? "large" : "default"}>
+                      Seleccionar Certificado
+                    </Button>
+                  )}
+                </Upload>
+              </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={12} md={12}>
+              <Form.Item label="Alias ARCA" name="arcaAlias">
+                <Input placeholder="Ej: HomologacionEmpresa" size={isMobile ? "large" : "default"} />
+              </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={12} md={12}>
+              <Form.Item
+                label="Clave privada del certificado"
+                name="arcaClave"
+                help={
+                  testingConnection ? (
+                    <span style={{ color: "#1677ff" }}><LoadingOutlined /> Validando credenciales con ARCA...</span>
+                  ) : connectionStatus === "success" ? (
+                    <span style={{ color: "#52c41a" }}><CheckCircleFilled /> Conexión exitosa y clave válida</span>
+                  ) : connectionStatus === "error" ? (
+                    <span style={{ color: "#ff4d4f" }}><CloseCircleFilled /> Error de autenticación o archivo corrupto</span>
+                  ) : null
+                }
+              >
+                <Input.Password placeholder="Ingrese la contraseña del certificado" size={isMobile ? "large" : "default"} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Divider />
+
+          {/* PARÁMETROS ADICIONALES */}
+          <Row style={{ marginBottom: 24 }}>
+            <Col xs={24}>
+              <Form.Item name="imprimeTicketDirecto" valuePropName="checked" style={{ marginBottom: 8 }}>
+                <Checkbox style={{ fontSize: isMobile ? '15px' : '14px' }}>
+                  Imprimir comprobante automáticamente (Ticket directo)
+                </Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          {/* BOTÓN PRINCIPAL */}
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={saving}
+              block={isMobile}
+              size="large"
             >
-              <Input placeholder="*************" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Form.Item name="imprimeTicketDirecto" valuePropName="checked">
-          <Checkbox>Imprime ticket directo</Checkbox>
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={saving}>
-            Guardar Cambios
-          </Button>
-        </Form.Item>
+              Guardar Configuraciones
+            </Button>
+          </Form.Item>
+        </Card>
       </Form>
     </PageLayout>
   );

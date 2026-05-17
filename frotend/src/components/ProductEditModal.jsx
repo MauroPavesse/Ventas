@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   message,
   Form,
@@ -7,17 +8,19 @@ import {
   Upload,
   Image,
   Tabs,
-  Space,
   Button,
   Row,
   Col,
+  InputNumber,
+  Grid,
 } from "antd";
-import { UploadOutlined, LinkOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
+import { UploadOutlined, LinkOutlined, BarcodeOutlined } from "@ant-design/icons";
 import { productService } from "../services/productService";
 import { SearchCommand } from "../DTOs/SearchCommand";
 import { categoryService } from "../services/categoryService";
 import { taxRateService } from "../services/taxRateService";
+
+const { useBreakpoint } = Grid;
 
 const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
   const [form] = Form.useForm();
@@ -26,6 +29,9 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
   const [categories, setCategories] = useState([]);
   const [taxRates, setTaxRates] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Detecta celulares y pantallas compactas
 
   useEffect(() => {
     if (open) {
@@ -53,8 +59,8 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
         taxRateService.search(command),
       ]);
 
-      setCategories(resCategory);
-      setTaxRates(resTaxRate);
+      setCategories(resCategory || []);
+      setTaxRates(resTaxRate || []);
     } catch (error) {
       message.error("Error al cargar listas: " + error);
     } finally {
@@ -87,7 +93,7 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
         name: values.name,
         description: values.description,
         imagePath: values.imagePath,
-        price: values.price,
+        price: values.price || 0,
         codeBar: values.codeBar,
         categoryId: values.categoryId,
         taxRateId: values.taxRateId,
@@ -103,8 +109,12 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
 
       onSuccess();
     } catch (error) {
-      console.error(error);
-      message.error("Error al guardar");
+      if (error.errorFields) {
+        console.log("Campos inválidos en formulario:", error.errorFields);
+      } else {
+        const errorMsg = error.response?.data?.Message || error.response?.data?.message || "Error al guardar el producto";
+        message.error(errorMsg);
+      }
     } finally {
       setConfirmLoading(false);
     }
@@ -112,42 +122,68 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
 
   return (
     <Modal
-      title={initialValues?.id ? "Editar Producto" : "Nuevo Producto"}
+      title={
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <BarcodeOutlined style={{ color: '#1677ff' }} />
+          <span>{initialValues?.id ? "Editar Producto" : "Nuevo Producto"}</span>
+        </div>
+      }
       open={open}
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
-      width={700}
+      width={isMobile ? "95%" : 750} // Ancho elástico inteligente para escritorio y tablets
+      forceRender
+      okText="Guardar"
+      cancelText="Cancelar"
+      centered={isMobile}
+      styles={{
+        body: {
+          maxHeight: isMobile ? 'calc(100vh - 180px)' : '75vh',
+          overflowY: 'auto',
+          padding: '4px 4px'
+        }
+      }}
     >
-      <Form form={form} layout="vertical" preserve={false}>
-        <div style={{ display: "flex", gap: "20px" }}>
-          {/* Columna Izquierda: Datos */}
-          <div style={{ flex: 2 }}>
+      <Form
+        form={form}
+        layout="vertical"
+        preserve={false}
+        style={{ marginTop: '16px' }}
+      >
+        <Row gutter={[16, 0]}>
+          {/* COLUMNA IZQUIERDA: DATOS PRINCIPALES */}
+          <Col xs={24} md={15}>
             <Form.Item
               label="Nombre del Producto"
               name="name"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: 'Por favor ingrese el nombre del artículo' }]}
             >
-              <Input placeholder="Ej. Helado Arcor" />
+              <Input placeholder="Ej. Helado Arcor Chocolate" size="large" />
             </Form.Item>
 
-            <Row gutter={10} style={{ alignItems: "baseline" }}>
-              <Col span={8}>
+            <Row gutter={[12, 0]}>
+              <Col xs={24} sm={10}>
                 <Form.Item label="Código Interno" name="code">
-                  <Input placeholder="COD-001" />
+                  <Input placeholder="COD-001" size="large" />
                 </Form.Item>
               </Col>
-              <Col span={16}>
+              <Col xs={24} sm={14}>
                 <Form.Item label="Código de Barras" name="codeBar">
-                  <Input placeholder="789..." />
+                  <Input placeholder="789123456789" size="large" />
                 </Form.Item>
               </Col>
             </Row>
 
-            <Form.Item label="Categoría" name="categoryId">
+            <Form.Item
+              label="Categoría"
+              name="categoryId"
+              rules={[{ required: true, message: 'Seleccione una categoría' }]}
+            >
               <Select
-                placeholder="Seleccione categoría"
+                placeholder="Seleccione categoría de catálogo"
                 loading={loadingLists}
+                size="large"
                 options={categories.map((c) => ({
                   value: c.id,
                   label: c.name,
@@ -155,99 +191,123 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
               />
             </Form.Item>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "10px",
-              }}
-            >
-              <Form.Item label="Precio" name="price">
-                <Input prefix="$" type="number" />
-              </Form.Item>
-              <Form.Item label="IVA" name="taxRateId">
-                <Select
-                  options={taxRates.map((t) => ({
-                    value: t.id,
-                    label: t.description,
-                  }))}
-                />
-              </Form.Item>
-            </div>
-          </div>
+            <Row gutter={[12, 0]}>
+              <Col xs={12} sm={12}>
+                <Form.Item
+                  label="Precio de Venta"
+                  name="price"
+                  rules={[{ required: true, message: 'Ingrese precio' }]}
+                >
+                  <InputNumber
+                    prefix="$"
+                    placeholder="0.00"
+                    size="large"
+                    style={{ width: '100%' }}
+                    min={0}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={12}>
+                <Form.Item
+                  label="Tasa de IVA"
+                  name="taxRateId"
+                  rules={[{ required: true, message: 'Seleccione IVA' }]}
+                >
+                  <Select
+                    placeholder="21%"
+                    size="large"
+                    loading={loadingLists}
+                    options={taxRates.map((t) => ({
+                      value: t.id,
+                      label: t.description,
+                    }))}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Col>
 
-          {/* Columna Derecha: Imagen */}
-          <div style={{ flex: 1, textAlign: "center" }}>
-            <Form.Item label="Imagen del Producto">
+          {/* COLUMNA DERECHA: MEDIA/IMAGEN */}
+          <Col xs={24} md={9} style={{ textAlign: "center", marginTop: isMobile ? '16px' : '0' }}>
+            <Form.Item label="Imagen Ilustrativa">
               <div
                 style={{
-                  marginBottom: 10,
+                  marginBottom: 12,
                   border: "1px dashed #d9d9d9",
                   borderRadius: "8px",
-                  padding: "5px",
-                  minHeight: "150px",
+                  padding: "8px",
+                  height: "150px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor: "#fafafa"
                 }}
               >
                 {imageUrl ? (
                   <Image
                     src={imageUrl}
                     alt="preview"
-                    style={{ maxHeight: "140px", objectFit: "contain" }}
+                    style={{ maxHeight: "130px", maxWidth: "100%", objectFit: "contain" }}
                   />
                 ) : (
-                  <span style={{ color: "#999" }}>Sin imagen</span>
+                  <span style={{ color: "#bfbfbf", fontSize: '13px' }}>Sin imagen configurada</span>
                 )}
               </div>
 
               <Tabs
                 defaultActiveKey="1"
+                type="card"
+                size="small"
                 items={[
                   {
                     key: "1",
                     label: (
                       <span>
-                        <LinkOutlined /> URL
+                        <LinkOutlined /> Web URL
                       </span>
                     ),
                     children: (
-                      <Form.Item name="imagePath" noStyle>
-                        <Input
-                          placeholder="http://..."
-                          onChange={(e) => setImageUrl(e.target.value)}
-                        />
-                      </Form.Item>
+                      <div style={{ padding: '8px 0' }}>
+                        <Form.Item name="imagePath" noStyle>
+                          <Input
+                            placeholder="https://imagenes.com/foto.jpg"
+                            onChange={(e) => setImageUrl(e.target.value)}
+                            size="large"
+                          />
+                        </Form.Item>
+                      </div>
                     ),
                   },
                   {
                     key: "2",
                     label: (
                       <span>
-                        <UploadOutlined /> Subir
+                        <UploadOutlined /> Subir File
                       </span>
                     ),
                     children: (
-                      <Upload
-                        beforeUpload={handleFileUpload}
-                        showUploadList={false}
-                        maxCount={1}
-                      >
-                        <Button icon={<UploadOutlined />} block>
-                          Seleccionar archivo
-                        </Button>
-                      </Upload>
+                      <div style={{ padding: '8px 0' }}>
+                        <Upload
+                          beforeUpload={handleFileUpload}
+                          showUploadList={false}
+                          maxCount={1}
+                        >
+                          <Button icon={<UploadOutlined />} size="large" block>
+                            Buscar archivo local
+                          </Button>
+                        </Upload>
+                      </div>
                     ),
                   },
                 ]}
               />
             </Form.Item>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <Form.Item label="Descripción" name="description">
-          <Input.TextArea rows={2} placeholder="Descripción breve..." />
+        {/* DESCRIPCIÓN EXTENDIDA */}
+        <Form.Item label="Descripción Extendida" name="description">
+          <Input.TextArea rows={3} placeholder="Detalles comerciales opcionales del producto..." />
         </Form.Item>
       </Form>
     </Modal>

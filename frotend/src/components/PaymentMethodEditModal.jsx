@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Col,
   Form,
@@ -7,9 +8,12 @@ import {
   Row,
   message,
   ColorPicker,
+  Grid,
 } from "antd";
-import { useState, useEffect } from "react";
 import { paymentMethodService } from "../services/paymentMethodService";
+import { CreditCardOutlined } from "@ant-design/icons";
+
+const { useBreakpoint } = Grid;
 
 const PaymentMethodEditModal = ({
   open,
@@ -20,12 +24,16 @@ const PaymentMethodEditModal = ({
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
 
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Detecta celulares y tablets chicas
+
   useEffect(() => {
     if (open) {
       if (initialValues) {
         setTimeout(() => {
           form.setFieldsValue({
             ...initialValues,
+            color: initialValues.color || "#1677ff",
           });
         }, 0);
       } else {
@@ -40,12 +48,17 @@ const PaymentMethodEditModal = ({
 
       setConfirmLoading(true);
 
+      const colorHex = typeof values.color === "string"
+        ? values.color
+        : values.color?.toHexString?.() || "#1677ff";
+
       const payload = {
         id: initialValues?.id ? initialValues.id : 0,
         name: values.name,
-        descountPercentage: values.descountPercentage,
-        increasePercentage: values.increasePercentage,
-        color: values.color
+        // Fallback preventivo a 0 si el usuario borra el contenido del InputNumber
+        descountPercentage: values.descountPercentage ?? 0,
+        increasePercentage: values.increasePercentage ?? 0,
+        color: colorHex
       };
 
       if (initialValues?.id) {
@@ -67,48 +80,84 @@ const PaymentMethodEditModal = ({
 
   return (
     <Modal
-      title={initialValues?.id ? "Editar Forma de pago" : "Nueva Forma de pago"}
+      title={
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <CreditCardOutlined style={{ color: '#1677ff' }} />
+          <span>{initialValues?.id ? "Editar Forma de Pago" : "Nueva Forma de Pago"}</span>
+        </div>
+      }
       open={open}
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
-      width={700}
+      width={isMobile ? "95%" : 550} // Ajuste elástico del ancho general
+      forceRender // Resuelve la inicialización del formulario sin delays
+      okText="Guardar"
+      cancelText="Cancelar"
+      centered={isMobile}
     >
-      <Form form={form} layout="vertical" preserve={false}>
-        <Row gutter={15}>
-          <Col span={18}>
-            <Form.Item label="Nombre" name="name">
-              <Input placeholder="Efectivo" />
+      <Form
+        form={form}
+        layout="vertical"
+        preserve={false}
+        style={{ marginTop: '16px' }}
+        initialValues={{ color: '#1677ff', descountPercentage: 0, increasePercentage: 0 }}
+      >
+        <Row gutter={[16, 0]}>
+          {/* NOMBRE DEL MÉTODO */}
+          <Col xs={24} sm={16}>
+            <Form.Item
+              label="Nombre"
+              name="name"
+              rules={[{ required: true, message: 'Por favor ingrese el nombre (ej: Tarjeta Débito)' }]}
+            >
+              <Input placeholder="Efectivo, Transferencia..." size="large" />
             </Form.Item>
           </Col>
-          <Col span={5}>
+
+          {/* SELECCIÓN DE COLOR */}
+          <Col xs={24} sm={8}>
             <Form.Item
-              label="Color"
+              label="Color Identificador"
               name="color"
               getValueFromEvent={(color) => {
                 return typeof color === "string" ? color : color.toHexString();
               }}
             >
-              <ColorPicker defaultValue="#1677ff" />
+              <ColorPicker
+                showText
+                disabledAlpha
+                style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center' }}
+              />
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={15}>
-          <Col span={6}>
+
+        <Row gutter={[16, 0]}>
+          {/* PORCENTAJE DE DESCUENTO */}
+          <Col xs={12} sm={12}>
             <Form.Item label="Descuento" name="descountPercentage">
               <InputNumber
-                placeholder="20%"
+                placeholder="0%"
                 min={0}
+                max={100}
+                size="large"
+                style={{ width: '100%' }}
                 formatter={(value) => `${value}%`}
                 parser={(value) => value?.replace("%", "")}
               />
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item label="Incremento" name="increasePercentage">
+
+          {/* PORCENTAJE DE INCREMENTO */}
+          <Col xs={12} sm={12}>
+            <Form.Item label="Recargo / Incremento" name="increasePercentage">
               <InputNumber
-                placeholder="15%"
+                placeholder="0%"
                 min={0}
+                max={100}
+                size="large"
+                style={{ width: '100%' }}
                 formatter={(value) => `${value}%`}
                 parser={(value) => value?.replace("%", "")}
               />

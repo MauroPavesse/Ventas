@@ -1,4 +1,4 @@
-import { Button, message, Table, Modal, Tooltip } from "antd";
+import { Button, message, Table, Modal, Tooltip, Grid } from "antd";
 import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,10 +12,15 @@ import {
   FileDoneOutlined
 } from "@ant-design/icons";
 
+const { useBreakpoint } = Grid;
+
 const VoucherPage = () => {
   const navigate = useNavigate();
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Determina si es un dispositivo móvil
+
   const [loading, setLoading] = useState(false);
-  const [dailyBoxes, setDailyBoxes] = useState();
+  const [dailyBoxes, setDailyBoxes] = useState([]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -113,25 +118,39 @@ const VoucherPage = () => {
     expandedRowRender: (record) => (
       <Table
         columns={[
-          { title: "Comprobante", dataIndex: "description", key: "description" },
-          { title: "Importe", dataIndex: "amountTotal", key: "amountTotal", render: (i) => <b>$ {i.toLocaleString()}</b> },
+          { 
+            title: "Comprobante", 
+            dataIndex: "description", 
+            key: "description" 
+          },
+          { 
+            title: "Importe", 
+            dataIndex: "amountTotal", 
+            key: "amountTotal", 
+            render: (i) => <b>$ {i.toLocaleString()}</b> 
+          },
           {
             title: "Acción",
             key: "action",
-            fixed: "right",
-            width: 100,
+            fixed: isMobile ? false : "right", // Desactivado en móvil para fluidez
+            width: isMobile ? 90 : 100,
             render: (_, record) => (
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <Tooltip title="Imprimir">
-                  <Button icon={<PrinterOutlined />} onClick={() => printTicket(record.id)} />
+              <div style={{ display: 'flex', gap: isMobile ? '4px' : '8px' }}>
+                <Tooltip title={isMobile ? "" : "Imprimir"}>
+                  <Button 
+                    size={isMobile ? "small" : "default"} 
+                    icon={<PrinterOutlined />} 
+                    onClick={() => printTicket(subRecord.id)} 
+                  />
                 </Tooltip>
 
-                <Tooltip title="Convertir a Factura">
+                <Tooltip title={isMobile ? "" : "Convertir a Factura"}>
                   <Button
+                    size={isMobile ? "small" : "default"}
                     type="primary"
                     ghost
                     icon={<FileDoneOutlined />}
-                    onClick={() => handleConvertInvoice(record)}
+                    onClick={() => handleConvertInvoice(subRecord)}
                   />
                 </Tooltip>
               </div>
@@ -142,24 +161,42 @@ const VoucherPage = () => {
         pagination={false}
         size="small"
         rowKey="id"
+        scroll={isMobile ? { x: true } : undefined}
       />
     ),
     rowExpandable: (record) => record.vouchers?.length > 0,
   };
 
   const columns = [
-    { title: "N° Caja Diaria", dataIndex: "number", key: "number", render: (i) => `Caja diaria ${i} ` },
-    { title: "Cant. Comp.", dataIndex: "quantityVouchers", key: "quantityVouchers" },
-    { title: "Importe total", dataIndex: "amount", key: "amount", render: (i) => <b>$ {i.toLocaleString()}</b> },
+    { 
+      title: "N° Caja Diaria", 
+      dataIndex: "number", 
+      key: "number", 
+      render: (i) => isMobile ? `#${i}` : `Caja diaria ${i}`
+    },
+    { 
+      title: isMobile ? "Comps." : "Cant. Comp.",
+      dataIndex: "quantityVouchers", 
+      key: "quantityVouchers" 
+    },
+    { 
+      title: "Total", 
+      dataIndex: "amount", 
+      key: "amount", 
+      render: (i) => <b>$ {i.toLocaleString()}</b> },
     {
       title: "Acción",
       key: "action",
-      fixed: "right",
-      width: 50,
+      fixed: isMobile ? false : "right", // Desactivado en móvil para evitar roturas
+      width: isMobile ? 50 : 60,
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px' }}>
-          <Tooltip title="Imprimir">
-            <Button icon={<PrinterOutlined />} onClick={() => printDailyBox(record.id)} />
+          <Tooltip title={isMobile ? "" : "Imprimir"}>
+            <Button 
+              size={isMobile ? "small" : "default"} 
+              icon={<PrinterOutlined />} 
+              onClick={() => printDailyBox(record.id)} 
+            />
           </Tooltip>
         </div>
       ),
@@ -175,6 +212,8 @@ const VoucherPage = () => {
         rowKey="id"
         loading={loading}
         expandable={expandableConfig}
+        size={isMobile ? "small" : "default"}
+        scroll={{ x: true }} // Scroll horizontal para la tabla madre
       />
 
     </PageLayout>

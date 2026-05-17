@@ -11,14 +11,12 @@ export const productService = {
   },
 
   create: async (params) => {
-    const body = new ProductCreateCommand(params);
-    const response = await api.post("/product", body);
+    const response = await api.post("/product", params);
     return response.data;
   },
 
   update: async (params) => {
-    const body = new ProductUpdateCommand(params);
-    const response = await api.put("/product", body);
+    const response = await api.put("/product", params);
     return response.data;
   },
 

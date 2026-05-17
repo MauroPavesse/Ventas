@@ -11,22 +11,26 @@ import {
   InputNumber,
   Modal,
   Space,
-  Popconfirm
+  Grid
 } from "antd";
-import { PrinterOutlined } from '@ant-design/icons';
+import { PrinterOutlined, DeleteOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import PageLayout from "../layouts/PageLayout";
 import { productService } from "../services/productService"; // Asumiendo esta ruta
 import { SearchCommand } from "../DTOs/SearchCommand";
-import { DeleteOutlined } from "@ant-design/icons";
 import CloseSale from "../components/CloseSale";
 import { voucherService } from "../services/voucherService";
 import { VoucherTypesEnum } from '../constants/voucherTypesEnum';
 import { VoucherStateEnum } from '../constants/stateEntityEnum';
 import { printService } from "../services/printService";
 
+const { useBreakpoint } = Grid;
+
 const Sale = () => {
   const navigate = useNavigate();
   const searchInputRef = useRef(null);
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Detecta celulares y tablets chicas
+
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [cart, setCart] = useState([]);
@@ -105,7 +109,9 @@ const Sale = () => {
     const value = e.target.value.toLowerCase();
     setSearchText(value);
     const filtered = products.filter((p) =>
-      p.name.toLowerCase().includes(value),
+      p.name.toLowerCase().includes(value) || 
+      (p.code && p.code.toLowerCase().includes(value)) ||
+      p.codeBar.includes(value)
     );
     setFilteredProducts(filtered);
   };
@@ -345,6 +351,7 @@ const Sale = () => {
     <PageLayout title="Nueva Venta" onClose={handleClose}>
       <Row gutter={[16, 16]}>
 
+        {/* Input Buscador */}
         <Col span={24}>
           <Input.Search
             ref={searchInputRef}
@@ -357,61 +364,78 @@ const Sale = () => {
           />
         </Col>
 
-        <Col span={12}>
-          <Card title="Productos Disponibles">
+        {/* Sección Productos Disponibles */}
+        <Col xs={24} md={12}>
+          <Card title="Productos Disponibles" styles={{ body: { padding: isMobile ? '8px' : '24px' } }}>
             <Table
               dataSource={filteredProducts}
               columns={productColumns}
               rowKey="id"
-              pagination={{ pageSize: 5 }}
+              pagination={{ pageSize: isMobile ? 4 : 5, size: "small" }}
+              scroll={{ x: true }} // Evita desbordamiento en móviles ultra chicos
             />
           </Card>
         </Col>
 
-        <Col span={12}>
-          <Card title="Carrito de Compras">
+        {/* Sección Carrito de Compras */}
+        <Col xs={24} md={12}>
+          <Card title="Carrito de Compras" styles={{ body: { padding: isMobile ? '8px' : '24px' } }}>
             <Table
               dataSource={cart}
               columns={cartColumns}
               rowKey="id"
+              pagination={isMobile ? { pageSize: 4, size: "small" } : false} // Paginación en móvil para acortar vista
               locale={{ emptyText: "El carrito está vacío" }}
+              scroll={{ x: true }}
             />
             <div style={{ marginTop: 16, textAlign: "right" }}>
-              <h3>
+              <h3 style={{ margin: 0, fontSize: isMobile ? '18px' : '22px' }}>
                 Total: ${cart.reduce((acc, item) => acc + item.amountFinal, 0)}
               </h3>
             </div>
           </Card>
-          <Button
-            type="primary"
-            style={{ marginTop: 16, float: "inline-end" }}
-            onClick={() => {
-              if (cart.length === 0)
-                return message.warning("El carrito está vacío");
-              setIsModalVisible(true);
-            }}
-          >
-            PAGAR
-          </Button>
-          <Button
-            // type="default" es el estándar si no es el botón principal
-            style={{ marginTop: 16, marginRight: 10, float: "inline-end" }}
-            icon={<PrinterOutlined />} // Aquí agregamos el icono
-            onClick={() => {
-              if (cart.length === 0)
-                return message.warning("El carrito está vacío");
-              printBudget();
-            }}
-          >
-            PRESUPUESTO
-          </Button>
-          <Button
-            style={{ marginTop: 16, marginRight: 10, float: "inline-end" }}
-            onClick={fetchPendingVouchers}
-            type="dashed"
-          >
-            Recuperar Pendiente
-          </Button>
+
+          {/* Botonera de Acciones Adaptativa */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column-reverse' : 'row',
+            gap: '10px',
+            justifyContent: 'flex-end',
+            marginTop: 16
+          }}>
+            <Button
+              onClick={fetchPendingVouchers}
+              type="dashed"
+              block={isMobile}
+              icon={<FolderOpenOutlined />}
+            >
+              Recuperar Pendiente
+            </Button>
+
+            <Button
+              style={{ marginRight: isMobile ? 0 : 2 }}
+              icon={<PrinterOutlined />}
+              onClick={() => {
+                if (cart.length === 0) return message.warning("El carrito está vacío");
+                printBudget();
+              }}
+              block={isMobile}
+            >
+              PRESUPUESTO
+            </Button>
+
+            <Button
+              type="primary"
+              onClick={() => {
+                if (cart.length === 0) return message.warning("El carrito está vacío");
+                setIsModalVisible(true);
+              }}
+              block={isMobile}
+              size={isMobile ? "large" : "default"} // Botón de pago más grande en celular
+            >
+              PAGAR
+            </Button>
+          </div>
         </Col>
       </Row>
 
@@ -422,36 +446,47 @@ const Sale = () => {
         onConfirm={handleConfirmSale}
       />
 
+      {/* Modal de Pendientes Adaptativo */}
       <Modal
         title="Ventas Pendientes / Presupuestos"
         open={isPendingModalVisible}
         onCancel={() => setIsPendingModalVisible(false)}
         footer={null}
-        width={700}
+        width={isMobile ? "95%" : 700}
+        style={{ top: isMobile ? 20 : 100 }}
       >
         <Table
           dataSource={pendingVouchers}
           rowKey="id"
           loading={loadingPending}
+          size={isMobile ? "small" : "default"}
+          scroll={{ x: true }}
           columns={[
-            { title: "Nro", dataIndex: "id", key: "id" },
-            { title: "Fecha", dataIndex: "dateCreation", key: "dateCreation", render: (date) => new Date(date).toLocaleDateString() },
-            { title: "Total", dataIndex: "amountTotal", key: "amountTotal", render: (t) => `$ ${t}` },
+            { title: "Nro", dataIndex: "id", key: "id", width: 60 },
+            {
+              title: "Fecha",
+              dataIndex: "dateCreation",
+              key: "dateCreation",
+              render: (date) => new Date(date).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })
+            },
+            { title: "Total", dataIndex: "amountTotal", key: "amountTotal", render: (t) => `$${t}` },
             {
               title: "Acciones",
               key: "action",
+              width: isMobile ? 110 : 140,
               render: (_, record) => (
-                <Space size="middle">
+                <Space size={isMobile ? "small" : "middle"}>
                   <Button
                     type="primary"
+                    size="small"
                     onClick={() => loadVoucher(record)}
                   >
                     Cargar
                   </Button>
-
                   <Button
                     type="text"
                     danger
+                    size="small"
                     icon={<DeleteOutlined />}
                     onClick={() => deleteVoucher(record.id)}
                   />

@@ -1,10 +1,16 @@
-import { Col, Form, Input, InputNumber, Modal, Row, message } from "antd";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Col, Form, Input, InputNumber, Modal, Row, message, Grid } from "antd";
 import { pointOfSaleService } from "../services/pointOfSaleService";
+import { ShopOutlined } from "@ant-design/icons";
+
+const { useBreakpoint } = Grid;
 
 const PointOfSaleEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const screens = useBreakpoint();
+  const isMobile = screens.md === false; // Detecta celulares y tablets en vertical
 
   useEffect(() => {
     if (open) {
@@ -12,6 +18,7 @@ const PointOfSaleEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
         setTimeout(() => {
           form.setFieldsValue({
             ...initialValues,
+            provincie: initialValues.provincie || initialValues.province,
           });
         }, 0);
       } else {
@@ -29,10 +36,11 @@ const PointOfSaleEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
       const payload = {
         id: initialValues?.id ? initialValues.id : 0,
         name: values.name,
-        number: values.number.toString(),
+        // Conversión segura que evita crasheos si el número viene indefinido
+        number: values.number !== undefined && values.number !== null ? values.number.toString() : "0",
         address: values.address,
         city: values.city,
-        provincie: values.provincie,
+        provincie: values.provincie, // Mantenemos la propiedad esperada por tu servicio
         postalCode: values.postalCode,
       };
 
@@ -56,45 +64,103 @@ const PointOfSaleEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
   return (
     <Modal
       title={
-        initialValues?.id ? "Editar Punto de Venta" : "Nuevo Punto de Venta"
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <ShopOutlined style={{ color: '#1677ff' }} />
+          <span>{initialValues?.id ? "Editar Punto de Venta" : "Nuevo Punto de Venta"}</span>
+        </div>
       }
       open={open}
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
-      width={700}
+      width={isMobile ? "95%" : 600} // Elástico en móviles, contenido en escritorio
+      forceRender // Carga inmediata de campos en el DOM sin usar setTimeout
+      okText="Guardar"
+      cancelText="Cancelar"
+      centered={isMobile}
+      styles={{
+        body: {
+          maxHeight: isMobile ? 'calc(100vh - 200px)' : '70vh', // Protege la vista si emerge el teclado táctil
+          overflowY: 'auto',
+          padding: '4px 8px'
+        }
+      }}
     >
-      <Form form={form} layout="vertical" preserve={false}>
-        <Row gutter={15}>
-          <Col span={18}>
-            <Form.Item label="Nombre" name="name">
-              <Input placeholder="Punto de venta 05" />
+      <Form
+        form={form}
+        layout="vertical"
+        preserve={false}
+        style={{ marginTop: '16px' }}
+      >
+        <Row gutter={[12, 0]}>
+          {/* NOMBRE */}
+          <Col xs={24} sm={16}>
+            <Form.Item
+              label="Nombre del Punto de Venta"
+              name="name"
+              rules={[{ required: true, message: 'Por favor ingrese el nombre' }]}
+            >
+              <Input placeholder="Ej: Caja Central, Showroom" size="large" />
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item label="Numeración" name="number">
-              <InputNumber placeholder="5" min={1} />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Form.Item label="Provincia" name="provincie">
-          <Input placeholder="Buenos Aires" />
-        </Form.Item>
-        <Row gutter={15}>
-          <Col span={14}>
-            <Form.Item label="Ciudad" name="city">
-              <Input placeholder="General Lavalle" />
-            </Form.Item>
-          </Col>
-          <Col span={10}>
-            <Form.Item label="Codigo postal" name="postalCode">
-              <Input placeholder="7103" />
+
+          {/* NUMERACIÓN */}
+          <Col xs={24} sm={8}>
+            <Form.Item
+              label="Numeración POS"
+              name="number"
+              rules={[{ required: true, message: 'Requerido' }]}
+            >
+              <InputNumber
+                placeholder="Ej: 5"
+                min={1}
+                size="large"
+                style={{ width: '100%' }}
+              />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item label="Dirección" name="address">
-          <Input placeholder="Av. Mitre 1580" />
+        {/* PROVINCIA */}
+        <Form.Item
+          label="Provincia"
+          name="provincie"
+          rules={[{ required: true, message: 'Por favor ingrese la provincia' }]}
+        >
+          <Input placeholder="Buenos Aires" size="large" />
+        </Form.Item>
+
+        <Row gutter={[12, 0]}>
+          {/* CIUDAD */}
+          <Col xs={24} sm={16}>
+            <Form.Item
+              label="Ciudad / Localidad"
+              name="city"
+              rules={[{ required: true, message: 'Por favor ingrese la ciudad' }]}
+            >
+              <Input placeholder="General Lavalle" size="large" />
+            </Form.Item>
+          </Col>
+
+          {/* CÓDIGO POSTAL */}
+          <Col xs={24} sm={8}>
+            <Form.Item
+              label="Código Postal"
+              name="postalCode"
+              rules={[{ required: true, message: 'Requerido' }]}
+            >
+              <Input placeholder="7103" size="large" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* DIRECCIÓN */}
+        <Form.Item
+          label="Dirección / Calle y Altura"
+          name="address"
+          rules={[{ required: true, message: 'Por favor ingrese la dirección' }]}
+        >
+          <Input placeholder="Av. Mitre 1580" size="large" />
         </Form.Item>
       </Form>
     </Modal>
