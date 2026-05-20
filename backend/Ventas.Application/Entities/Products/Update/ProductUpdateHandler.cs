@@ -2,10 +2,11 @@
 using MediatR;
 using Ventas.Application.Entities.Products.DTOs;
 using Ventas.Application.Entities.UnitOfWork;
+using Ventas.Domain.Enums;
 
 namespace Ventas.Application.Entities.Products.Update
 {
-    public record ProductUpdateCommand(int Id, string? Code, string Name, string Description, string ImagePath, decimal Price, string CodeBar, int CategoryId, int TaxRateId) : IRequest<ProductOutput>;
+    public record ProductUpdateCommand(int Id, string? Code, string Name, string Description, string ImagePath, decimal SellingPrice, decimal CostPrice, string CodeBar, int? CategoryId, int TaxRateId, UnitTypeEnum UnitOfMeasurement) : IRequest<ProductOutput>;
 
     public class ProductUpdateHandler : IRequestHandler<ProductUpdateCommand, ProductOutput>
     {
@@ -29,10 +30,12 @@ namespace Ventas.Application.Entities.Products.Update
             existingProduct.Name = request.Name;
             existingProduct.Description = request.Description;
             existingProduct.ImagePath = request.ImagePath;
-            existingProduct.Price = request.Price;
+            existingProduct.SellingPrice = request.SellingPrice;
+            existingProduct.CostPrice = request.CostPrice;
             existingProduct.CodeBar = request.CodeBar;
             existingProduct.CategoryId = request.CategoryId;
             existingProduct.TaxRateId = request.TaxRateId;
+            existingProduct.UnitOfMeasurement = request.UnitOfMeasurement;
             var updatedProduct = await _productRepository.UpdateAsync(existingProduct);
             await _unitOfWorkRepository.SaveChangesAsync();
             return updatedProduct.Adapt<ProductOutput>();

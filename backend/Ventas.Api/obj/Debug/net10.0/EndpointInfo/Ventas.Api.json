@@ -2615,7 +2615,11 @@
             "type": "string",
             "nullable": true
           },
-          "price": {
+          "sellingPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "costPrice": {
             "type": "number",
             "format": "double"
           },
@@ -2625,11 +2629,15 @@
           },
           "categoryId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "taxRateId": {
             "type": "integer",
             "format": "int32"
+          },
+          "unitOfMeasurement": {
+            "$ref": "#/components/schemas/UnitTypeEnum"
           }
         },
         "additionalProperties": false
@@ -2657,7 +2665,11 @@
             "type": "string",
             "nullable": true
           },
-          "price": {
+          "sellingPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "costPrice": {
             "type": "number",
             "format": "double"
           },
@@ -2667,11 +2679,15 @@
           },
           "categoryId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "taxRateId": {
             "type": "integer",
             "format": "int32"
+          },
+          "unitOfMeasurement": {
+            "$ref": "#/components/schemas/UnitTypeEnum"
           }
         },
         "additionalProperties": false
@@ -2781,6 +2797,15 @@
           }
         },
         "additionalProperties": false
+      },
+      "UnitTypeEnum": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "UpdateConfigurationsBatchCommand": {
         "type": "object",

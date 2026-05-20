@@ -28,6 +28,13 @@ const Products = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   // Carga inicial
   const fetchProducts = async () => {
     setLoading(true);
@@ -146,10 +153,10 @@ const Products = () => {
     },
     {
       title: "Precio",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "sellingPrice",
+      key: "sellingPrice",
       width: isMobile ? 80 : 100,
-      render: (p) => <b>${p}</b>,
+      render: (p) => <b>{currencyFormatter.format(p)}</b>,
     },
     {
       title: "Acción",

@@ -5,6 +5,7 @@ using Ventas.Application.Entities.DailyBoxes.DTOs;
 using Ventas.Application.Entities.UnitOfWork;
 using Ventas.Application.Entities.Vouchers;
 using Ventas.Domain.Entities;
+using Ventas.Domain.Enums;
 
 namespace Ventas.Application.Entities.DailyBoxes.CloseDailyBox
 {
@@ -31,7 +32,7 @@ namespace Ventas.Application.Entities.DailyBoxes.CloseDailyBox
             var configurationNumber = configurations.First(t => t.Variable == "cajaDiariaNumero");
             configurationNumber.NumericValue++;
 
-            var vouchers = await _voucherRepository.SearchAsync(t => t.Deleted == 0 && t.DailyBoxId == null);
+            var vouchers = await _voucherRepository.SearchAsync(t => t.Deleted == 0 && t.DailyBoxId == null && t.StateEntityId == (int)StateEntityEnum.VoucherStateEnum.FINALIZADO);
 
             var dailyBox = await _dailyBoxRepository.CreateAsync(new DailyBox()
             {

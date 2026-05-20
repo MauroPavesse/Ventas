@@ -29,6 +29,13 @@ const CloseSale = ({ visible, onClose, totalAmount, onConfirm }) => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [customers, setCustomers] = useState([]);
 
+  const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   useEffect(() => {
     if (!visible) return; // Solo carga si el modal está abierto
     const loadMetadata = async () => {
@@ -115,7 +122,7 @@ const CloseSale = ({ visible, onClose, totalAmount, onConfirm }) => {
           <div style={{ background: '#fcfcfc', padding: '12px', borderRadius: '8px', border: '1px solid #f0f0f0' }}>
             <Text type="secondary" style={{ fontSize: '12px' }}>SUBTOTAL ORIGINAL</Text>
             <Title level={4} style={{ margin: 0, fontWeight: 500 }}>
-              ${totalAmount.toFixed(2)}
+              {currencyFormatter.format(totalAmount)}
             </Title>
           </div>
         </Col>
@@ -185,7 +192,7 @@ const CloseSale = ({ visible, onClose, totalAmount, onConfirm }) => {
           >
             <Text type="secondary" strong style={{ letterSpacing: '0.5px', fontSize: '11px' }}>TOTAL CON RECARGOS / DESCUENTOS</Text>
             <Title level={1} style={{ margin: 0, color: "#096dd9", fontSize: isMobile ? '36px' : '42px', fontWeight: 700 }}>
-              ${finalAmount.toFixed(2)}
+              {currencyFormatter.format(finalAmount)}
             </Title>
           </div>
         </Col>
@@ -203,13 +210,13 @@ const CloseSale = ({ visible, onClose, totalAmount, onConfirm }) => {
             stringMode={false}
             onFocus={(e) => e.target.select()} // Auto-selecciona el texto para agilizar el borrado en cajas rápidas
           />
-          
+
           {paidAmount > finalAmount ? (
             <div style={{ marginTop: 12 }}>
               <div style={{ background: '#f6ffed', border: '1px solid #b7eb8f', padding: '12px', borderRadius: '6px', textAlign: 'center' }}>
                 <Text type="secondary" style={{ display: 'block', fontSize: '11px', color: '#52c41a' }} strong>VUELTO (CAMBIO)</Text>
                 <Title level={3} style={{ margin: 0, color: '#52c41a', fontWeight: 600 }}>
-                  ${(paidAmount - finalAmount).toFixed(2)}
+                  {currencyFormatter.format(paidAmount - finalAmount)}
                 </Title>
               </div>
             </div>
@@ -217,7 +224,7 @@ const CloseSale = ({ visible, onClose, totalAmount, onConfirm }) => {
             <div style={{ marginTop: 12 }}>
               <div style={{ background: '#fff1f0', border: '1px solid #ffa39e', padding: '8px', borderRadius: '6px', textAlign: 'center' }}>
                 <Text type="danger" strong style={{ fontSize: '12px' }}>
-                  Faltan: ${(finalAmount - paidAmount).toFixed(2)}
+                  Faltan: {currencyFormatter.format(finalAmount - paidAmount)}
                 </Text>
               </div>
             </div>

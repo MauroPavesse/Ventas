@@ -41,6 +41,13 @@ const Sale = () => {
   const [pendingVouchers, setPendingVouchers] = useState([]);
   const [loadingPending, setLoadingPending] = useState(false);
 
+  const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   // Carga inicial
   useEffect(() => {
     const fetchProducts = async () => {
@@ -109,7 +116,7 @@ const Sale = () => {
     const value = e.target.value.toLowerCase();
     setSearchText(value);
     const filtered = products.filter((p) =>
-      p.name.toLowerCase().includes(value) || 
+      p.name.toLowerCase().includes(value) ||
       (p.code && p.code.toLowerCase().includes(value)) ||
       p.codeBar.includes(value)
     );
@@ -153,9 +160,9 @@ const Sale = () => {
           id: product.id,
           productId: product.id, // Lo guardamos explícitamente para el backend
           productName: product.name,
-          price: product.price,
+          price: product.sellingPrice,
           quantity: 1,
-          amountFinal: product.price,
+          amountFinal: product.sellingPrice,
         },
       ];
     });
@@ -188,9 +195,9 @@ const Sale = () => {
     { title: "Nombre", dataIndex: "name", key: "name" },
     {
       title: "Precio",
-      dataIndex: "price",
-      key: "price",
-      render: (p) => `$ ${p}`,
+      dataIndex: "sellingPrice",
+      key: "sellingPrice",
+      render: (value) => currencyFormatter.format(value),
     },
     {
       title: "Acción",
@@ -222,7 +229,7 @@ const Sale = () => {
       title: "Importe",
       dataIndex: "amountFinal",
       key: "amountFinal",
-      render: (i) => <strong>$ {i}</strong>,
+      render: (value) => <strong>{currencyFormatter.format(value)}</strong>,
     },
     {
       title: "",
@@ -390,7 +397,7 @@ const Sale = () => {
             />
             <div style={{ marginTop: 16, textAlign: "right" }}>
               <h3 style={{ margin: 0, fontSize: isMobile ? '18px' : '22px' }}>
-                Total: ${cart.reduce((acc, item) => acc + item.amountFinal, 0)}
+                Total: {currencyFormatter.format(cart.reduce((acc, item) => acc + item.amountFinal, 0))}
               </h3>
             </div>
           </Card>
@@ -469,7 +476,7 @@ const Sale = () => {
               key: "dateCreation",
               render: (date) => new Date(date).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })
             },
-            { title: "Total", dataIndex: "amountTotal", key: "amountTotal", render: (t) => `$${t}` },
+            { title: "Total", dataIndex: "amountTotal", key: "amountTotal", render: (t) => `${currencyFormatter.format(t)}` },
             {
               title: "Acciones",
               key: "action",

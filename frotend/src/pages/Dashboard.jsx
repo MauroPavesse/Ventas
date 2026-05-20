@@ -18,6 +18,13 @@ const Dashboard = () => {
 
   const maxQuantity = topProductsData.length > 0 ? topProductsData[0].quantity : 1;
 
+  const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   // Modificamos la función para que opcionalmente reciba las fechas directamente
   const fetchData = async (currentDates = dateRange) => {
     setLoading(true);
@@ -76,9 +83,7 @@ const Dashboard = () => {
             <Card variant="borderless" hoverable styles={{ body: { padding: isMobile ? '16px' : '24px' } }}>
               <Statistic
                 title="Importe de Ventas"
-                value={salesAmountData?.currentSales ?? 0} // Si es null, muestra 0
-                precision={2}
-                prefix="$"
+                value={currencyFormatter.format(salesAmountData?.currentSales ?? 0)} // Si es null, muestra 0
               />
               {salesAmountData && (
                 <div style={{ marginTop: '12px', fontSize: '14px', color: '#8c8c8c', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -116,9 +121,7 @@ const Dashboard = () => {
             <Card variant="borderless" hoverable styles={{ body: { padding: isMobile ? '16px' : '24px' } }}>
               <Statistic
                 title="Ticket Promedio"
-                value={salesAmountData?.averageTicket ?? 0} // (CurrentSales / TotalOrders)
-                precision={2}
-                prefix="$"
+                value={currencyFormatter.format(salesAmountData?.averageTicket ?? 0)} // (CurrentSales / TotalOrders)
               />
               <div style={{ marginTop: '12px', fontSize: '14px', color: '#8c8c8c' }}>
                 <span>Consumo medio por cliente</span>
@@ -162,7 +165,7 @@ const Dashboard = () => {
                     {item.name}
                   </span>
                   <span style={{ fontSize: isMobile ? '13px' : '14px', color: 'rgba(0, 0, 0, 0.45)' }}>
-                    {item.quantity} und. — <span style={{ fontWeight: 500, color: '#595959' }}>Total: ${item.totalAmount}</span>
+                    {item.quantity} und. — <span style={{ fontWeight: 500, color: '#595959' }}>Total: {currencyFormatter.format(item.totalAmount)}</span>
                   </span>
                 </div>
               </div>

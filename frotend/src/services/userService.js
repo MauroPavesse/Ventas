@@ -30,7 +30,7 @@ export const userService = {
 
   login: async(params) => {
     const body = new UserLoginCommand(params);
-    const response = await api.post("/user/login", body)
+    const response = await api.post("/user/login", body);
     return response.data;
   }
 };

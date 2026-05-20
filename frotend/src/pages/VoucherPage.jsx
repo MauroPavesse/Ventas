@@ -22,6 +22,13 @@ const VoucherPage = () => {
   const [loading, setLoading] = useState(false);
   const [dailyBoxes, setDailyBoxes] = useState([]);
 
+  const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -118,16 +125,16 @@ const VoucherPage = () => {
     expandedRowRender: (record) => (
       <Table
         columns={[
-          { 
-            title: "Comprobante", 
-            dataIndex: "description", 
-            key: "description" 
+          {
+            title: "Comprobante",
+            dataIndex: "description",
+            key: "description"
           },
-          { 
-            title: "Importe", 
-            dataIndex: "amountTotal", 
-            key: "amountTotal", 
-            render: (i) => <b>$ {i.toLocaleString()}</b> 
+          {
+            title: "Importe",
+            dataIndex: "amountTotal",
+            key: "amountTotal",
+            render: (i) => <b>{currencyFormatter.format(i)}</b>
           },
           {
             title: "Acción",
@@ -137,10 +144,10 @@ const VoucherPage = () => {
             render: (_, record) => (
               <div style={{ display: 'flex', gap: isMobile ? '4px' : '8px' }}>
                 <Tooltip title={isMobile ? "" : "Imprimir"}>
-                  <Button 
-                    size={isMobile ? "small" : "default"} 
-                    icon={<PrinterOutlined />} 
-                    onClick={() => printTicket(subRecord.id)} 
+                  <Button
+                    size={isMobile ? "small" : "default"}
+                    icon={<PrinterOutlined />}
+                    onClick={() => printTicket(subRecord.id)}
                   />
                 </Tooltip>
 
@@ -168,22 +175,23 @@ const VoucherPage = () => {
   };
 
   const columns = [
-    { 
-      title: "N° Caja Diaria", 
-      dataIndex: "number", 
-      key: "number", 
+    {
+      title: "N° Caja Diaria",
+      dataIndex: "number",
+      key: "number",
       render: (i) => isMobile ? `#${i}` : `Caja diaria ${i}`
     },
-    { 
+    {
       title: isMobile ? "Comps." : "Cant. Comp.",
-      dataIndex: "quantityVouchers", 
-      key: "quantityVouchers" 
+      dataIndex: "quantityVouchers",
+      key: "quantityVouchers"
     },
-    { 
-      title: "Total", 
-      dataIndex: "amount", 
-      key: "amount", 
-      render: (i) => <b>$ {i.toLocaleString()}</b> },
+    {
+      title: "Total",
+      dataIndex: "amount",
+      key: "amount",
+      render: (i) => <b>{currencyFormatter.format(i)}</b>
+    },
     {
       title: "Acción",
       key: "action",
@@ -192,10 +200,10 @@ const VoucherPage = () => {
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px' }}>
           <Tooltip title={isMobile ? "" : "Imprimir"}>
-            <Button 
-              size={isMobile ? "small" : "default"} 
-              icon={<PrinterOutlined />} 
-              onClick={() => printDailyBox(record.id)} 
+            <Button
+              size={isMobile ? "small" : "default"}
+              icon={<PrinterOutlined />}
+              onClick={() => printDailyBox(record.id)}
             />
           </Tooltip>
         </div>

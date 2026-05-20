@@ -20,7 +20,10 @@ namespace Ventas.Infrastructure.Persistence.Configurations
             builder.Property(t => t.ImagePath)
                 .HasMaxLength(200);
 
-            builder.Property(t => t.Price)
+            builder.Property(t => t.SellingPrice)
+                .HasPrecision(18, 2);
+
+            builder.Property(t => t.CostPrice)
                 .HasPrecision(18, 2);
 
             builder.Property(t => t.CodeBar)

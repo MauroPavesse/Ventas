@@ -1,4 +1,4 @@
-import { Button, message, Table, Modal, Tooltip, Grid, Card } from "antd";
+import { Button, message, Table, Modal, Tooltip, Grid, Card, Row, Col, Statistic  } from "antd";
 import PageLayout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { voucherService } from "../services/voucherService";
 import { printService } from "../services/printService";
 import { dailyBoxService } from "../services/dailyBoxService";
 import { configurationService } from "../services/configurationService";
+import { VoucherTypesEnum } from "../constants/voucherTypesEnum";
 import {
   DeleteOutlined,
   ExclamationCircleOutlined,
@@ -23,6 +24,15 @@ const DailyBox = () => {
 
   const [loading, setLoading] = useState(false);
   const [vouchers, setVouchers] = useState();
+
+  const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  const totalAccumulated = vouchers?.reduce((sum, item) => sum + (item.amountTotal || 0), 0) || 0;
 
   const fetchData = async () => {
     setLoading(true);
@@ -114,7 +124,7 @@ const DailyBox = () => {
         columns={[
           { title: "Producto", dataIndex: "productName", key: "productName" },
           { title: "Cant.", dataIndex: "quantity", key: "quantity", width: isMobile ? 60 : undefined },
-          { title: "Subtotal", dataIndex: "amountFinal", key: "amountFinal", render: (a) => `$ ${a}` },
+          { title: "Subtotal", dataIndex: "amountFinal", key: "amountFinal", render: (a) => currencyFormatter.format(a) },
         ]}
         dataSource={record.voucherDetails}
         pagination={false}
@@ -137,7 +147,7 @@ const DailyBox = () => {
       title: "Importe",
       dataIndex: "amountTotal",
       key: "amountTotal",
-      render: (i) => <b>$ {i.toLocaleString()}</b>
+      render: (i) => <b>{currencyFormatter.format(i)}</b>
     },
     {
       title: "Acción",
@@ -150,15 +160,18 @@ const DailyBox = () => {
             <Button size={isMobile ? "small" : "default"} icon={<PrinterOutlined />} onClick={() => printTicket(record.id)} />
           </Tooltip>
 
-          <Tooltip title={isMobile ? "" : "Convertir a Factura"}>
-            <Button
-              size={isMobile ? "small" : "default"}
-              type="primary"
-              ghost
-              icon={<FileDoneOutlined />}
-              onClick={() => handleConvertInvoice(record)}
-            />
-          </Tooltip>
+          {record.voucherTypeId == VoucherTypesEnum.ORDEN_DE_COMPRA ?
+            <Tooltip title={isMobile ? "" : "Convertir a Factura"}>
+              <Button
+                size={isMobile ? "small" : "default"}
+                type="primary"
+                ghost
+                icon={<FileDoneOutlined />}
+                onClick={() => handleConvertInvoice(record)}
+              />
+            </Tooltip>
+            : null
+          }
 
           <Button
             size={isMobile ? "small" : "default"}
@@ -234,23 +247,35 @@ const DailyBox = () => {
     <PageLayout title="Caja de Hoy - Comprobantes" onClose={() => navigate("/dashboard")}>
 
       {/* Botón superior destacado para celular */}
-      <div style={{ 
-        marginBottom: 16, 
-        display: 'flex', 
-        justifyContent: isMobile ? 'stretch' : 'flex-end' 
-      }}>
-        <Button
-          type="primary"
-          danger
-          icon={<DollarOutlined />}
-          onClick={() => closeDailyBox()}
-          block={isMobile}
-          size={isMobile ? "large" : "default"}
-          style={{ fontWeight: 600 }}
-        >
-          Cerrar Caja Diaria
-        </Button>
-      </div>
+      <Row gutter={[16, 16]} align="middle" style={{ marginBottom: 16 }}>
+        {/* Tarjeta del total: Ocupa todo el ancho en móvil (24) y se autoajusta en escritorio */}
+        <Col xs={24} sm={12} md={7}>
+          <Card size="small" bodyStyle={{ padding: '12px 16px' }}>
+            <Statistic
+              title="Acumulado del Día"
+              value={totalAccumulated}
+              formatter={(value) => currencyFormatter.format(value)}
+              valueStyle={{ color: '#3f8600', fontWeight: 'bold', fontSize: isMobile ? '20px' : '24px' }}
+              prefix={<DollarOutlined />}
+            />
+          </Card>
+        </Col>
+        
+        {/* Contenedor del botón: Se alinea al final en pantallas grandes */}
+        <Col xs={24} sm={12} md={16} style={{ display: 'flex', justifyContent: isMobile ? 'stretch' : 'flex-end' }}>
+          <Button
+            type="primary"
+            danger
+            icon={<DollarOutlined />}
+            onClick={() => closeDailyBox()}
+            block={isMobile}
+            size={isMobile ? "large" : "default"}
+            style={{ fontWeight: 600, width: isMobile ? '100%' : 'auto', height: isMobile ? '50px' : 'auto' }}
+          >
+            Cerrar Caja Diaria
+          </Button>
+        </Col>
+      </Row>
 
       <div style={{ overflowX: 'auto' }}>
         <Table

@@ -33,6 +33,12 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
   const screens = useBreakpoint();
   const isMobile = screens.md === false; // Detecta celulares y pantallas compactas
 
+  const unitTypeEnum = [
+    { id: 1, name: "Unidad (Ud)" },
+    { id: 2, name: "Kilogramo (Kg)" },
+    { id: 3, name: "Litro (L)" },
+  ];
+
   useEffect(() => {
     if (open) {
       loadSelectData();
@@ -90,13 +96,15 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
       const payload = {
         id: initialValues?.id ? initialValues.id : 0,
         code: values.code,
-        name: values.name,
-        description: values.description,
-        imagePath: values.imagePath,
-        price: values.price || 0,
-        codeBar: values.codeBar,
+        name: values.name || "",
+        description: values.description || "",
+        imagePath: values.imagePath || "",
+        sellingPrice: values.sellingPrice || 0,
+        costPrice: values.costPrice || 0,
+        codeBar: values.codeBar || "",
         categoryId: values.categoryId,
         taxRateId: values.taxRateId,
+        unitOfMeasurement: values.unitOfMeasurement
       };
 
       if (initialValues?.id) {
@@ -109,6 +117,7 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
 
       onSuccess();
     } catch (error) {
+      message.error(error);
       if (error.errorFields) {
         console.log("Campos inválidos en formulario:", error.errorFields);
       } else {
@@ -178,7 +187,7 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
             <Form.Item
               label="Categoría"
               name="categoryId"
-              rules={[{ required: true, message: 'Seleccione una categoría' }]}
+              rules={[{ required: false, message: 'Seleccione una categoría' }]}
             >
               <Select
                 placeholder="Seleccione categoría de catálogo"
@@ -195,7 +204,22 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
               <Col xs={12} sm={12}>
                 <Form.Item
                   label="Precio de Venta"
-                  name="price"
+                  name="sellingPrice"
+                  rules={[{ required: true, message: 'Ingrese precio' }]}
+                >
+                  <InputNumber
+                    prefix="$"
+                    placeholder="0.00"
+                    size="large"
+                    style={{ width: '100%' }}
+                    min={0}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={12}>
+                <Form.Item
+                  label="Precio de Costo"
+                  name="costPrice"
                   rules={[{ required: true, message: 'Ingrese precio' }]}
                 >
                   <InputNumber
@@ -220,6 +244,22 @@ const ProductEditModal = ({ open, onCancel, onSuccess, initialValues }) => {
                     options={taxRates.map((t) => ({
                       value: t.id,
                       label: t.description,
+                    }))}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={12} sm={12}>
+                <Form.Item
+                  label="Tipo de Unidad"
+                  name="unitOfMeasurement"
+                  rules={[{ required: true, message: 'Seleccione un tipo de unidad' }]}
+                >
+                  <Select
+                    placeholder="Seleccione un tipo de unidad"
+                    size="large"
+                    options={unitTypeEnum.map((c) => ({
+                      value: c.id,
+                      label: c.name,
                     }))}
                   />
                 </Form.Item>

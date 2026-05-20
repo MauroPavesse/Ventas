@@ -56,6 +56,14 @@ const DashboardLayout = ({ children }) => {
   // Lógica para extraer la llave activa basada en la URL actual
   const currentKey = location.pathname.split('/')[1] || 'sales';
 
+  const handleMenuClick = (key) => {
+    // Si la opción no maneja un evento onClick customizado (como el botón logout)
+    if (key !== 'logout') {
+      navigate(`/${key}`);
+    }
+    setMobileMenuOpen(false); // Cierra el Drawer
+  };
+
   return (
     <ConfigProvider
       theme={{

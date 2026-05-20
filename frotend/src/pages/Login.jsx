@@ -26,14 +26,11 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await userService.login(values);
-
             login(response);
-
             message.success(`Bienvenido, ${response.userName}`);
             navigate('/dashboard');
         } catch (error) {
-            const errorMsg = error.response?.data?.Message || error.response?.data?.message || 'Error al conectar con el servidor';
-            message.error(errorMsg);
+            message.error(error);
         } finally {
             setLoading(false);
         }

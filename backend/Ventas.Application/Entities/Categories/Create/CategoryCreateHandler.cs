@@ -23,8 +23,8 @@ namespace Ventas.Application.Entities.Categories.Create
         public async Task<CategoryOutput> Handle(CategoryCreateCommand request, CancellationToken cancellationToken)
         {
             // Regla de negocio: Validar duplicados
-            var exists = await categoryRepository.SearchAsync(t => t.Name.ToLower() == request.Name.ToLower());
-            if (exists != null)
+            var exists = await categoryRepository.SearchAsync(t => t.Name.ToLower() == request.Name.ToLower() && t.Active == 1);
+            if (exists.Any())
             {
                 throw new BusinessException($"Ya existe una categoría con el nombre '{request.Name}'.");
             }
