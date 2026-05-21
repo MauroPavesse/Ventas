@@ -14,6 +14,7 @@ using Ventas.Application.Entities.Externas.Afip;
 using Ventas.Application.Entities.Externas.Encryption;
 using Ventas.Application.Entities.Externas.FileStorage;
 using Ventas.Application.Entities.Externas.Jwt;
+using Ventas.Application.Entities.Externas.Licences;
 using Ventas.Application.Entities.Externas.Prints.BudgetDocument;
 using Ventas.Application.Entities.Externas.Prints.DailyBoxDocument;
 using Ventas.Application.Entities.Externas.Prints.TicketDocument;
@@ -86,19 +87,26 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Open", builder =>
-        builder.AllowAnyOrigin()
+    options.AddPolicy("Open", policy =>
+        policy.AllowAnyOrigin()
                .AllowAnyHeader()
                .AllowAnyMethod());
-});
 
-builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => {
         policy.WithOrigins("https://*.reservacanchita.online")
               .SetIsOriginAllowedToAllowWildcardSubdomains()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
+});
+
+// Registrar la memoria caché
+builder.Services.AddMemoryCache();
+
+// Registrar el HttpClient apuntando a tu IP del Nginx de Licencias
+builder.Services.AddHttpClient<ILicenseService, LicenseService>(client =>
+{
+    client.BaseAddress = new Uri("http://72.60.60.66:81/"); // La IP y puerto del sistema de Licencias
 });
 
 var config = TypeAdapterConfig.GlobalSettings;
@@ -118,22 +126,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ventas API V1");
-        c.RoutePrefix = string.Empty; // Esto hace que Swagger salga en la raíz (evita el 404)
+        c.RoutePrefix = string.Empty;
     });
 }
 
-
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.UseMiddleware<TenantMiddleware>();
-
-app.MapControllers();
-
 app.UseStaticFiles();
 
 app.UseCors("Open");
 
+app.UseAuthorization();
+
+app.UseMiddleware<TenantMiddleware>();       // Primero se identifica al cliente (Subdominio)
+app.UseMiddleware<LicenseCheckMiddleware>(); // Segundo se verifica si pagó la licencia
+
+app.MapControllers();
 app.Run();
 

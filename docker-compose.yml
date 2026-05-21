@@ -1,0 +1,28 @@
+services:
+  ventas-api:
+    build: 
+      context: ./backend        # <--- Ahora busca la carpeta backend
+      dockerfile: Dockerfile     # El Dockerfile que está dentro de backend
+    container_name: ventas_backend
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - red-proyectos  # <--- IMPORTANTE: Usamos tu red existente
+    ports:
+      - "5001:8080" # Usaremos el 5001 para no chocar con el otro backend (5000)
+
+  ventas-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ventas_frontend
+    restart: always
+    ports:
+      - "8082:80" # El frontend irá al puerto 8082
+    networks:
+      - red-proyectos
+
+networks:
+  red-proyectos:
+    external: true
