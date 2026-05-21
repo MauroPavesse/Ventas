@@ -51,8 +51,11 @@ namespace Ventas.Application.Entities.Vouchers.ConvertToInvoice
                 return Result<VoucherOutput>.Failure(errorMessages);
             }
 
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo argTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
+            DateTime fechaArgentina = TimeZoneInfo.ConvertTimeFromUtc(utcNow, argTimeZone);
             // 4. Actualizar datos fiscales en el objeto y persistir
-            voucher.SetFiscalData(afipResponse.Cae!, afipResponse.CaeExpiration ?? DateTime.Now, afipResponse.Number);
+            voucher.SetFiscalData(afipResponse.Cae!, afipResponse.CaeExpiration ?? fechaArgentina, afipResponse.Number);
 
             await _voucherRepository.UpdateAsync(voucher);
             await _unitOfWorkRepository.SaveChangesAsync();

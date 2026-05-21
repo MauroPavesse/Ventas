@@ -178,6 +178,9 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                     await _pointOfSaleVoucherTypeRepository.UpdateAsync(posVoucherType);
                 }
 
+                DateTime utcNow = DateTime.UtcNow;
+                TimeZoneInfo argTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
+                DateTime fechaArgentina = TimeZoneInfo.ConvertTimeFromUtc(utcNow, argTimeZone);
                 voucher = new Voucher()
                 {
                     Number = number,
@@ -189,7 +192,7 @@ namespace Ventas.Application.Entities.Vouchers.CloseSale
                     CustomerId = request.CustomerId,
                     VoucherTypeId = request.VoucherTypeId,
                     DailyBoxId = null,
-                    DateCreation = DateTime.Now,
+                    DateCreation = fechaArgentina,
                     StateEntityId = request.StateEntityId,
                     VoucherDetails = voucherDetails,
                     VoucherPayments = voucherPayments

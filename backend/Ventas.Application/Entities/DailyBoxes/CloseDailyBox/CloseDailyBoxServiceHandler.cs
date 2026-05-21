@@ -34,11 +34,14 @@ namespace Ventas.Application.Entities.DailyBoxes.CloseDailyBox
 
             var vouchers = await _voucherRepository.SearchAsync(t => t.Deleted == 0 && t.DailyBoxId == null && t.StateEntityId == (int)StateEntityEnum.VoucherStateEnum.FINALIZADO);
 
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo argTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
+            DateTime fechaArgentina = TimeZoneInfo.ConvertTimeFromUtc(utcNow, argTimeZone);
             var dailyBox = await _dailyBoxRepository.CreateAsync(new DailyBox()
             {
                 Number = Convert.ToInt32(configurationNumber.NumericValue),
                 Amount = vouchers.Sum(t => t.AmountNet + t.AmountVAT),
-                Date = DateTime.Now,
+                Date = fechaArgentina,
                 UserId = request.UserId
             });
 
