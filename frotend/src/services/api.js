@@ -32,6 +32,23 @@ api.interceptors.response.use(
       }
     }
 
+    if (error.response && error.response.status === 403) {
+      const serverError = error.response.data?.error;
+      
+      // Validamos si el mensaje viene del Middleware de Licencias
+      if (serverError && serverError.includes("suscripción ha expirado")) {
+        
+        // OPCIÓN A: Si usas una librería de alertas (como SweetAlert2 o AntD message)
+        // Swal.fire("Suscripción Vencida", "Por favor, contacte al administrador para renovar su licencia.", "warning");
+        
+        // OPCIÓN B: Redirigir a una ruta limpia del Frontend que diseñes para esto
+        // window.location.href = '/suscripcion-expirada';
+
+        // Por ahora devolvemos un texto súper claro para tu 'catch' actual:
+        return Promise.reject("⚠️ Licencia Expirada: El acceso a este sistema se encuentra pausado por falta de pago. Contacte a soporte.");
+      }
+    }
+
     // 2. Extraer el mensaje del estándar Problem Details (C#)
     let friendlyMessage = "Ocurrió un error inesperado";
     

@@ -87,13 +87,9 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Open", policy =>
-        policy.AllowAnyOrigin()
-               .AllowAnyHeader()
-               .AllowAnyMethod());
-
-    options.AddDefaultPolicy(policy => {
-        policy.WithOrigins("https://*.reservacanchita.online")
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://*.reservacanchita.online", "https://*.reservacanchita.online")
               .SetIsOriginAllowedToAllowWildcardSubdomains()
               .AllowAnyHeader()
               .AllowAnyMethod();
@@ -133,12 +129,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseCors("Open");
-
-app.UseAuthorization();
+app.UseCors();
 
 app.UseMiddleware<TenantMiddleware>();       // Primero se identifica al cliente (Subdominio)
 app.UseMiddleware<LicenseCheckMiddleware>(); // Segundo se verifica si pagó la licencia
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.Run();

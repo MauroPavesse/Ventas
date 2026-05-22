@@ -31,7 +31,7 @@ namespace Ventas.Infrastructure.Persistence.Services
             {
                 // 2. Si no está en caché, le preguntamos a la API de tu sistema de Licencias
                 // Apunta al endpoint de tu backend de licencias (ej: /api/subscriptions/validate)
-                var response = await _httpClient.GetAsync($"api/subscriptions/validate?domain={domain}");
+                var response = await _httpClient.GetAsync($"api/subscription/validate?domain={domain}");
 
                 if (response.IsSuccessStatusCode)
                 {

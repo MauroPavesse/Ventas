@@ -13,10 +13,18 @@ namespace Ventas.Api.Middlewares
 
         public async Task InvokeAsync(HttpContext context, ILicenseService licenseService)
         {
-            // 1. Obtener el dominio/subdominio actual de la petición (ej: cliente1.reservacanchita.online)
-            string currentHost = context.Request.Host.Host;
+            var host = context.Request.Host.Host;
 
-            // 2. Excluir rutas que no requieren licencia (por ejemplo: webhooks de pago, login del admin central, etc.)
+            if (host == "localhost" || host == "127.0.0.1")
+            {
+                await _next(context);
+                return;
+            }
+
+            var partes = host.Split('.');
+            var subdominio = partes.Length > 1 ? partes[0] : "default";
+
+            // Excluir rutas que no requieren licencia (por ejemplo: webhooks de pago, login del admin central, etc.)
             if (context.Request.Path.StartsWithSegments("/api/admin-central"))
             {
                 await _next(context);
@@ -24,7 +32,7 @@ namespace Ventas.Api.Middlewares
             }
 
             // 3. Validar la licencia
-            bool hasValidLicense = await licenseService.IsLicenseValidAsync(currentHost);
+            bool hasValidLicense = await licenseService.IsLicenseValidAsync(subdominio);
 
             if (!hasValidLicense)
             {
