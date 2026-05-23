@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ventas.Application.Entities.Users.Create;
 using Ventas.Application.Entities.Users.Delete;
@@ -50,6 +51,7 @@ namespace Ventas.Api.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginServiceCommand command)
         {
             // Tu ExceptionMiddleware se encargará de capturar el error 
